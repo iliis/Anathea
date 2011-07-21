@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="anathea1.7" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option extended_obj_names="1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/anathea" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/anathea" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DRELEASE" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="`sdl-config --cflags`" />
+			<Add option="-DTIXML_USE_TICPP" />
+			<Add option="-DUSE_TINYXML" />
+			<Add option="-DUSE_PROPERTY_TREE" />
+			<Add option="-DDATA_DIR=empty" />
+			<Add directory="/home/samuel/programme/boost_1_43_0" />
+			<Add directory="/home/samuel/projects/cpp/anathea1.7" />
+		</Compiler>
+		<Linker>
+			<Add option="`sdl-config --libs`" />
+			<Add library="SDL" />
+			<Add library="SDL_image" />
+			<Add library="SDL_gfx" />
+			<Add library="SDL_ttf" />
+			<Add library="boost_signals" />
+			<Add library="GL" />
+			<Add library="boost_system-mt" />
+			<Add library="boost_filesystem-mt" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="managers/animation_mgr.cpp" />
+		<Unit filename="managers/animation_mgr.hpp" />
+		<Unit filename="managers/definitions.hpp" />
+		<Unit filename="managers/gui_mgr.cpp" />
+		<Unit filename="managers/gui_mgr.hpp" />
+		<Unit filename="managers/image_mgr.cpp" />
+		<Unit filename="managers/image_mgr.hpp" />
+		<Unit filename="managers/input_mgr.cpp" />
+		<Unit filename="managers/input_mgr.hpp" />
+		<Unit filename="managers/kernel.cpp" />
+		<Unit filename="managers/kernel.hpp" />
+		<Unit filename="managers/time_mgr.cpp" />
+		<Unit filename="managers/time_mgr.hpp" />
+		<Unit filename="managers/widget.cpp" />
+		<Unit filename="managers/widget.hpp" />
+		<Unit filename="managers/widgets/widget_button.cpp" />
+		<Unit filename="managers/widgets/widget_button.hpp" />
+		<Unit filename="managers/widgets/widget_container.cpp" />
+		<Unit filename="managers/widgets/widget_container.hpp" />
+		<Unit filename="managers/widgets/widget_image.cpp" />
+		<Unit filename="managers/widgets/widget_image.hpp" />
+		<Unit filename="managers/widgets/widget_list.cpp" />
+		<Unit filename="managers/widgets/widget_list.hpp" />
+		<Unit filename="managers/widgets/widget_text.cpp" />
+		<Unit filename="managers/widgets/widget_text.hpp" />
+		<Unit filename="tools/color.cpp" />
+		<Unit filename="tools/color.hpp" />
+		<Unit filename="tools/errorclass.cpp" />
+		<Unit filename="tools/errorclass.hpp" />
+		<Unit filename="tools/expression.hpp" />
+		<Unit filename="tools/geometry.cpp" />
+		<Unit filename="tools/geometry.hpp" />
+		<Unit filename="tools/mathfuncs.cpp" />
+		<Unit filename="tools/mathfuncs.hpp" />
+		<Unit filename="tools/misc.cpp" />
+		<Unit filename="tools/misc.hpp" />
+		<Unit filename="tools/shape.cpp" />
+		<Unit filename="tools/shape.hpp" />
+		<Unit filename="tools/slots.hpp" />
+		<Unit filename="tools/stringhelpers.cpp" />
+		<Unit filename="tools/stringhelpers.hpp" />
+		<Unit filename="tools/ticpp/ticpp.cpp" />
+		<Unit filename="tools/ticpp/ticpp.h" />
+		<Unit filename="tools/ticpp/ticpprc.h" />
+		<Unit filename="tools/ticpp/tinystr.cpp" />
+		<Unit filename="tools/ticpp/tinystr.h" />
+		<Unit filename="tools/ticpp/tinyxml.cpp" />
+		<Unit filename="tools/ticpp/tinyxml.h" />
+		<Unit filename="tools/ticpp/tinyxmlerror.cpp" />
+		<Unit filename="tools/ticpp/tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

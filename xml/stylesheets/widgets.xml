@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<style>
+
+	<bluebox w="200" h="100">
+		<caption size="20" font="fonts/Arial_Black.ttf" text_color="white" />
+		<normal  type="dynamic_image" path="images/blue_edge.png" all=20 />
+		<hover   type="dynamic_image" path="images/blue_edge.png" all=20 />
+		<pressed type="dynamic_image" path="images/blue_edge.png" all=20 />
+	</bluebox>
+	
+	<button_box w=100 h=40>
+		<image_set path="images/buttons/box" ext=".png" />
+	</button_box>
+	
+	<button>
+		<caption size=12 />
+		<normal  type="box" border="#888" fill="#DDD" border_size=1 />
+		<hover   type="box" border="#888" fill="#EEE" border_size=2 />
+		<pressed type="box" border="#333" fill="#888" border_size=1 />
+	</button>
+	
+	<button_dyn>
+		<normal  type="dynamic_image" path="images/buttons/close_normal.png"  all=20 />
+		<hover   type="dynamic_image" path="images/buttons/close_hover.png"   all=20 />
+		<pressed type="dynamic_image" path="images/buttons/close_pressed.png" all=20 />
+	</button_dyn>
+	
+	<button_close w=70 h=70>
+		<caption size=30 text_color="#FE0" />
+		<image_set path="images/buttons/close" ext=".png" />
+	</button_close>
+	
+	<button_close2 w=65 h=65>
+		<caption size=12 text_color="#eee" />
+		<normal  type="multi_image" path="images/cross.png" cols=3 framenr=0 />
+		<hover   type="multi_image" path="images/cross.png" cols=3 framenr=1 />
+		<pressed type="multi_image" path="images/cross.png" cols=3 framenr=2 />
+	</button_close2>
+	
+	<button_round>
+		<dyn_image_set path="images/buttons/button1" ext=".png" all=9 />
+	</button_round>
+	
+	<window title="a normal window" container_border=10 buttons_height=30 w=300 h=150>
+		<caption size=20 text_color="#111" font="fonts/adventpro-Lt1.ttf" />
+		<text text_color="#222" />
+		<close_button style="button_close2" w=33 h=33 />
+		<background type="dynamic_image" path="images/greenedge.png" all=28 />
+		<title_bg   type="box" fill="#8D0" />
+	</window>
+	
+	<darkBG>
+		<bg type="box" fill="#000D" />
+	</darkBG>
+</style>

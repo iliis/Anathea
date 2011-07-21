@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<settings>
+	<!-- bpp (bits per pixel): 0 = use current -->
+	<screen w=1024
+			h=768
+			bpp=0
+			fullscreen="false"
+			maxFPS=100
+			doublebuf="false"
+			resizable="true"
+			background="#0d1e28" />
+	
+	<styles sprites="xml/stylesheets/sprites.xml"
+			widgets="xml/stylesheets/widgets.xml" />
+	
+	<misc appname="Anathea 1.6" />
+</settings>
