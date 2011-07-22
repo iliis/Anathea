@@ -6,6 +6,7 @@
 #include "managers/widgets/widget_text.hpp"
 #include "managers/widgets/widget_button.hpp"
 #include "managers/widgets/widget_list.hpp"
+#include "managers/widgets/widget_window.hpp"
 
 using namespace std;
 
@@ -159,6 +160,37 @@ main(int argc, char *argv[])
 		wcontainer->insert(wb);
 		wcontainer->hideOverflow(true);
 		wcontainer->removeChild(wi2);
+
+		shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
+		cont_border->setImage("images/edge.png");
+		cont_border->getImage().setNinePatchData(NinePatchData(true,7,7,7,7));
+		Image edge = cont_border->getImage();
+		cont_border->abs_x  = wcontainer->abs_x.ref() - 3;
+		cont_border->abs_y  = wcontainer->abs_y.ref() - 3;
+		cont_border->width  = wcontainer->width.ref() + 6;
+		cont_border->height = wcontainer->height.ref()+ 6;
+
+		shared_ptr<WButton> wclose = kernel.guiMgr->createWidget<WButton>("window close");
+		wclose->setTripleBG("images/cross.png",HORIZONTAL);
+		wclose->width = wclose->height.ref();
+		shared_ptr<WWindow> awindow = kernel.guiMgr->createWidget<WWindow>("a window for testing");
+		awindow->abs_x = 300;
+		awindow->abs_y = 100;
+		awindow->width = 500;
+		awindow->height = 300;
+		awindow->setTitleBar("images/yellow.png"); awindow->getTitleBar().setNinePatchData(NinePatchData(true,7,7,7,7));
+		awindow->setBG("images/orange.png");       awindow->getBG      ().setNinePatchData(NinePatchData(true,7,7,7,7));
+		awindow->setCloseButton(wclose);
+		awindow->border = 5;
+		awindow->setTitle("hallo welt: this is a Window!");
+		awindow->getTitleWidget()->cast<WText>()->setColor(Color("black"));
+		awindow->getTitleWidget()->cast<WText>()->setFontSize(20);
+		awindow->getContainer()->addChild(wi2);
+		wi2->abs_x = awindow->abs_x.ref() - 100;
+
+		kernel.guiMgr->addWidget(awindow);
+		kernel.guiMgr->addWidget(wcontainer);
+		kernel.guiMgr->addWidget(button_exit);
 
 		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");
 		kernel.run();

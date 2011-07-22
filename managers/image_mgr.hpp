@@ -57,7 +57,7 @@ protected:
 	NinePatchData nine_patch;
 	Box UV;
 
-	GLuint texture;
+	GLuint* texture; ///< muss ein Pointer sein, damit Textur aktualisiert werden kann
 	SDL_Surface* surface;
 
 	int* counter;
@@ -68,13 +68,14 @@ protected:
 		if(*counter == 0)
 		{
 			SDL_FreeSurface(surface);
-			glDeleteTextures(1, &texture);
+			glDeleteTextures(1, texture);
 
-			delete counter;
+			delete counter; *texture = 0;
+			delete texture;
 		}
 
 		counter = NULL;
-		texture = 0;
+		texture = NULL;
 		surface = NULL;
 	}
 
@@ -90,8 +91,8 @@ public:
 	/// übernimmt ein bereits existierendes Bild
 	/// @param srf shared-pointer auf eine SDL-Surface
 	Image(SDL_Surface* srf)
-	 : name("from SDL_Surface"), UV(0,0,1,1), surface(srf), counter(new int(1)), color(Color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE))
-		{if(srf){texture = convertSDL_SurfaceToTexture(surface,name);}}
+	 : name("from SDL_Surface"), UV(0,0,1,1), texture(new GLuint(0)), surface(srf), counter(new int(1)), color(Color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE))
+		{if(srf){*texture = convertSDL_SurfaceToTexture(surface,name);}}
 		//else throw Error("load", "Cannot create Image from SDL_Surface: NULL");}; /// für Screen etc.
 
 	Image(const Image& i)
@@ -142,7 +143,7 @@ public:
 	inline SDL_Surface* getSurface(){return this->surface;}
 
 	/** Gibt die OpenGL-Textur zurück. Nicht löschen! */
-	inline GLuint getTexture(){return this->texture;}
+	inline GLuint getTexture(){return *this->texture;}
 
 	inline bool valid(){return this->surface != NULL and this->texture > 0;}
 

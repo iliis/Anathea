@@ -107,7 +107,7 @@ GuiManager::addRootWidget(WidgetPtr widget)
 void
 GuiManager::deleteWidget(string name)
 {
-	WidgetPtr tmp = this->getWidget(name);
+	WidgetPtr tmp = this->getWidget(name, false);
 	if(tmp != WidgetPtr())
 	{
 		tmp->deleteMe(false);

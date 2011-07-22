@@ -18,7 +18,7 @@ struct PointKey
 	Point point;
 
 	PointKey() : name(),state(false),visible(true),point(Vect(0,0)) {};
-	PointKey(PointName name, bool state, Point p) : name(name), state(state), point(p) {};
+	PointKey(PointName name, bool state, Point p) : name(name), state(state), visible(true), point(p) {};
 };
 
 class InputManager

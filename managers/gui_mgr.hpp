@@ -36,7 +36,7 @@ public:
 
 	~GuiManager(){BOOST_FOREACH(WidgetPtr c, this->root_widgets) c->clearSlots();}
 
-	inline	bool		hasWidget(string name){return this->getWidget(name) != WidgetPtr();}
+	inline	bool		hasWidget(string name){return this->getWidget(name, false) != WidgetPtr();}
 			bool		hasRootWidget(string name);
 	inline	bool		hasRootWidget(WidgetPtr widget){return find(root_widgets.begin(), root_widgets.end(), widget) != root_widgets.end();};
 			WidgetPtr	getWidget(string path, bool throwIfNotFound=true);
@@ -69,7 +69,7 @@ public:
 	{
 		boost::shared_ptr<T> newWidget(new T(name, this->kernel));
 
-		this->addWidget(newWidget);
+		//this->addWidget(newWidget);
 		newWidget->draw_bounding_box = this->draw_bounding_boxes.ref();
 		return newWidget;
 	};

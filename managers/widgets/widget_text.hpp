@@ -32,9 +32,12 @@ public:
 	inline bool  isTransparent() const {return this->transparent;}
 	inline Align  getAlign() const {return this->align;}
 
+	//inline Image getBuffer() {return this->buffer;}
+
 	// SET
 	void _set(ptree n);
 	void setFont(Font f);
+	void setFontSize(int s);
 	void setText(string t);
 	void setColor(Color c) {this->color = c;      this->render();}
 	void setBG(Color c)    {this->background = c; this->render();}

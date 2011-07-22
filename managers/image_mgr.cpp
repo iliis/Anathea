@@ -258,7 +258,7 @@ drawRectangle(Box shape, Color color, double border_with, bool fill)
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 Image::Image(string path)
- : UV(0,0,1,1), counter(new int(1)), color(Color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE))
+ : UV(0,0,1,1), texture(new GLuint(0)), counter(new int(1)), color(Color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE))
 {
 	this->name = path;
 
@@ -273,7 +273,7 @@ Image::Image(string path)
 	if( ! this->surface)
 		throw Error("load", "Cannot convert image '"+path+"' to screen-format.");
 
-	texture = convertSDL_SurfaceToTexture(this->surface);
+	*texture = convertSDL_SurfaceToTexture(this->surface);
 };
 //------------------------------------------------------------------------------
 void
@@ -352,7 +352,7 @@ Image::draw(Box pos, Box uv, bool uvnormal)
 					uv.size / this->getPhysicalSize().cast<Vect::T>() );
 	}
 
-	glBindTexture( GL_TEXTURE_2D, texture );
+	glBindTexture( GL_TEXTURE_2D, *texture );
 
 	Color c = this->color;
 	glBegin( GL_QUADS );
@@ -392,7 +392,7 @@ Image::draw_rotated(Box pos, double angle, Vect center, Box uv, bool uvnormal)
 						uv.size / size );
 		}
 
-		glBindTexture( GL_TEXTURE_2D, texture );
+		glBindTexture( GL_TEXTURE_2D, *texture );
 
 		center = center * size; ///< center ist relativ
 		Vect p1 = Vect(0,0)-center;
@@ -447,14 +447,13 @@ Image::fill(Color col)
 void
 Image::updateTexture()
 {
-	cout << "WARNING: Image::updateTexture() may pose problems with smart-pointer-images." << endl;
 	assert(this->surface);
 
 	/// alte löschen
-	glDeleteTextures(0, &this->texture);
+	glDeleteTextures(0, this->texture);
 
 	/// neue erzeugen
-	this->texture = convertSDL_SurfaceToTexture(this->surface, this->name);
+	*this->texture = convertSDL_SurfaceToTexture(this->surface, this->name);
 };
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -754,6 +753,9 @@ GraphicsManager::drawBoxToScreen(Box shape, Color col)
 							col.r, col.g, col.b, col.a);*/
 	/// -> SpriteBox::draw()
 	glDisable(GL_TEXTURE_2D);
+
+	/// damit die Linien auch schön auf die Pixel passen
+	shape.pos = shape.pos.Floor() + Vect(0.5, 0.5);
 
 	glLineWidth(1);
 	glBegin(GL_LINE_LOOP);

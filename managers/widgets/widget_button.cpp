@@ -36,18 +36,26 @@ WButton::setLabel(WidgetPtr l)
 void
 WButton::setText(string text)
 {
-	this->label->deleteMe();
 	this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
 	label->cast<WText>()->setText(text);
 };
 //------------------------------------------------------------------------------
 void
-WButton::setTripleBG(Image const& i)
+WButton::setTripleBG(Image const& i, Orientation orient)
 {
 	Image bn = i, bh = i, ba = i;
-	bn.setUV(Box(0,0    ,1,1/3.0), true);
-	bh.setUV(Box(0,1/3.0,1,1/3.0), true);
-	ba.setUV(Box(0,2/3.0,1,1/3.0), true);
+	if(orient == VERTICAL)
+	{
+		bn.setUV(Box(0,0    ,1,1/3.0), true);
+		bh.setUV(Box(0,1/3.0,1,1/3.0), true);
+		ba.setUV(Box(0,2/3.0,1,1/3.0), true);
+	}
+	else
+	{
+		bn.setUV(Box(0    ,0,1/3.0,1), true);
+		bh.setUV(Box(1/3.0,0,1/3.0,1), true);
+		ba.setUV(Box(2/3.0,0,1/3.0,1), true);
+	}
 	this->setBGnormal(bn);
 	this->setBGhover (bh);
 	this->setBGactive(ba);

@@ -15,6 +15,12 @@ WText::setFont(Font f)
 };
 //------------------------------------------------------------------------------
 void
+WText::setFontSize(int s)
+{
+	this->setFont(this->kernel->graphicsMgr->loadFont(this->font.getPath(), s));
+};
+//------------------------------------------------------------------------------
+void
 WText::setText(string t)
 {
 	if(t != this->text)

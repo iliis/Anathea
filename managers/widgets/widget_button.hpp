@@ -20,8 +20,10 @@ public:
 	};
 
 	// GET
+	//-------------------------------------------------------------------------
 
 	// SET
+	//-------------------------------------------------------------------------
 	void _set(ptree n);
 
 	void setLabel(WidgetPtr l);
@@ -29,8 +31,9 @@ public:
 	void setBGnormal(Image const& i){this->bg_normal = i; this->setSize(i.getSize());}
 	void setBGhover (Image const& i){this->bg_hover  = i;}
 	void setBGactive(Image const& i){this->bg_active = i;}
-	void setTripleBG(Image const& i);
-	void setTripleBG(string const& path){setTripleBG(kernel->graphicsMgr->loadImage(path));}
+	void setTripleBG(Image const& i, Orientation orient = VERTICAL);
+	void setTripleBG(string const& path, Orientation orient = VERTICAL)
+		{setTripleBG(kernel->graphicsMgr->loadImage(path), orient);}
 
 
 protected:
