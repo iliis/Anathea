@@ -63,28 +63,28 @@ public:
 
 //------------- GET ------------------------------------------------------------
 	inline Vect    getSize()             const {return Vect(width, height);};
-	inline FNumber getSize(int dim)     const {return get_dim2(dim, width.get(), height.get());}
+	inline FNumber getSize(int dim)      const {return get_dim2(dim, width.get(), height.get());}
 	inline Vect    getRelPos()           const {return Vect(rel_x, rel_y);}
-	inline FNumber getRelPos(int dim)   const {return get_dim2(dim, rel_x.get(), rel_y.get());}
+	inline FNumber getRelPos(int dim)    const {return get_dim2(dim, rel_x.get(), rel_y.get());}
 	inline Vect    getAbsPos()           const {return Vect(abs_x, abs_y);};
-	inline FNumber getAbsPos(int dim)   const {return (dim==1?abs_x:abs_y);}
-	inline FNumber getAbsOuter(int dim) const {return (dim==1?abs_x+width:abs_y+height);}
+	inline FNumber getAbsPos(int dim)    const {return (dim==1?abs_x:abs_y);}
+	inline FNumber getAbsOuter(int dim)  const {return (dim==1?abs_x+width:abs_y+height);}
 
 	inline Box     getBB()               const {return Box(this->getAbsPos(), this->getSize());}
-	inline bool   isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
+	inline bool    isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
 
-	virtual const char* getType()      const {return "Widget";}
+	virtual const char* getType()        const {return "Widget";}
 
 	inline WidgetPtr   getParent()       const {return this->parent.lock();}
 	inline bool       hasParent()        const {return !this->parent.expired();}
-	unsigned int      getNumberOfChilds() const {return this->childs.size();}
+	unsigned int      getNumberOfChilds()const {return this->childs.size();}
 	inline bool       hasChild(WidgetPtr child);
 	WidgetPtr           getChild(string path, bool throwIfNotFound = true);
 
-	inline list<WidgetPtr> getChilds() const {return this->childs;};
+	inline list<WidgetPtr> getChilds()   const {return this->childs;};
 
 	inline Slots::SignalPtr getSlot(string name) const {return slots[name];}
-	inline const Slots&    getSlots() const {return this->slots;}
+	inline const Slots&    getSlots()    const {return this->slots;}
 
 //------------- SET ------------------------------------------------------------
 	inline void    setAbsPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->abs_x = n; else this->abs_y = n;}
