@@ -7,7 +7,7 @@ WButton::WButton(string name, Kernel* k)
 	   bg_normal(k->graphicsMgr->getFallbackImage()),
 	   bg_hover (k->graphicsMgr->getFallbackImage()),
 	   bg_active(k->graphicsMgr->getFallbackImage()),
-	   state(NORMAL)
+	   align(CENTER), state(NORMAL)
 {
 	this->slots.add("clicked");
 	label->cast<WText>()->setText(name);
@@ -30,7 +30,7 @@ WButton::setLabel(WidgetPtr l)
 	this->addChild(label);
 
 	/// center label
-	label->setRelativeTo(CENTER, true, MIDDLE, true, shared_from_this());
+	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
 };
 //------------------------------------------------------------------------------
 void
@@ -38,6 +38,15 @@ WButton::setText(string text)
 {
 	this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
 	label->cast<WText>()->setText(text);
+	label->cast<WText>()->setAlign(this->align);
+};
+//------------------------------------------------------------------------------
+void
+WButton::setAlign(Align a)
+{
+	this->align = a;
+	// label->setAlign(a); // doesn't have to be WText...
+	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
 };
 //------------------------------------------------------------------------------
 void

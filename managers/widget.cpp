@@ -76,10 +76,15 @@ Widget::setRelativeTo(Align horiz, bool h_inside, Vlign vert, bool v_inside, Wid
 				rel_x = this->width.ref()*(-1);
 			break;
 
-		case CENTER: rel_x = relativeTo->width.ref()/2-this->width.ref()/2; break;
+		case CENTER:
+			rel_x = relativeTo->width.ref()/2-this->width.ref()/2; break;
 
-		case RIGHT:  rel_x = (h_inside ? relativeTo->width.ref()-this->width.ref()
-								        : relativeTo->width); break;
+		case RIGHT:
+			if(h_inside)
+				rel_x = relativeTo->width.ref()-this->width.ref();
+			else
+				rel_x = relativeTo->width;
+			break;
 	}
 
 	/// vertical
@@ -92,10 +97,15 @@ Widget::setRelativeTo(Align horiz, bool h_inside, Vlign vert, bool v_inside, Wid
 				rel_y = this->height.ref()*(-1);
 			break;
 
-		case MIDDLE: rel_y = relativeTo->height.ref()/2-this->height.ref()/2; break;
+		case MIDDLE:
+			rel_y = relativeTo->height.ref()/2-this->height.ref()/2; break;
 
-		case BOTTOM: rel_y = (v_inside ? relativeTo->height.ref()-this->height.ref()
-								        : relativeTo->height); break;
+		case BOTTOM:
+			if(v_inside)
+				rel_y = relativeTo->height.ref()-this->height.ref();
+			else
+				rel_y = relativeTo->height;
+			break;
 	}
 
 	abs_x = relativeTo->abs_x.ref() + this->rel_x.ref();

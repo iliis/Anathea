@@ -10,7 +10,7 @@ class WContainer : public Widget
 	bool hide_overflow;
 public:
 	WContainer(string name, Kernel* k)
-	 : Widget(name, k), hide_overflow(true) {};
+	 : Widget(name, k), hide_overflow(false) {};
 
 	// GET
 	//-------------------------------------------------------------------------
@@ -20,7 +20,7 @@ public:
 	//-------------------------------------------------------------------------
 	void _set(ptree n){};
 
-	void hideOverflow(bool hide){this->hide_overflow = hide;}
+	void hideOverflow(bool hide=true){this->hide_overflow = hide;}
 
 
 

@@ -73,6 +73,8 @@
 		<Unit filename="managers/widgets/widget_button.hpp" />
 		<Unit filename="managers/widgets/widget_container.cpp" />
 		<Unit filename="managers/widgets/widget_container.hpp" />
+		<Unit filename="managers/widgets/widget_filetree.cpp" />
+		<Unit filename="managers/widgets/widget_filetree.hpp" />
 		<Unit filename="managers/widgets/widget_image.cpp" />
 		<Unit filename="managers/widgets/widget_image.hpp" />
 		<Unit filename="managers/widgets/widget_list.cpp" />

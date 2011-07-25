@@ -12,6 +12,7 @@ WList::WList(string name, Kernel* k)
 	this->item_spacing   = padding.ref();
 
 	this->slots.get("childRemoved")->connect(boost::bind(&WList::updateSize, this));
+	//this->hideOverflow(false);
 };
 //------------------------------------------------------------------------------
 void
@@ -46,7 +47,7 @@ WList::insert(WidgetPtr w)
 	{
 		this->append(w, --this->childs.end());
 
-		WContainer::insert(w);
+		WContainer::addChild(w);
 
 		this->updateSize();
 	}

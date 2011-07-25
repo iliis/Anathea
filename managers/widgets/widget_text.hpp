@@ -29,7 +29,7 @@ public:
 	inline Font   getFont() const {return this->font;}
 	inline Color  getColor() const {return this->color;}
 	inline Color  getBG()   const {return this->background;}
-	inline bool  isTransparent() const {return this->transparent;}
+	inline bool   isTransparent() const {return this->transparent;}
 	inline Align  getAlign() const {return this->align;}
 
 	//inline Image getBuffer() {return this->buffer;}

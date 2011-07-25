@@ -11,21 +11,17 @@ WContainer::draw()
 
 		if(this->hide_overflow)
 		{
-			bool previously_cropped = glIsEnabled(GL_SCISSOR_TEST);
-			GLint old_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, old_scissor_box);
+			bool previously_cropped = kernel->graphicsMgr->scissorsEnabled();
+			Box  prev = kernel->graphicsMgr->getScissors();
 
-			glScissor(GLint(this->abs_x),
-					  GLint(this->kernel->graphicsMgr->getScreenSize().y-this->abs_y-this->height),
-					  GLint(this->width),
-					  GLint(this->height));
-			glEnable(GL_SCISSOR_TEST);
+			kernel->graphicsMgr->setScissors(this->getBB(), true);
 
 			this->drawChilds();
 
 			if(previously_cropped)
-				glScissor(old_scissor_box[0], old_scissor_box[1], old_scissor_box[2], old_scissor_box[3]);
+				kernel->graphicsMgr->setScissors(prev, true);
 			else
-				glDisable(GL_SCISSOR_TEST);
+				kernel->graphicsMgr->disableScissors();
 		}
 		else
 			this->drawChilds();
@@ -36,7 +32,7 @@ void
 WContainer::insert(WidgetPtr w)
 {
 	this->addChild(w);
-	//w->setRelativeTo(LEFT,true,TOP,true,shared_from_this());
+	w->setRelativeTo(LEFT,true,TOP,true,shared_from_this());
 };
 //------------------------------------------------------------------------------
 //------------- INPUT ----------------------------------------------------------

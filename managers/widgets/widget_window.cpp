@@ -17,6 +17,7 @@ WWindow::WWindow(string name, Kernel* k)
 	this->content->width  = this->width.ref()  - 2*border.ref() - padding_left.ref() - padding_right.ref();
 	this->content->height = this->height.ref() - 3*border.ref() - padding_bottom.ref() - padding_top.ref() - title_bar_height.ref();
 	this->content->removeParent(); // only WE are responsible for this widget
+	this->content->hideOverflow(true);
 
 	this->slots.add("closed");
 };

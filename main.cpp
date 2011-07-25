@@ -7,6 +7,7 @@
 #include "managers/widgets/widget_button.hpp"
 #include "managers/widgets/widget_list.hpp"
 #include "managers/widgets/widget_window.hpp"
+#include "managers/widgets/widget_filetree.hpp"
 
 using namespace std;
 
@@ -108,7 +109,7 @@ main(int argc, char *argv[])
 		kernel.init();
 
 		kernel.inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, &kernel, _1, _2)); ///< sollte eigentlich in TestApp hinein
-
+		//kernel.guiMgr->draw_bounding_boxes = true;
 
 		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
@@ -158,7 +159,7 @@ main(int argc, char *argv[])
 		wcontainer->insert(wi2);
 		wcontainer->insert(wt);
 		wcontainer->insert(wb);
-		wcontainer->hideOverflow(true);
+		//wcontainer->hideOverflow(true);
 		wcontainer->removeChild(wi2);
 
 		shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
@@ -187,6 +188,10 @@ main(int argc, char *argv[])
 		awindow->getTitleWidget()->cast<WText>()->setFontSize(20);
 		awindow->getContainer()->addChild(wi2);
 		wi2->abs_x = awindow->abs_x.ref() - 100;
+
+		shared_ptr<WFileTree> wfiletree = kernel.guiMgr->createWidget<WFileTree>("asdf");
+		wfiletree->setRoot("/home/samuel/");
+		awindow->getContainer()->insert(wfiletree);
 
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);

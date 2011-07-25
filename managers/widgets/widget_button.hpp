@@ -11,6 +11,7 @@ class WButton : public Widget
 {
 	WidgetPtr label;
 	Image bg_normal, bg_hover, bg_active;
+	Align align;
 public:
 	WButton(string name, Kernel* k);
 
@@ -21,6 +22,7 @@ public:
 
 	// GET
 	//-------------------------------------------------------------------------
+	inline Align getAlign() const {return this->align;}
 
 	// SET
 	//-------------------------------------------------------------------------
@@ -34,6 +36,8 @@ public:
 	void setTripleBG(Image const& i, Orientation orient = VERTICAL);
 	void setTripleBG(string const& path, Orientation orient = VERTICAL)
 		{setTripleBG(kernel->graphicsMgr->loadImage(path), orient);}
+	void hideLabel(bool hide=true){this->label->visible = !hide;}
+	void setAlign(Align a); /// doesn't update label! (because it doesn't know if the label is a WText or something else)
 
 
 protected:

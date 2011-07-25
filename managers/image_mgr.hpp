@@ -273,10 +273,12 @@ class GraphicsManager
 
 	Color background;		///< Hintergrundfarbe
 
+	Box scissors; bool scissors_enabled;
+
 	/// lädt Bildschirm neu, z.B. bei Fenstergrössenänderungen
 	void	reloadScreen();
 public:
-	GraphicsManager() : screen(NULL), nullImg(NULL), background("#000F") {};
+	GraphicsManager() : screen(NULL), nullImg(NULL), background("#000F"), scissors_enabled(false) {};
 	~GraphicsManager();
 
 	/// initialisiert SDL und öffnet ein Grafik-Fenster (oder gerade den ganzen Bildschirm)
@@ -320,6 +322,12 @@ public:
 	void	setBackgroundColor(Color bg){this->background = bg; glClearColor(bg.fr(), bg.fg(), bg.fb(), bg.fa());}
 
 	void	setVideoMode(vector2<int> size, int bpp=32, Uint32 flags = SDL_OPENGL | SDL_FULLSCREEN);
+
+	/// begrenzt zeichnen auf einen Teil des Bildschirmes
+	void    setScissors(Box s, bool enabled = true);
+	void    disableScissors();
+	bool    scissorsEnabled(){return this->scissors_enabled;}
+	Box     getScissors(){return this->scissors;}
 };
 //------------------------------------------------------------------------------
 

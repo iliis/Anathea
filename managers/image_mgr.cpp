@@ -574,7 +574,7 @@ Font::renderMultiline(string text, boost::shared_ptr<GraphicsManager> graphicsMg
 			text_surface.fill(bgCol);
 
 		int i=0;
-		/// den \a text rendern
+		/// den text rendern
 		BOOST_FOREACH(string line, lines)
 		{
 			if(line == "") {++i; continue;}
@@ -826,5 +826,28 @@ GraphicsManager::setVideoMode(vector2<int> size, int bpp, Uint32 flags)
 
 	this->screen_width  = screen->w;
 	this->screen_height = screen->h;
+};
+//------------------------------------------------------------------------------
+void
+GraphicsManager::setScissors(Box s, bool enabled)
+{
+	this->scissors_enabled = enabled;
+	this->scissors = s;
+	if(enabled)
+	{
+		glScissor(GLint(s.pos.x),
+				  GLint(this->getScreenSize().y-s.pos.y-s.size.y),
+				  GLint(s.size.x), GLint(s.size.y));
+		glEnable(GL_SCISSOR_TEST);
+	}
+	else
+		glDisable(GL_SCISSOR_TEST);
+};
+//------------------------------------------------------------------------------
+void
+GraphicsManager::disableScissors()
+{
+	glDisable(GL_SCISSOR_TEST);
+	this->scissors_enabled = false;
 };
 //------------------------------------------------------------------------------
