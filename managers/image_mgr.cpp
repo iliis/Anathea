@@ -663,7 +663,7 @@ GraphicsManager::init(vector2<int> size, int bpp, Uint32 flags)
     glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_LINE_SMOOTH); ///< läuft nicht auf allen Rechnern ;)
-	glEnable(GL_POLYGON_SMOOTH);
+	//glEnable(GL_POLYGON_SMOOTH); ///< bewirkt Artefakte mit nouveau-treiber
 	glEnable(GL_POINT_SMOOTH);
 
 	glDisable(GL_DEPTH_TEST);

@@ -39,6 +39,7 @@ WFileTree::setRoot(string r)
 void
 WFileTree::update()
 {
+	rootlist->clear();
 	rootlist->abs_x = this->abs_x;
 	rootlist->abs_y = this->abs_y;
 	this->width     = rootlist->width;
@@ -55,7 +56,7 @@ WFileTree::update()
 
 	BOOST_FOREACH(fs::path p, content)
 	{
-		if(p.filename().generic_string()[0] != '.')
+		//if(p.filename().generic_string()[0] != '.')
 		{
 			cout << p.filename().generic_string() << endl;
 
@@ -63,6 +64,7 @@ WFileTree::update()
 			//node->setPath(p);
 
 			shared_ptr<WText> node = kernel->guiMgr->createWidget<WText>(name.get()+"_item");
+
 			node->setText(p.filename().generic_string());
 			rootlist->insert(node);
 		}

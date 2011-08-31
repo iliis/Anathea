@@ -187,6 +187,7 @@ main(int argc, char *argv[])
 		awindow->getTitleWidget()->cast<WText>()->setColor(Color("black"));
 		awindow->getTitleWidget()->cast<WText>()->setFontSize(20);
 		awindow->getContainer()->addChild(wi2);
+		awindow->getContainer()->hideOverflow(false);
 		wi2->abs_x = awindow->abs_x.ref() - 100;
 
 		shared_ptr<WFileTree> wfiletree = kernel.guiMgr->createWidget<WFileTree>("asdf");

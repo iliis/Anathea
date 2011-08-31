@@ -12,7 +12,7 @@
 
 
 
-#define CHECK_FOR_CYCLES
+#define CHECK_FOR_CYCLES /// still possible! (a -> b -> a)
 
 template <typename T>
 class Expression;
@@ -30,44 +30,17 @@ public:
 ///----------------------------------------------------------------------------
 	class ExpressionRef
 	{
-		//list<boost::signals::connection> connections;
-
-
 	public:
-		list<boost::signal<void()>*>    on_change, on_deletion;
-		list<boost::signal<void(Typ)>*> on_change_val;
-
 		virtual ~ExpressionRef()
 		{
-			/*BOOST_FOREACH(boost::signals::connection& c, this->connections)
-				c.disconnect();
 
-			this->connections.clear();*/
 		};
 
 		virtual ExpressionRef* copy() const = 0;
 
 
-		void link_signals(Expression& attr)
-		{
-			//this->connections.push_back(attr.on_deletion  .connect(on_deletion));
-			//this->connections.push_back(attr.on_change    .connect(on_change));
-			//this->connections.push_back(attr.on_change_val.connect(on_change_val));
-			this->on_change    .push_back(&attr.on_change);
-			this->on_deletion  .push_back(&attr.on_deletion);
-			this->on_change_val.push_back(&attr.on_change_val);
-		};
-
-		void link_signals(ExpressionRef& attr)
-		{
-			/*this->connections.push_back(attr.on_deletion  .connect(on_deletion));
-			this->connections.push_back(attr.on_change    .connect(on_change));
-			this->connections.push_back(attr.on_change_val.connect(on_change_val));*/
-
-			this->on_change    .insert(this->on_change.end(),     attr.on_change.begin(),     attr.on_change.end());
-			this->on_deletion  .insert(this->on_deletion.end(),   attr.on_deletion.begin(),   attr.on_deletion.end());
-			this->on_change_val.insert(this->on_change_val.end(), attr.on_change_val.begin(), attr.on_change_val.end());
-		};
+		virtual void add_link(Expression* ptr) = 0;
+		virtual void remove_link(Expression* ptr) = 0;
 
 		virtual Typ get() = 0;
 		virtual bool check_for_cycle(Expression* a){return false;}
@@ -93,12 +66,15 @@ public:
 	{
 		Expression<Typ>& attr;
 	public:
-		ExprDirectRef(Expression<Typ>& a) : attr(a) {link_signals(a);};
+		ExprDirectRef(Expression<Typ>& a) : attr(a) {};
 
 		virtual ExpressionRef* copy() const {return new ExprDirectRef(attr);};
 
 		Typ get(){return attr.get();};
 		virtual bool check_for_cycle(Expression* a){return &this->attr == a;}
+
+		void add_link(Expression* ptr){attr.add_link(ptr);};
+		void remove_link(Expression* ptr){attr.remove_link(ptr);};
 	};
 
 	class ExprConstRef : public ExpressionRef
@@ -111,6 +87,9 @@ public:
 
 		Typ get(){return val;}
 		bool check_for_cycle(Expression* a){return false;}
+
+		void add_link(Expression* ptr){};
+		void remove_link(Expression* ptr){};
 	};
 
 	class ExprSingleRef : public ExpressionRef
@@ -118,11 +97,14 @@ public:
 	protected:
 		ExpressionRef *ref;
 	public:
-		ExprSingleRef(ExpressionRef* A) : ref(A) {assert(A); link_signals(*ref);};
+		ExprSingleRef(ExpressionRef* A) : ref(A) {assert(A);};
 		~ExprSingleRef(){delete ref;}
 
 		virtual ExpressionRef* copy() const = 0;
 		virtual bool check_for_cycle(Expression* A){return ref->check_for_cycle(A);}
+
+		void add_link(Expression* ptr){ref->add_link(ptr);};
+		void remove_link(Expression* ptr){ref->remove_link(ptr);};
 	};
 
 	class ExprTwinRef : public ExpressionRef
@@ -130,11 +112,14 @@ public:
 	protected:
 		ExpressionRef *a, *b;
 	public:
-		ExprTwinRef(ExpressionRef* A, ExpressionRef* B) : a(A), b(B) {assert(a); assert(b); link_signals(*a); link_signals(*b);};
+		ExprTwinRef(ExpressionRef* A, ExpressionRef* B) : a(A), b(B) {assert(a); assert(b);};
 		~ExprTwinRef(){delete a; delete b;}
 
 		virtual ExpressionRef* copy() const  = 0;
 		virtual bool check_for_cycle(Expression* A){return a->check_for_cycle(A) or b->check_for_cycle(A);}
+
+		void add_link(Expression* ptr){a->add_link(ptr); b->add_link(ptr);};
+		void remove_link(Expression* ptr){a->remove_link(ptr); b->remove_link(ptr);};
 	};
 
 	/// + ADDITION
@@ -242,12 +227,13 @@ private:
 
 	Typ val;
 	ExpressionRef* expr;
-	list<boost::signals::connection> connections;
+	//list<boost::signals::connection> connections;
+	list<Expression*> children;
 
 
 public:
-	boost::signal<void()>    on_change, on_deletion;
-	boost::signal<void(Typ)> on_change_val;
+	//boost::signal<void()>    on_change, on_deletion;
+	//boost::signal<void(Typ)> on_change_val;
 
 ///   CONSTRUCTORS
 ///----------------------------------------------------------------------------
@@ -270,6 +256,35 @@ public:
 
 ///----------------------------------------------------------------------------
 
+	void on_change()
+	{
+		BOOST_FOREACH(Expression* c, this->children)
+			c->update();
+	}
+
+	void on_deletion()
+	{
+		BOOST_FOREACH(Expression* c, this->children)
+			c->unlink();
+
+		this->children.clear();
+	}
+
+	inline
+	void add_link(Expression* ptr)
+	{
+		assert(ptr);
+		this->children.push_back(ptr);
+	}
+
+	inline
+	void remove_link(Expression* ptr)
+	{
+		this->children.remove(ptr);
+	}
+
+///----------------------------------------------------------------------------
+
 	inline bool isLinked() const {return this->expr!=NULL;}
 
 	inline   Typ get() const  {return val;}
@@ -285,7 +300,6 @@ public:
 		{
 			this->val = v;
 			on_change();
-			on_change_val(v);
 		}
 	}
 
@@ -294,7 +308,7 @@ public:
 		if(this->isLinked())
 		{
 			Typ v = this->expr->get();
-			if(this->val != v) { this->val = v; on_change(); on_change_val(this->val);}
+			if(this->val != v) {this->val = v; on_change();}
 		}
 	};
 
@@ -303,13 +317,10 @@ public:
 		if(this->isLinked())
 		{
 			this->update();
+			this->expr->remove_link(this);
+
 			delete this->expr;
 			this->expr = NULL;
-
-			BOOST_FOREACH(boost::signals::connection& c, this->connections)
-				c.disconnect();
-
-			this->connections.clear();
 		}
 	}
 
@@ -329,20 +340,7 @@ public:
 
 			this->unlink();
 			this->expr = r;
-
-			/*this->connections.push_back(this->expr->on_deletion  .connect(boost::bind(&Expression<Typ>::unlink, this)));
-			this->connections.push_back(this->expr->on_change    .connect(boost::bind(&Expression<Typ>::update, this)));
-			this->connections.push_back(this->expr->on_change_val.connect(on_change_val));*/
-
-			BOOST_FOREACH(boost::signal<void()>* sig_ptr, this->expr->on_deletion)
-				this->connections.push_back(sig_ptr->connect(boost::bind(&Expression<Typ>::unlink, this)));
-
-			BOOST_FOREACH(boost::signal<void()>* sig_ptr, this->expr->on_change)
-				this->connections.push_back(sig_ptr->connect(boost::bind(&Expression<Typ>::update, this)));
-
-			BOOST_FOREACH(boost::signal<void(Typ)>* sig_ptr, this->expr->on_change_val)
-				this->connections.push_back(sig_ptr->connect(this->on_change_val));
-
+			this->expr->add_link(this);
 			this->update();
 		}
 	};

@@ -23,6 +23,7 @@ public:
 	Expression<FNumber> content_width, content_height;
 
 	virtual void insert(WidgetPtr w);
+	void clear();
 };
 
 #endif // WIDGET_LIST_HPP_INCLUDED
