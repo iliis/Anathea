@@ -71,7 +71,7 @@ public:
 		virtual ExpressionRef* copy() const {return new ExprDirectRef(attr);};
 
 		Typ get(){return attr.get();};
-		virtual bool check_for_cycle(Expression* a){return &this->attr == a;}
+		virtual bool check_for_cycle(Expression* a){return this->attr.check_for_cycle(a);}
 
 		void add_link(Expression* ptr){attr.add_link(ptr);};
 		void remove_link(Expression* ptr){attr.remove_link(ptr);};
@@ -227,13 +227,10 @@ private:
 
 	Typ val;
 	ExpressionRef* expr;
-	//list<boost::signals::connection> connections;
 	list<Expression*> children;
 
 
 public:
-	//boost::signal<void()>    on_change, on_deletion;
-	//boost::signal<void(Typ)> on_change_val;
 
 ///   CONSTRUCTORS
 ///----------------------------------------------------------------------------
@@ -264,10 +261,11 @@ public:
 
 	void on_deletion()
 	{
-		BOOST_FOREACH(Expression* c, this->children)
-			c->unlink();
+		list<Expression*> tmp_children;
+		tmp_children.swap(this->children);
 
-		this->children.clear();
+		BOOST_FOREACH(Expression* c, tmp_children)
+			c->unlink();
 	}
 
 	inline
@@ -344,6 +342,23 @@ public:
 			this->update();
 		}
 	};
+
+///----------------------------------------------------------------------------
+
+	bool check_for_cycle(Expression* ptr)
+	{
+		assert(ptr);
+
+		if(ptr == this)
+			return true;
+		else if(!this->isLinked())
+			return false;
+		else
+			return this->expr->check_for_cycle(ptr);
+	}
+
+
+///----------------------------------------------------------------------------
 
 
 	inline ExpressionRefPtr ref() {return ExpressionRefPtr(new ExprDirectRef(*this));}
