@@ -142,9 +142,26 @@ main(int argc, char *argv[])
 
 		shared_ptr<WButton> wb = kernel.guiMgr->createWidget<WButton>("just a button");
 		wb->abs_x=wi->width.ref()+20;
-		wb->abs_y=20;
+		//wb->abs_y=wb->;
+		//wb->setTripleBG("images/buttons/button1.png");
+
+		Image bbg1 = kernel.graphicsMgr->loadImage("images/buttons/default.png");
+		Image bbg2 = bbg1, bbg3 = bbg1;
+		bbg1.setUV(Box(0,  0,119,58)); bbg1.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		bbg2.setUV(Box(0, 58,119,58)); bbg2.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		bbg3.setUV(Box(0,116,119,58)); bbg3.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		wb->setBGnormal(bbg1);
+		wb->setBGhover(bbg2);
+		wb->setBGactive(bbg3);
+
+		wb->width = 200;
+		wb->height = wb->getLabel()->height.ref() + 12;
+
 		wb->setText("just a Button :) asfasdfi aslf jasdlfij\nsecond line...");
-		wb->setTripleBG("images/buttons/button1.png");
+
+
+
+
 		 //kernel.graphicsMgr->loadImage("images/green.png"));
 		wb->getSlot("clicked")->connect(boost::bind(add_some_text, wt));
 
@@ -174,6 +191,7 @@ main(int argc, char *argv[])
 		shared_ptr<WButton> wclose = kernel.guiMgr->createWidget<WButton>("window close");
 		wclose->setTripleBG("images/cross.png",HORIZONTAL);
 		wclose->width = wclose->height.ref();
+		wclose->getLabel()->visible = false;
 		shared_ptr<WWindow> awindow = kernel.guiMgr->createWidget<WWindow>("a window for testing");
 		awindow->abs_x = 300;
 		awindow->abs_y = 100;
@@ -187,7 +205,7 @@ main(int argc, char *argv[])
 		awindow->getTitleWidget()->cast<WText>()->setColor(Color("black"));
 		awindow->getTitleWidget()->cast<WText>()->setFontSize(20);
 		awindow->getContainer()->addChild(wi2);
-		awindow->getContainer()->hideOverflow(false);
+		//awindow->getContainer()->hideOverflow(false);
 		wi2->abs_x = awindow->abs_x.ref() - 100;
 
 		shared_ptr<WFileTree> wfiletree = kernel.guiMgr->createWidget<WFileTree>("asdf");

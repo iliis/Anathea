@@ -19,6 +19,7 @@ public:
 	virtual void   _set(ptree n);
 
 	Image& getImage(){return this->img;}
+	virtual const char* getType()        const {return "Image";}
 
 protected:
 	virtual void _draw();

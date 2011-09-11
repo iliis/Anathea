@@ -22,7 +22,9 @@ public:
 
 	// GET
 	//-------------------------------------------------------------------------
-	inline Align getAlign() const {return this->align;}
+	inline Align     getAlign() const {return this->align;}
+	virtual const char* getType()        const {return "Button";}
+	inline WidgetPtr getLabel() const {return this->label;}
 
 	// SET
 	//-------------------------------------------------------------------------

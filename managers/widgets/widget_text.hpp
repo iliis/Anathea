@@ -32,6 +32,8 @@ public:
 	inline bool   isTransparent() const {return this->transparent;}
 	inline Align  getAlign() const {return this->align;}
 
+	virtual const char* getType()        const {return "Text";}
+
 	//inline Image getBuffer() {return this->buffer;}
 
 	// SET

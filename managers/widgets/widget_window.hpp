@@ -20,13 +20,14 @@ public:
 
 	Expression<FNumber> border, title_bar_height, padding, padding_top, padding_bottom, padding_left, padding_right;
 
-	// SET
+	// GET
 	//-------------------------------------------------------------------------
 	inline shared_ptr<WContainer> getContainer()   {return this->content;}
 	inline shared_ptr<WButton>    getCloseButton() {return this->close_button;}
 	inline WidgetPtr              getTitleWidget() {return this->title;}
 	inline Image&                 getTitleBar()    {return this->title_bar;}
 	inline Image&                 getBG()          {return this->content_bg;}
+	virtual const char*           getType()  const {return "Window";}
 
 	// SET
 	//-------------------------------------------------------------------------

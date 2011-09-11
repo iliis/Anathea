@@ -54,6 +54,21 @@ WList::insert(WidgetPtr w)
 };
 //------------------------------------------------------------------------------
 void
+WList::insert(list<WidgetPtr> ws)
+{
+	BOOST_FOREACH(WidgetPtr w, ws)
+	{
+		if(!w->hasParent() or w->getParent().get() != this)
+		{
+			this->append(w, --this->childs.end());
+			WContainer::addChild(w);
+		}
+	}
+
+	this->updateSize();
+};
+//------------------------------------------------------------------------------
+void
 WList::updateSize()
 {
 	if(this->childs.empty())

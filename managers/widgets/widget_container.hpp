@@ -15,6 +15,7 @@ public:
 	// GET
 	//-------------------------------------------------------------------------
 	inline bool isOverflowHidden(){return this->hide_overflow;}
+	virtual const char* getType()        const {return "Container";}
 
 	// SET
 	//-------------------------------------------------------------------------

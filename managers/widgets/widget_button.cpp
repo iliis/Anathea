@@ -11,7 +11,8 @@ WButton::WButton(string name, Kernel* k)
 {
 	this->slots.add("clicked");
 	label->cast<WText>()->setText(name);
-	label->visible = false;
+
+	k->addToDo(boost::bind(&WButton::setLabel, this, label));
 
 	this->setSize(bg_normal.getSize().cast<Vect::T>());
 };
@@ -25,6 +26,9 @@ WButton::_set(ptree n)
 void
 WButton::setLabel(WidgetPtr l)
 {
+	cout << "executuing setLabel" << endl;
+	cout << l->cast<WText>()->getText() << endl;
+
 	this->label->removeParent();
 	this->label = l;
 	this->addChild(label);
@@ -36,7 +40,10 @@ WButton::setLabel(WidgetPtr l)
 void
 WButton::setText(string text)
 {
-	this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
+	boost::shared_ptr<WText> lbl = boost::dynamic_pointer_cast<WText>(this->label);
+
+	if(!lbl) this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
+
 	label->cast<WText>()->setText(text);
 	label->cast<WText>()->setAlign(this->align);
 };
@@ -45,7 +52,11 @@ void
 WButton::setAlign(Align a)
 {
 	this->align = a;
-	// label->setAlign(a); // doesn't have to be WText...
+
+	boost::shared_ptr<WText> lbl = boost::dynamic_pointer_cast<WText>(this->label);
+	if(lbl)
+		lbl->setAlign(a);
+
 	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
 };
 //------------------------------------------------------------------------------

@@ -25,17 +25,22 @@ public:
 	void setIcon(Image i){icon = i;}
 
 	void _draw();
+
+	virtual const char* getType()        const {return "FileTreeNode";}
 };
 
 class WFileTree : public Widget
 {
 	fs::path root;
 	shared_ptr<WList> rootlist;
+	bool show_hidden_files;
 public:
 	WFileTree(string name, Kernel* k);
 
 	// GET
 	//-------------------------------------------------------------------------
+	inline bool show_hidden(){return this->show_hidden_files;}
+	virtual const char* getType()        const {return "FileTree";}
 
 	// SET
 	//-------------------------------------------------------------------------

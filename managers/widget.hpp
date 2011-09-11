@@ -45,6 +45,8 @@ public:
 	Expression<bool>   visible, draw_bounding_box;
 	Expression<FNumber> alpha;
 
+	virtual const char* getType() const = 0;
+
 protected:
 	Slots slots;
 
@@ -59,7 +61,7 @@ protected:
 	Widget(string Name, Kernel* k);
 
 public:
-	virtual ~Widget() {this->slots.call("deleted"); cout << this->getType() << " '" << this->name.get() << "' destroyed." << endl;};
+	virtual ~Widget() {this->slots.call("deleted"); cout << "Widget '" << this->name.get() << "' destroyed." << endl;};
 
 //------------- GET ------------------------------------------------------------
 	inline Vect    getSize()             const {return Vect(width, height);};
@@ -72,8 +74,6 @@ public:
 
 	inline Box     getBB()               const {return Box(this->getAbsPos(), this->getSize());}
 	inline bool    isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
-
-	virtual const char* getType()        const {return "Widget";}
 
 	inline WidgetPtr   getParent()       const {return this->parent.lock();}
 	inline bool       hasParent()        const {return !this->parent.expired();}

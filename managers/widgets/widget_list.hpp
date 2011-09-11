@@ -23,7 +23,10 @@ public:
 	Expression<FNumber> content_width, content_height;
 
 	virtual void insert(WidgetPtr w);
+	virtual void insert(list<WidgetPtr> ws);
 	void clear();
+
+	virtual const char* getType()        const {return "List";}
 };
 
 #endif // WIDGET_LIST_HPP_INCLUDED
