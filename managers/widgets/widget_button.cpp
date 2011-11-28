@@ -26,9 +26,6 @@ WButton::_set(ptree n)
 void
 WButton::setLabel(WidgetPtr l)
 {
-	cout << "executuing setLabel" << endl;
-	cout << l->cast<WText>()->getText() << endl;
-
 	this->label->removeParent();
 	this->label = l;
 	this->addChild(label);
@@ -107,15 +104,15 @@ WButton::handlePointMovEvent(PointKey oldP, PointKey newP)
 		if(this->state == NORMAL)
 			this->state = HOVER;
 
-		return true;
+		/// others may want to know about this too ;)
+		/// TODO: PointMovEvent should maybe be un-catchable
+		//return true;
 	}
 	else if(oldP.point.collide(this->getBB()))
-	{
 		this->state = NORMAL;
-		return true;
-	}
-	else
-		return false;
+		/// no return true here, as we didn't handle the new point
+
+	return false;
 };
 //------------------------------------------------------------------------------
 bool

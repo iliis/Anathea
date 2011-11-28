@@ -5,12 +5,6 @@ WList::WList(string name, Kernel* k)
  : WContainer(name,k), orientation(VERTICAL),
    wrap_horiz(true), wrap_vert(true)
 {
-	this->padding_bottom = padding.ref();
-	this->padding_top    = padding.ref();
-	this->padding_left   = padding.ref();
-	this->padding_right  = padding.ref();
-	this->item_spacing   = padding.ref();
-
 	this->slots.get("childRemoved")->connect(boost::bind(&WList::updateSize, this));
 	//this->hideOverflow(false);
 };
@@ -18,10 +12,12 @@ WList::WList(string name, Kernel* k)
 void
 WList::append(WidgetPtr w, list<WidgetPtr>::iterator to)
 {
+	/// TODO: implement proper insertion not only at end
+
 	if(to == this->childs.end())
 	{
-		w->abs_x = this->abs_x.ref() + padding_left.ref();
-		w->abs_y = this->abs_y.ref() + padding_top.ref();
+		w->abs_x = this->abs_x.ref();
+		w->abs_y = this->abs_y.ref();
 	}
 	else
 	{
@@ -30,11 +26,11 @@ WList::append(WidgetPtr w, list<WidgetPtr>::iterator to)
 		if(this->orientation == HORIZONTAL)
 		{
 			w->abs_x = last->abs_x.ref() + last->width.ref() + item_spacing.ref();
-			w->abs_y = this->abs_y.ref() + padding_top.ref();
+			w->abs_y = this->abs_y.ref();
 		}
 		else
 		{
-			w->abs_x = this->abs_x.ref() + padding_left.ref();
+			w->abs_x = this->abs_x.ref();
 			w->abs_y = last->abs_y.ref() + last->height.ref() + item_spacing.ref();
 		}
 	}
@@ -65,12 +61,16 @@ WList::insert(list<WidgetPtr> ws)
 		}
 	}
 
+	/// we only need to update once, so this saves quite a bit of overhead
 	this->updateSize();
 };
 //------------------------------------------------------------------------------
 void
 WList::updateSize()
 {
+	/// this function creates quite a bit of overhead and is not very optimized...
+	/// main point: it creates a linear list of dependency of addition when a tree or something would be faster
+
 	if(this->childs.empty())
 	{
 		this->width  = 0;
@@ -90,6 +90,7 @@ WList::updateSize()
 				content_width  += (*it)->width.ref();
 				max_size = Expression<FNumber>::ExpressionRefPtr(new Expression<FNumber>::ExprMaxRef(max_size.ptr, (*it)->height.ref()));
 			}
+			content_width += this->item_spacing.ref() * this->childs.size();
 
 			content_height.link(max_size.ptr);
 
@@ -111,6 +112,7 @@ WList::updateSize()
 				content_height  += (*it)->height.ref();
 				max_size = Expression<FNumber>::ExpressionRefPtr(new Expression<FNumber>::ExprMaxRef(max_size.ptr, (*it)->width.ref()));
 			}
+			content_height += this->item_spacing.ref() * this->childs.size();
 
 			content_width.link(max_size.ptr);
 
@@ -124,6 +126,7 @@ WList::updateSize()
 		if(this->wrap_horiz) this->width  = content_width;
 		if(this->wrap_vert)  this->height = content_height;
 
+		/// is this really necessary?
 		for(list<WidgetPtr>::iterator it = this->childs.begin(); it!= this->childs.end(); ++it)
 		{
 			list<WidgetPtr>::iterator it_before = it; --it_before;

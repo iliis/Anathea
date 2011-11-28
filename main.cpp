@@ -21,8 +21,23 @@ public:
 
 	void escapeKeyListener(KEY key, bool state)
 	{
-		if(key == KEY_ESCAPE and state)
-			this->stop();
+		if(state) /// only react to key-DOWN events
+		{
+				switch(key)
+			{
+			case KEY_ESCAPE:
+				this->stop();
+				break;
+
+			case KEY_b:
+				this->guiMgr->draw_bounding_boxes = !this->guiMgr->draw_bounding_boxes;
+				break;
+
+			default:
+				break;
+
+			}
+		}
 	}
 };
 
@@ -109,7 +124,6 @@ main(int argc, char *argv[])
 		kernel.init();
 
 		kernel.inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, &kernel, _1, _2)); ///< sollte eigentlich in TestApp hinein
-		//kernel.guiMgr->draw_bounding_boxes = true;
 
 		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
@@ -196,7 +210,7 @@ main(int argc, char *argv[])
 		awindow->abs_x = 300;
 		awindow->abs_y = 100;
 		awindow->width = 500;
-		awindow->height = 300;
+		awindow->height = 800;
 		awindow->setTitleBar("images/yellow.png"); awindow->getTitleBar().setNinePatchData(NinePatchData(true,7,7,7,7));
 		awindow->setBG("images/orange.png");       awindow->getBG      ().setNinePatchData(NinePatchData(true,7,7,7,7));
 		awindow->setCloseButton(wclose);
@@ -204,13 +218,14 @@ main(int argc, char *argv[])
 		awindow->setTitle("hallo welt: this is a Window!");
 		awindow->getTitleWidget()->cast<WText>()->setColor(Color("black"));
 		awindow->getTitleWidget()->cast<WText>()->setFontSize(20);
-		awindow->getContainer()->addChild(wi2);
+
 		//awindow->getContainer()->hideOverflow(false);
 		wi2->abs_x = awindow->abs_x.ref() - 100;
 
 		shared_ptr<WFileTree> wfiletree = kernel.guiMgr->createWidget<WFileTree>("asdf");
 		wfiletree->setRoot("/home/samuel/");
 		awindow->getContainer()->insert(wfiletree);
+		//awindow->getContainer()->insert(wi2);
 
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);

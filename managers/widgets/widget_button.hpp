@@ -22,9 +22,9 @@ public:
 
 	// GET
 	//-------------------------------------------------------------------------
-	inline Align     getAlign() const {return this->align;}
+	inline Align        getAlign() const {return this->align;}
 	virtual const char* getType()        const {return "Button";}
-	inline WidgetPtr getLabel() const {return this->label;}
+	inline WidgetPtr    getLabel() const {return this->label;}
 
 	// SET
 	//-------------------------------------------------------------------------
@@ -39,7 +39,7 @@ public:
 	void setTripleBG(string const& path, Orientation orient = VERTICAL)
 		{setTripleBG(kernel->graphicsMgr->loadImage(path), orient);}
 	void hideLabel(bool hide=true){this->label->visible = !hide;}
-	void setAlign(Align a); /// doesn't update label! (because it doesn't know if the label is a WText or something else)
+	void setAlign(Align a);
 
 
 protected:

@@ -13,7 +13,8 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Wall" />
+					<Add option="-O" />
+					<Add option="-Weffc++" />
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
 				</Compiler>
@@ -24,7 +25,12 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-march=core2" />
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
 					<Add option="-O2" />
+					<Add option="-fforce-addr -funroll-loops -frerun-cse-after-loop -frerun-loop-opt -lto" />
 					<Add option="-DRELEASE" />
 				</Compiler>
 				<Linker>

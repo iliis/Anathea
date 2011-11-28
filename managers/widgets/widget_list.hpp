@@ -19,7 +19,7 @@ protected:
 public:
 	WList(string name, Kernel* k);
 
-	Expression<FNumber> padding, padding_left, padding_right, padding_top, padding_bottom, item_spacing;
+	Expression<FNumber> item_spacing;
 	Expression<FNumber> content_width, content_height;
 
 	virtual void insert(WidgetPtr w);

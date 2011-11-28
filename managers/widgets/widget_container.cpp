@@ -6,6 +6,8 @@ WContainer::draw()
 {
 	if(this->isVisible())
 	{
+		this->_draw();
+
 		if(this->draw_bounding_box)
 			this->kernel->graphicsMgr->drawBoxToScreen(this->getBB());
 

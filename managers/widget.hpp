@@ -75,16 +75,16 @@ public:
 	inline Box     getBB()               const {return Box(this->getAbsPos(), this->getSize());}
 	inline bool    isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
 
-	inline WidgetPtr   getParent()       const {return this->parent.lock();}
+	inline WidgetPtr  getParent()       const {return this->parent.lock();}
 	inline bool       hasParent()        const {return !this->parent.expired();}
 	unsigned int      getNumberOfChilds()const {return this->childs.size();}
 	inline bool       hasChild(WidgetPtr child);
-	WidgetPtr           getChild(string path, bool throwIfNotFound = true);
+	WidgetPtr         getChild(string path, bool throwIfNotFound = true);
 
 	inline list<WidgetPtr> getChilds()   const {return this->childs;};
 
 	inline Slots::SignalPtr getSlot(string name) const {return slots[name];}
-	inline const Slots&    getSlots()    const {return this->slots;}
+	inline const Slots&     getSlots()    const {return this->slots;}
 
 //------------- SET ------------------------------------------------------------
 	inline void    setAbsPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->abs_x = n; else this->abs_y = n;}
@@ -119,6 +119,7 @@ public:
 	virtual  void  drawChilds();
 
 	virtual  void  addChild(WidgetPtr child);
+			 void  addChildDuringConstructor(WidgetPtr child);
 	virtual  void  setParent(WidgetPtr new_parent);
 
 	virtual  void  removeChildren();
@@ -149,6 +150,8 @@ public:
 
 	TimelinePtr moveAnim(Vect dest, FNumber sec = 0.5);*/
 };
+//------------------------------------------------------------------------------
+bool order_by_name(WidgetPtr& A, WidgetPtr& B);
 //------------------------------------------------------------------------------
 
 #endif // WIDGET_HPP_INCLUDED

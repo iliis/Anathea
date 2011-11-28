@@ -166,7 +166,7 @@ public:
 
 	/// UV-Koordinaten: Welche Teile der Grafik genau genommen werden
 	/// Nützlich z.B. um mehrere Bilder in einer Datei zu kombinieren
-	void setUV(Box uv, bool normalized=false);
+	void         setUV(Box uv, bool normalized=false);
 	inline Box   getUV() const {return this->UV;}
 
 	/// Direkter Pointer zur SDL_Surface. Vorsichtig verwenden! Wird nach wie vor von Image verwaltet.

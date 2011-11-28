@@ -213,6 +213,17 @@ Widget::addChild(WidgetPtr child)
 	child->setParent(shared_from_this());
 };
 //------------------------------------------------------------------------------
+/// It's not possible to call this->addChild(...) in a constructor, because the
+/// shared_ptr doesn't exist yet. (shared_from_this() fails)
+void
+Widget::addChildDuringConstructor(WidgetPtr child)
+{
+	/// This is somewhat of a hack.
+	/// It would be better to handle this in guiMgr::createWidget() somehow...
+
+	this->kernel->addToDo(boost::bind(&Widget::addChild, this, child));
+};
+//------------------------------------------------------------------------------
 void
 Widget::setParent(WidgetPtr new_parent)
 {
@@ -395,4 +406,13 @@ Widget::fadeOutAndDelete(FNumber sec, bool deleteFromMgr)
 
     return tl;
 };*/
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+#include <boost/algorithm/string/predicate.hpp>
+bool
+order_by_name(WidgetPtr& A, WidgetPtr& B)
+{
+	return boost::algorithm::ilexicographical_compare(A->name.get(), B->name.get());
+};
 //------------------------------------------------------------------------------
