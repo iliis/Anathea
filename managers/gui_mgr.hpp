@@ -89,6 +89,8 @@ public:
 	inline void             addEvent(string name){this->events.add(name);}
 
 	int getUniqueNr(){return unique++;}
+
+	void createPopupOK(string text);
 };
 //------------------------------------------------------------------------------
 

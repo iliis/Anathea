@@ -41,6 +41,7 @@ public:
 	void hideLabel(bool hide=true){this->label->visible = !hide;}
 	void setAlign(Align a);
 
+	void setAutoWidth(FNumber padding){this->width = this->label->width.ref() + 2*padding;};
 
 protected:
 	ButtonState state;

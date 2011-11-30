@@ -94,7 +94,7 @@ public:
 	inline void    setSize  (Vect s) {this->width = s.x; this->height = s.y;}
 
 	        void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
-	inline void    setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
+	inline void     setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
 				{if(this->hasParent()) setRelativeTo(horiz,h_inside,vert,v_inside,this->parent.lock());
 				else throw Error("illegalOperation","Can't set relativeToParent: There is no parent.");}
 

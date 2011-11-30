@@ -442,6 +442,16 @@ typename Expression<T>::ExpressionRefPtr EXPR(string name,
 		throw Error("parse", "Unknown expression token '"+name+"'.");
 };
 
+
+/// usage eg.:
+/// foo = MAX<float>(a.ref(), b.ref()) + 100;
+template <typename T>
+typename Expression<T>::ExpressionRefPtr MAX(typename Expression<T>::ExpressionRefPtr a,
+											 typename Expression<T>::ExpressionRefPtr b)
+{
+	return new typename Expression<T>::ExprMaxRef(a,b);
+}
+
 template <typename T>
 typename Expression<T>::ExpressionRefPtr EXPR(string name,
 													typename Expression<T>::ExpressionRef* a,

@@ -262,3 +262,58 @@ GuiManager::connectEvents(WidgetPtr widget, string event_name, string event_slot
 	widget->getSlot(event_slot)->connect(boost::bind(&GuiManager::triggerEvent, this, event_name));
 };
 //------------------------------------------------------------------------------
+#include "widgets/widget_container.hpp"
+#include "widgets/widget_text.hpp"
+#include "widgets/widget_button.hpp"
+#include "widgets/widget_image.hpp"
+
+void
+GuiManager::createPopupOK(string text)
+{
+	shared_ptr<WContainer> popup = this->createWidget<WContainer>("popup");
+	this->addRootWidget(popup);
+
+	popup->abs_x = this->graphicsMgr->screen_width .ref()/2 - popup->width .ref()/2;
+	popup->abs_y = this->graphicsMgr->screen_height.ref()/2 - popup->height.ref()/2;
+	//popup->draw_bounding_box = true;
+
+	Image bg = kernel->graphicsMgr->loadImage("images/blue_edge.png");
+	bg.setNinePatchData(NinePatchData(true,2,2,10,10));
+
+	shared_ptr<WImage> container_bg = this->createWidget<WImage>("popup_image");
+	container_bg->setImage(bg);
+	popup->addChild(container_bg);
+	container_bg->fitToParent();
+
+
+
+	shared_ptr<WText> label = this->createWidget<WText>("popup_text");
+	label->setText(text);
+	popup->addChild(label);
+	label->setRelativeToParent(CENTER, true, MIDDLE, true);
+	label->abs_y = popup->abs_y.ref() + 15;
+
+	shared_ptr<WButton> button = this->createWidget<WButton>("popup_button");
+	button->setText("OK");
+	Image bbg1 = kernel->graphicsMgr->loadImage("images/buttons/default.png");
+		Image bbg2 = bbg1, bbg3 = bbg1;
+		bbg1.setUV(Box(0,  0,119,58)); bbg1.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		bbg2.setUV(Box(0, 58,119,58)); bbg2.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		bbg3.setUV(Box(0,116,119,58)); bbg3.setNinePatchData(NinePatchData(true, 6,6,6,6));
+		button->setBGnormal(bbg1);
+		button->setBGhover(bbg2);
+		button->setBGactive(bbg3);
+
+	popup->addChild(button);
+	button->getSlot("clicked")->connect(boost::bind(&Widget::deleteMe,popup,true));
+
+	popup->width  = MAX<FNumber>(label->width.ref(),button->width.ref()) + 30;
+	popup->height = label->height.ref() + button->height.ref() + 45;
+
+	button->setRelativeToParent(CENTER, true, MIDDLE, true);
+	button->abs_y = label->abs_y.ref() + label->height.ref() + 15;
+
+	container_bg->moveToBG();
+	popup->moveToFront();
+};
+//------------------------------------------------------------------------------

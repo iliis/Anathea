@@ -231,6 +231,7 @@ main(int argc, char *argv[])
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 
+
 		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");
 		kernel.run();
 

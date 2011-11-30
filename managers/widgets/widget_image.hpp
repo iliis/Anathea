@@ -15,6 +15,7 @@ public:
 	void setImage(Image i);
 	void setImage(string path);
 	void fitToImage();
+	void fitToParent();
 
 	virtual void   _set(ptree n);
 

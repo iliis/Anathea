@@ -2,5 +2,6 @@ Anathea is a small graphics engine, mainly for GUI-stuff, but intented
 to be useful for games in general. It uses SDL and renders things with
 OpenGL. So far, it has a powerful layout-system, that is afaik completely
 new.
-Anathea is already usable but missing a lot of things to be really useful.
-Expect more to come (Animations and Sound are the two Next Big Things).
+Anathea is already usable but missing a lot of things to be truly useful.
+Expect more to come (Animations and Sound are the two Next Big Things, after
+the GUI-part is finished).
