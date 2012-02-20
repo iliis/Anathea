@@ -88,12 +88,13 @@ public:
 
 //------------- SET ------------------------------------------------------------
 	inline void    setAbsPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->abs_x = n; else this->abs_y = n;}
+	inline void    setAbsPos(Vect p)             {this->abs_x = p.x; this->abs_y = p.y;}
 	inline void    setRelPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->rel_x = n; else this->rel_y = n;}
-	inline void    setRelPos(Vect p)             {this->rel_x = p.x, this->rel_y = p.y;}
+	inline void    setRelPos(Vect p)             {this->rel_x = p.x; this->rel_y = p.y;}
 	inline void    setSize  (FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->width = n; else this->height = n;}
 	inline void    setSize  (Vect s) {this->width = s.x; this->height = s.y;}
 
-	        void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
+	       void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
 	inline void    setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
 				{if(this->hasParent()) setRelativeTo(horiz,h_inside,vert,v_inside,this->parent.lock());
 				else throw Error("illegalOperation","Can't set relativeToParent: There is no parent.");}
