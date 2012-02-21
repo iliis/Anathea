@@ -5,7 +5,10 @@ void
 SpriteImage::draw(Vect pos)
 {
 	if(this->isVisible())
+	{
+		this->img.color.setA(this->alpha);
 		this->img.draw(Box(pos,this->getSize()));
+	}
 };
 //------------------------------------------------------------------------------
 #include "managers/kernel.hpp"

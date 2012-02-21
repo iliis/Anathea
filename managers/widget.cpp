@@ -353,7 +353,7 @@ Widget::clearSlots()
 TimelinePtr
 Widget::fadeOut(FNumber sec)
 {
-	TimelinePtr tl = this->kernel->animMgr->from_to(this->alpha, 0, fromSeconds(sec), true);
+	TimelinePtr tl = this->kernel->animMgr->from_to(this->alpha, A_TRANSPARENT, fromSeconds(sec), true);
 	this->alpha = tl->value.ref();
 
 	return tl;

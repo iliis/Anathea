@@ -12,7 +12,7 @@ WSprite::setSprite(SpritePtr s)
 	else
 	{
 		this->setSize(s->getSize());
-		s->alpha  = this->alpha; // TODO: alpha is sometimes implemented as float and sometimes als ColVal (int)
+		s->alpha  = this->alpha.ref(); // TODO: alpha is sometimes implemented as float and sometimes als ColVal (int)
 		s->width  = this->width.ref();
 		s->height = this->height.ref();
 	}
@@ -34,8 +34,7 @@ WSprite::_set(ptree n)
 		throw Error("notFound", "Can't create WidgetSprite: Attribute 'type' is missing.");
 
 	// TODO
-	//throw Error("notImplemented", "WSprite::_set(ptree n)");
+	throw Error("notImplemented", "WSprite::_set(ptree n)");
 	//this->setSprite(this->kernel->guiMgr->createSpriteFromPT(type, n));
-	printf("Will not load sprite from pt\n");
 };
 //------------------------------------------------------------------------------

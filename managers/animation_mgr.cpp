@@ -16,8 +16,6 @@ Timeline::calc(TimeVal now)
 		if((*next_keyframe).t <= now)
 			last_keyframe = next_keyframe++;
 
-		assert(next_keyframe->t > last_keyframe->t);
-
 		/// ist Animation beendet?
 		if(next_keyframe == keyframes.end())
 		{
@@ -38,6 +36,8 @@ Timeline::calc(TimeVal now)
 
 			return;
 		}
+
+		assert(next_keyframe->t > last_keyframe->t);
 
 		/// eigentliche Werte bestimmen
 		FNumber y = 0;
@@ -128,7 +128,6 @@ AnimationManager::from_to(FNumber from, FNumber to, TimeVal duration, bool start
 
 	TimelinePtr tl(new Timeline());
 
-	tl->clear();
 	tl->addKeyframe(Keyframe(0,        from));
 	tl->addKeyframe(Keyframe(duration ,to));
 

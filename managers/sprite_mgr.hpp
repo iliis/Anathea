@@ -25,7 +25,7 @@ protected:
 //---------- ATTRIBUTES --------------------------------------------------------
 public:
 	Expression<bool>   visible;
-	Expression<ColVal> alpha;
+	Expression<FNumber> alpha;
 	Expression<Vect::T> width, height;
 
 	virtual string getType() = 0;
