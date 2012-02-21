@@ -6,6 +6,8 @@
 #include <boost/bind.hpp>
 
 #include "managers/time_mgr.hpp"
+#include "managers/definitions.hpp"
+#include "tools/expression.hpp"
 
 #include <iostream>
 using namespace std;
@@ -14,10 +16,10 @@ using namespace std;
 struct Keyframe
 {
 	TimeVal t;
-	double x;
+	FNumber x;
 
-	Keyframe(TimeVal T, double X) : t(T), x(X) {};
-	Keyframe(double X) : t(0), x(X) {};
+	Keyframe(TimeVal T, FNumber X) : t(T), x(X) {};
+	Keyframe(FNumber X) : t(0), x(X) {};
 	Keyframe() : t(0), x(0) {};
 };
 //------------------------------------------------------------------------------
@@ -25,8 +27,8 @@ class Timeline
 {
 //---------- ATTRIBUTES --------------------------------------------------------
 	list<Keyframe> keyframes;
-	boost::function<void(double)> set_func;
-	boost::function<void(void)>   end_event_func;
+	boost::function<void(FNumber)> set_func;
+	boost::function<void(void)>    end_event_func;
 	enum Interpolation {LINEAR, COS, LOG, EXP, RAND} interpolation;
 //---------- DATA --------------------------------------------------------------
 	list<Keyframe>::iterator last_keyframe, next_keyframe;
@@ -34,11 +36,24 @@ class Timeline
 	TimeVal starttime, pausetime;
 
 public:
-	Timeline(boost::function<void(double)> set, Interpolation interp = COS)
-	 : set_func(set), interpolation(interp),
-	 last_keyframe(keyframes.begin()), next_keyframe(keyframes.begin()),
-	 paused(true),ended(false),pingpong(false),repeat(false),
-	 starttime(0),pausetime(0) {};
+	Timeline(boost::function<void(FNumber)> set = NULL, Interpolation interp = COS)
+	 : set_func(set),
+	   interpolation(interp),
+
+	   last_keyframe(keyframes.begin()),
+	   next_keyframe(keyframes.begin()),
+
+	   paused(true),
+	   ended(false),
+	   pingpong(false),
+	   repeat(false),
+
+	   starttime(0),
+	   pausetime(0)
+		{};
+
+
+	Expression<FNumber> value; /// alternative interface for animating expressions
 
     void setEndEvent(boost::function<void(void)> f){this->end_event_func = f;}
 
@@ -54,6 +69,8 @@ public:
 
 	inline void setPingPong(bool pp){this->pingpong = pp;}
 	inline void setRepeat  (bool rep){this->repeat = rep;}
+
+	inline void clear(){this->keyframes.clear();}
 
 	inline int  size() {return this->keyframes.size();}
 	inline bool empty(){return this->keyframes.empty();}
@@ -82,16 +99,11 @@ public:
 	void addAnim(TimelinePtr tl, bool start=false){this->timelines.push_back(tl); if(start){tl->start(time_mgr->now()-inittime);}}
 	void addCustomAnim(boost::function<void(TimeVal)> f){this->custom_anim.push_back(f);}
 
+	TimelinePtr from_to(FNumber from, FNumber to, TimeVal duration, bool start=true);
+
 	TimeVal letTimeElapse();
 	void resetInitTime(){this->inittime = time_mgr->now();}
 };
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-
-
 //------------------------------------------------------------------------------
 
 #endif // ANIMATION_MGR_HPP_INCLUDED

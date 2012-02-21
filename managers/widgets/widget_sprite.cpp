@@ -36,5 +36,6 @@ WSprite::_set(ptree n)
 	// TODO
 	//throw Error("notImplemented", "WSprite::_set(ptree n)");
 	//this->setSprite(this->kernel->guiMgr->createSpriteFromPT(type, n));
+	printf("Will not load sprite from pt\n");
 };
 //------------------------------------------------------------------------------

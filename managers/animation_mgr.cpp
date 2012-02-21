@@ -1,5 +1,6 @@
 #include "animation_mgr.hpp"
 
+
 //------------------------------------------------------------------------------
 void
 Timeline::calc(TimeVal now)
@@ -20,7 +21,7 @@ Timeline::calc(TimeVal now)
 		/// ist Animation beendet?
 		if(next_keyframe == keyframes.end())
 		{
-			set_func((*last_keyframe).x);
+			if(set_func) set_func((*last_keyframe).x);
 
 			if(not this->repeat)
             {
@@ -39,10 +40,10 @@ Timeline::calc(TimeVal now)
 		}
 
 		/// eigentliche Werte bestimmen
-		double y=0;
+		FNumber y = 0;
 		TimeVal delta = (*next_keyframe).t - (*last_keyframe).t;
 		TimeVal x     = now - (*last_keyframe).t;
-		double pos   = double(x)/double(delta);
+		FNumber pos   = FNumber(x)/FNumber(delta);
 		switch(interpolation)
 		{
 			case LINEAR:
@@ -63,7 +64,8 @@ Timeline::calc(TimeVal now)
 		}
 
 		/// und setzten
-		set_func(y);
+		this->value = y;
+		if(set_func) set_func(y);
 	};
 };
 //------------------------------------------------------------------------------
@@ -117,5 +119,21 @@ AnimationManager::letTimeElapse()
 	last = now;
 
 	return elapsed;
+};
+//------------------------------------------------------------------------------
+TimelinePtr
+AnimationManager::from_to(FNumber from, FNumber to, TimeVal duration, bool start) // TODO: add interpolation mode
+{
+	assert(duration > 0);
+
+	TimelinePtr tl(new Timeline());
+
+	tl->clear();
+	tl->addKeyframe(Keyframe(0,        from));
+	tl->addKeyframe(Keyframe(duration ,to));
+
+	this->addAnim(tl, start);
+
+	return tl;
 };
 //------------------------------------------------------------------------------

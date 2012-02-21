@@ -146,9 +146,9 @@ public:
 
 //---------- ANIMATIONS --------------------------------------------------------
 	// TODO: implement these:
-	void fadeOut(FNumber sec = 0.5){this->visible = false;};
-	void fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true){this->visible = false; this->deleteMe();};
-	void fadeIn (FNumber sec = 0.5){this->visible = true;};
+	TimelinePtr fadeOut(FNumber sec = 0.5);
+	TimelinePtr fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true);
+	TimelinePtr fadeIn (FNumber sec = 0.5);
 
 	void moveAnim(Vect dest, FNumber sec = 0.5){this->setRelPos(dest);};
 };
