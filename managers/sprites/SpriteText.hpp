@@ -38,7 +38,7 @@ public:
 			/// da wird \the buffer sowieso überschrieben
 			// this->render();
 
-			buffer.alpha = this->alpha;
+			buffer.color.setA(this->alpha);
 		};
 
 //---------- GET ---------------------------------------------------------------

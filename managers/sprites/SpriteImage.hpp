@@ -17,16 +17,16 @@ public:
 				boost::shared_ptr<GraphicsManager> gmgr = boost::shared_ptr<GraphicsManager>())
 	 :	Sprite(gmgr),
 		img(image)
-			{this->setSizeToImage(); img.alpha = this->alpha;};
+			{this->setSizeToImage(); img.color.setA(this->alpha);};
 
 	SpriteImage(string image,
 				boost::shared_ptr<GraphicsManager> gmgr)
 	 :	Sprite(gmgr), img(gmgr->loadImage(image))
-			{this->setSizeToImage(); img.alpha = this->alpha;};
+			{this->setSizeToImage(); img.color.setA(this->alpha);};
 
 	SpriteImage(boost::shared_ptr<GraphicsManager> gmgr)
 	 :	Sprite(gmgr), img(gmgr->getFallbackImage())
-			{this->setSizeToImage(); img.alpha = this->alpha;};
+			{this->setSizeToImage(); img.color.setA(this->alpha);};
 
 //---------- SET ---------------------------------------------------------------
 	void set(ptree params);

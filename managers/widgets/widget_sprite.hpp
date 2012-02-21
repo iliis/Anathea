@@ -14,7 +14,7 @@ public:
 	WSprite(string name, Kernel* k)
 	 : Widget(name, k) {};
 
-	string	getType()			{return "Sprite";}
+	virtual const char*	getType() const			{return "Sprite";}
 
 	void		setSprite(SpritePtr s);
 	SpritePtr	getSprite(){return this->sprite;}

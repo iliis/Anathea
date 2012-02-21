@@ -11,10 +11,10 @@ WSprite::setSprite(SpritePtr s)
 		this->setSize(Vect(0,0));
 	else
 	{
-		//this->setAlpha(this->getAlpha());
 		this->setSize(s->getSize());
-		s->alpha = this->alpha.ref();
-		s->size  = this->size.ref();
+		s->alpha  = this->alpha; // TODO: alpha is sometimes implemented as float and sometimes als ColVal (int)
+		s->width  = this->width.ref();
+		s->height = this->height.ref();
 	}
 };
 //------------------------------------------------------------------------------
@@ -33,6 +33,8 @@ WSprite::_set(ptree n)
 	if(type == "")
 		throw Error("notFound", "Can't create WidgetSprite: Attribute 'type' is missing.");
 
-	this->setSprite(this->kernel->guiMgr->createSpriteFromPT(type, n));
+	// TODO
+	//throw Error("notImplemented", "WSprite::_set(ptree n)");
+	//this->setSprite(this->kernel->guiMgr->createSpriteFromPT(type, n));
 };
 //------------------------------------------------------------------------------

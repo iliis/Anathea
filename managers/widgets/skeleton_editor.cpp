@@ -6,7 +6,7 @@ SkeletonEditorWidget::SkeletonEditorWidget(string name, Kernel* k)
  : Widget(name, k), skeleton(k->graphicsMgr), nearest_bone(NULL), active_bone(NULL),
    bg_img(k->graphicsMgr->loadImage("gfx/creatures/stickman/running_right.png")), time_delta(0), animate(false)
 {
-	this->bg_img.alpha = A_HALF_TRANSPARENT;
+	this->bg_img.color.setA(A_HALF_TRANSPARENT);
 
 	skeleton.setLineWidth(2);
 
@@ -69,7 +69,7 @@ SkeletonEditorWidget::_draw()
 	}
 
 	SkeletonKeyframe tmp(this->skeleton,0.1);
-	Box b(5,this->getHeight()-45,40,40);
+	Box b(5,this->height-45,40,40);
 	this->skeleton.setScale(0.05);
 	BOOST_FOREACH(SkeletonKeyframe& kf, this->keyframes)
 	{

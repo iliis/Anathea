@@ -145,11 +145,12 @@ public:
 	inline shared_ptr<T> cast(){return dynamic_pointer_cast<T>(shared_from_this());}
 
 //---------- ANIMATIONS --------------------------------------------------------
-	/*TimelinePtr fadeOut(FNumber sec = 0.5);
-	TimelinePtr fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true);
-	TimelinePtr fadeIn (FNumber sec = 0.5);
+	// TODO: implement these:
+	void fadeOut(FNumber sec = 0.5){this->visible = false;};
+	void fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true){this->visible = false; this->deleteMe();};
+	void fadeIn (FNumber sec = 0.5){this->visible = true;};
 
-	TimelinePtr moveAnim(Vect dest, FNumber sec = 0.5);*/
+	void moveAnim(Vect dest, FNumber sec = 0.5){this->setRelPos(dest);};
 };
 //------------------------------------------------------------------------------
 bool order_by_name(WidgetPtr& A, WidgetPtr& B);
