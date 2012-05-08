@@ -202,7 +202,7 @@ const TiXmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
 	@endverbatim
 */
 #ifdef TIXML_USE_TICPP
-#include "ticpprc.h"
+#include "tools/ticpp/ticpprc.h"
 class TiXmlBase : public TiCppRC
 #else
 class TiXmlBase

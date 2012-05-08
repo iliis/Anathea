@@ -61,6 +61,7 @@ string		getLeftSubstring(string text, string delimiter);
 string		getRightSubstring(string text, string delimiter);
 //------------------------------------------------------------------------------------------------
 list<string> splitString(string text, string delimiter);
+list<string> splitStringWithChars(string text, string delimiters = " ,;:|", bool trim=false);
 //------------------------------------------------------------------------------------------------
 string fillStringLeft (string text, unsigned int lenght, char fill);
 string fillStringRight(string text, unsigned int lenght, char fill);

@@ -75,7 +75,7 @@ public:
 	inline Box     getBB()               const {return Box(this->getAbsPos(), this->getSize());}
 	inline bool    isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
 
-	inline WidgetPtr  getParent()       const {return this->parent.lock();}
+	inline WidgetPtr  getParent()        const {return this->parent.lock();}
 	inline bool       hasParent()        const {return !this->parent.expired();}
 	unsigned int      getNumberOfChilds()const {return this->childs.size();}
 	inline bool       hasChild(WidgetPtr child);

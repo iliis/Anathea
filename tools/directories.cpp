@@ -44,21 +44,21 @@ list <string> scanDir(string dir, string extension, bool filterOutPointFiles, bo
 		boost_fs::directory_iterator endIter; // default construction yields past-the-end
 		for(boost_fs::directory_iterator dirIter(directory); dirIter != endIter; ++dirIter)
 		{
-#ifdef _WIN32
-            string name = dirIter->path().filename();//boost >= 1.36
-#else
-            string name = dirIter->leaf(); //boost <= 1.35
-#endif
+//#ifdef _WIN32
+            string name = dirIter->path().filename().string();//boost >= 1.36
+//#else
+//           string name = dirIter->leaf(); //boost <= 1.35
+//#endif
 
             //same goes here:
             //string ext = fs::extension(dirIter->leaf());
-#ifdef _WIN32
+//#ifdef _WIN32
             string ext = boost_fs::extension(dirIter->path().filename());//extractFileExtension(name);
-#else
-            string ext = boost_fs::extension(dirIter->leaf());
-#endif
+//#else
+//            string ext = boost_fs::extension(dirIter->leaf());
+//#endif
 
-            string completePath = dirIter->path().file_string();
+            string completePath = dirIter->path().string();
 
             bool isDir = is_directory(dirIter->status());
 

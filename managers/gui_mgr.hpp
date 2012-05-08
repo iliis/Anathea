@@ -71,17 +71,18 @@ public:
 
 		//this->addWidget(newWidget);
 		newWidget->draw_bounding_box = this->draw_bounding_boxes.ref();
+		this->setWidgetDefaults(newWidget);
 		return newWidget;
 	};
 
+	void setWidgetDefaults(WidgetPtr widget);
+
 	WidgetPtr createWidget(string typ, string name);
 
-	void createWidgetsFromXML(string file);
-
-	WidgetPtr  createWidgetFromPT(ptree node, WidgetPtr parent = WidgetPtr());
-	WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
-
-	void connectEvents(WidgetPtr widget, string event_name, string event_slot);
+	//void createWidgetsFromXML(string file);
+	//WidgetPtr  createWidgetFromPT(ptree node, WidgetPtr parent = WidgetPtr());
+	//WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
+	//void connectEvents(WidgetPtr widget, string event_name, string event_slot);
 
 	inline Slots::SignalPtr getEvent(string name){return events[name];}
 	inline Slots&           getEvents(){return this->events;}

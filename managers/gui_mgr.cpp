@@ -188,6 +188,25 @@ GuiManager::moveRootWidgetToBack(WidgetPtr w)
 };
 //------------------------------------------------------------------------------
 void
+GuiManager::setWidgetDefaults(WidgetPtr widget)
+{
+	// TODO: cache this stuff, so that we don't have to read files from disk every time
+	// TODO: implement the <include>-Tag (implement merge_ptree or something)
+	ptree base = readXML("xml/stylesheets/default/Widget.xml");
+	widget->set(base);
+
+	fs::path widget_stylesheet = string("xml/stylesheets/default/")+widget->getType()+".xml";
+
+	if(fs::exists(widget_stylesheet)
+	&& fs::is_regular_file(widget_stylesheet))
+	{
+		ptree additional = readXML(widget_stylesheet);
+		widget->set(additional);
+	}
+};
+//------------------------------------------------------------------------------
+/*
+void
 GuiManager::createWidgetsFromXML(string file)
 {
 	ptree pt = readXML(file);
@@ -260,7 +279,7 @@ GuiManager::connectEvents(WidgetPtr widget, string event_name, string event_slot
 {
 	this->events.add(event_name);
 	widget->getSlot(event_slot)->connect(boost::bind(&GuiManager::triggerEvent, this, event_name));
-};
+};*/
 //------------------------------------------------------------------------------
 #include "widgets/widget_container.hpp"
 #include "widgets/widget_text.hpp"

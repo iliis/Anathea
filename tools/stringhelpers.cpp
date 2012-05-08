@@ -140,6 +140,26 @@ list<string> splitString(string text, string delimiter)
 
 	return results;
 };
+//------------------------------------------------------------------------------
+list<string> splitStringWithChars(string text, string delimiters, bool trim)
+{
+	list<string> results;
+
+	size_t delpos = text.find_first_of(delimiters);
+	size_t oldpos = -1;
+	do
+	{
+		string tmp(text.substr(oldpos+1, delpos-oldpos-1));
+		if(trim) tmp = trimString(tmp);
+		if(!tmp.empty()) results.push_back(tmp);
+
+		oldpos = delpos;
+		delpos = text.find_first_of(delimiters, delpos+1);
+	}
+	while(oldpos != string::npos);
+
+	return results;
+};
 //------------------------------------------------------------------------------------------------
 string fillStringLeft(string text, unsigned int lenght, char fill)
 {
