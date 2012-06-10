@@ -350,15 +350,11 @@ Widget::clearSlots()
 //------------------------------------------------------------------------------
 //---------- ANIMATIONS --------------------------------------------------------
 //------------------------------------------------------------------------------
-/*TimelinePtr
+TimelinePtr
 Widget::fadeOut(FNumber sec)
 {
-	TimelinePtr tl(new Timeline(boost::bind(&Widget::setAlpha, this, _1)));
-
-	tl->addKeyframe(Keyframe(0, this->getAlpha()));
-	tl->addKeyframe(Keyframe(fromSeconds(sec), A_TRANSPARENT));
-
-	this->kernel->animMgr->addAnim(tl, true);
+	TimelinePtr tl = this->kernel->animMgr->from_to(this->alpha, A_TRANSPARENT, fromSeconds(sec), true);
+	this->alpha = tl->value.ref();
 
 	return tl;
 };
@@ -366,9 +362,9 @@ Widget::fadeOut(FNumber sec)
 TimelinePtr
 Widget::fadeIn(FNumber sec)
 {
-	TimelinePtr tl(new Timeline(boost::bind(&Widget::setAlpha, this, _1)));
+	TimelinePtr tl(new Timeline());
 
-	tl->addKeyframe(Keyframe(0, this->getAlpha()));
+	tl->addKeyframe(Keyframe(0, this->alpha));
 	tl->addKeyframe(Keyframe(fromSeconds(sec), A_OPAQUE));
 
 	this->kernel->animMgr->addAnim(tl, true);
@@ -376,7 +372,7 @@ Widget::fadeIn(FNumber sec)
 	return tl;
 };
 //------------------------------------------------------------------------------
-TimelinePtr
+/*TimelinePtr
 Widget::moveAnim(Vect dest, FNumber sec)
 {
 	TimelinePtr tlX(new Timeline(boost::bind(&Widget::setRelX, this, _1)));
@@ -395,7 +391,7 @@ Widget::moveAnim(Vect dest, FNumber sec)
 	this->kernel->animMgr->addAnim(tlY, true);
 
 	return tlX;
-};
+};*/
 //------------------------------------------------------------------------------
 TimelinePtr
 Widget::fadeOutAndDelete(FNumber sec, bool deleteFromMgr)
@@ -405,7 +401,7 @@ Widget::fadeOutAndDelete(FNumber sec, bool deleteFromMgr)
     tl->setEndEvent(boost::bind(&Widget::deleteMe,this,deleteFromMgr));
 
     return tl;
-};*/
+};
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

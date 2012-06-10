@@ -158,7 +158,7 @@ Kernel::Kernel(int argc, char *argv[])
 	}
 
 	/// hardcodete Default-Werte
-	this->settings.appname = "ANATHEA 1.6";
+	this->settings.appname = "ANATHEA 1.7";
 	this->settings.screen.w = 1024;
 	this->settings.screen.h =  768;
 	this->settings.screen.bpp =  0; ///< benutze momentanen Wert

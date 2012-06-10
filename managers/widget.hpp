@@ -88,13 +88,19 @@ public:
 
 //------------- SET ------------------------------------------------------------
 	inline void    setAbsPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->abs_x = n; else this->abs_y = n;}
+	inline void    setAbsPos(Vect p)             {this->abs_x = p.x; this->abs_y = p.y;}
 	inline void    setRelPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->rel_x = n; else this->rel_y = n;}
-	inline void    setRelPos(Vect p)             {this->rel_x = p.x, this->rel_y = p.y;}
+	inline void    setRelPos(Vect p)             {this->rel_x = p.x; this->rel_y = p.y;}
 	inline void    setSize  (FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->width = n; else this->height = n;}
 	inline void    setSize  (Vect s) {this->width = s.x; this->height = s.y;}
 
+<<<<<<< HEAD
 	        void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
 	inline void     setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
+=======
+	       void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
+	inline void    setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
+>>>>>>> a61f1cad03b926f7c3b4df31ba823c0d678f5b3a
 				{if(this->hasParent()) setRelativeTo(horiz,h_inside,vert,v_inside,this->parent.lock());
 				else throw Error("illegalOperation","Can't set relativeToParent: There is no parent.");}
 
@@ -144,11 +150,12 @@ public:
 	inline shared_ptr<T> cast(){return dynamic_pointer_cast<T>(shared_from_this());}
 
 //---------- ANIMATIONS --------------------------------------------------------
-	/*TimelinePtr fadeOut(FNumber sec = 0.5);
+	// TODO: implement these:
+	TimelinePtr fadeOut(FNumber sec = 0.5);
 	TimelinePtr fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true);
 	TimelinePtr fadeIn (FNumber sec = 0.5);
 
-	TimelinePtr moveAnim(Vect dest, FNumber sec = 0.5);*/
+	void moveAnim(Vect dest, FNumber sec = 0.5){this->setRelPos(dest);};
 };
 //------------------------------------------------------------------------------
 bool order_by_name(WidgetPtr& A, WidgetPtr& B);

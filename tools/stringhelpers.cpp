@@ -1,4 +1,4 @@
-#include "tools/stringhelpers.hpp"
+#include "stringhelpers.hpp"
 
 //------------------------------------------------------------------------------------------------
 int toAscii(char const& c)
@@ -6,12 +6,18 @@ int toAscii(char const& c)
 	return int(c);
 };
 //------------------------------------------------------------------------------------------------
+bool
+isQuote(const char& c)
+{
+	return c == '\'' || c == '"' || c == '`';
+}
+//------------------------------------------------------------------------------------------------
 int strCount(string haystack, const char needle)
 {
 	int nr=0;
 
 	BOOST_FOREACH(char c, haystack)
-		if(c == needle)++nr;
+		if(c == needle) ++nr;
 
 	return nr;
 };
@@ -160,6 +166,47 @@ list<string> splitStringWithChars(string text, string delimiters, bool trim)
 
 	return results;
 };
+//------------------------------------------------------------------------------------------------
+list<string>
+splitStringWithCharsAndQuotes(string text, string delimiters, bool trim)
+{
+	list<string> results;
+	
+	char current_quote = ' '; // none
+	size_t from = 0; size_t pos = 0;
+	
+	for(std::string::iterator i = text.begin(); i != text.end(); ++i)
+	{
+		++pos;
+		const bool is_last      =  i == text.end()-1;
+		const bool is_delimiter =  delimiters.find(*i) != std::string::npos;
+				
+		if(isQuote(*i))
+		{
+			if(current_quote == ' ')
+			{
+				// not inside a quote -> entering one now
+				current_quote = *i;
+			}
+			else
+			{
+				// inside a quote -> maybe end current one
+				if(current_quote == *i)
+					current_quote = ' ';
+			}
+		}
+		else if(is_last or is_delimiter)
+		{
+			string tmp = text.substr(from, pos-from-(is_delimiter?1:0)); // extract chunk and remove delimiter if neccessary
+			from = pos;
+			
+			if(trim) tmp = trimString(tmp);
+			if(!tmp.empty()) results.push_back(tmp);
+		}
+	}
+
+	return results;
+}
 //------------------------------------------------------------------------------------------------
 string fillStringLeft(string text, unsigned int lenght, char fill)
 {

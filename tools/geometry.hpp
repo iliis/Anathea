@@ -129,7 +129,7 @@ public:
 		return p;
 	};
 
-	Typ& operator[](const int dim) const
+	Typ& operator[](const int dim)
 	{
 		assert(valid_dim2(dim));
 
@@ -192,13 +192,19 @@ public:
 		return this->x == 0 && this->y == 0;
 	};
 
-	vector2<Typ> makeUnitVector()
+	vector2<Typ>& makeUnitVector()
 	{
 		Typ l = this->length();
 		this->x = this->x / l;
 		this->y = this->y / l;
 		return *this;
 	};
+
+	vector2<Typ> getUnitVector()
+	{
+		Typ l = this->length();
+		return vector2<Typ>(this->x / l, this->y / l);
+	}
 
 	template <typename Dest>
 	vector2<Dest> cast() const

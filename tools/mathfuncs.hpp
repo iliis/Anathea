@@ -6,7 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tools/errorclass.hpp"
+// some forward declarations due to nasty circular references due to templates in this file
+class Error;
+#define ERROR(type, msg) Error((type), (msg), __FILE__, __LINE__)
+
+#include "errorclass.hpp"
+
 
 #include <boost/foreach.hpp>
 //------------------------------------------------------------------------------------------------
@@ -99,11 +104,11 @@ bool abs(Typ val)
 };*/
 //------------------------------------------------------------------------------------------------
 template <typename T>
-bool isInList(list<T>& l, T obj)
+bool isInList(std::list<T>& l, T obj)
 {
 	if(l.empty()){return false;}
 
-	typename list<T>::iterator it;
+	typename std::list<T>::iterator it;
 	for(it = l.begin(); it != l.end(); ++it)
 	{
 		if(obj == *it)
@@ -113,12 +118,12 @@ bool isInList(list<T>& l, T obj)
 };
 //------------------------------------------------------------------------------------------------
 template <typename Typ>
-Typ getRandomElement(list<Typ>& l)
+Typ getRandomElement(std::list<Typ>& l)
 {
 	if(l.size() > 0)
 	{
 		int nr = rand() % l.size();
-		typename list<Typ>::iterator it = l.begin();
+		typename std::list<Typ>::iterator it = l.begin();
 		for(int i = 0; i < nr; ++i)
 		{
 			++it;
@@ -127,18 +132,18 @@ Typ getRandomElement(list<Typ>& l)
 	}
 	else
 	{
-		throw Error("illegalOperation", "getRandomElement(list<Typ>& l): list is empty");
+		throw ERROR("illegalOperation", "getRandomElement(list<Typ>& l): list is empty");
 	}
 };
 //------------------------------------------------------------------------------------------------
 //http://www.java2s.com/Tutorial/Cpp/0040__Data-Types/Printinganunsignedintegerinbits.htm
 template <typename Typ>
-string getBinary(Typ val)
+std::string getBinary(Typ val)
 {
 	const int SHIFT = 8 * sizeof( Typ ) - 1;
 	const Typ MASK = 1 << SHIFT;
 
-	string ret="";
+	std::string ret="";
 
 	for ( int i = 1; i <= SHIFT + 1; i++ )
 	{
@@ -153,14 +158,14 @@ string getBinary(Typ val)
 };
 //------------------------------------------------------------------------------------------------
 template <typename T>
-typename list<T>::iterator getIteratorFromList(list<T> l, unsigned int pos)
+typename std::list<T>::iterator getIteratorFromList(std::list<T> l, unsigned int pos)
 {
-	if(l.empty()){throw Error("illegalOperation", "getItemFromList(): List is empty!");}
-	if(l.size() < pos){throw Error("illegalOperation", "getItemFromList(): Position is not in list!");}
+	if(l.empty())     {throw ERROR("illegalOperation", "getItemFromList(): List is empty!");}
+	if(l.size() < pos){throw ERROR("illegalOperation", "getItemFromList(): Position is not in list!");}
 
 	unsigned int i = 1;
 
-	typename list<T>::iterator it;
+	typename std::list<T>::iterator it;
 	for(it = l.begin(); it != l.end(); ++it)
 	{
 		if(pos == i)

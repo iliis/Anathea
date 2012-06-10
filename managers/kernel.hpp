@@ -49,7 +49,8 @@ public:
 
 	struct Settings
 	{
-		fs::path file, appname;
+		fs::path file;
+		string appname;
 		ptree pt;
 
 		struct Screen

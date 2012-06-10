@@ -1,9 +1,9 @@
 #include "errorclass.hpp"
 
 //------------------------------------------------------------------------------------------------
-const string Error::getMessage(const string type, const string message, const string file, const int line)
+const std::string Error::getMessage(const std::string type, const std::string message, const std::string file, const int line, const int err)
 {
-	const string text = message + "\n  (in file '" + file + "' at line " + ToString(line)+")";
+	const std::string text = message + "\n  (in file '" + file + "' at line " + ToString(line)+")";
 	
 	if(type == "init")
 	{
@@ -47,7 +47,7 @@ const string Error::getMessage(const string type, const string message, const st
 	}
 	else if(type == "errno")
 	{
-		return "ERROR: " + text + "\n" + strerror(this->err_no) + "\n";
+		return "ERROR: " + text + "\n error #" + ToString(err) + ": " + strerror(err) + "\n";
 	}
 	else
 	{

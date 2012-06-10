@@ -7,24 +7,22 @@
 #include <stdio.h>
 
 #include "definitions.hpp"
+#include "stringhelpers.hpp"
 
-using namespace std;
 
 //------------------------------------------------------------------------------
 // Makro für detailiertere Fehlermeldungen
 #define ERROR(type, msg) Error((type), (msg), __FILE__, __LINE__)
+#define ERROR_ERRNO(msg) Error("errno",(msg), __FILE__, __LINE__, errno)
 
 //------------------------------------------------------------------------------
 class Error : public runtime_error
 {
-	//string type;
-	//string text;
-	int err_no;
 public:
-	                  Error(const string type, const string message, const string file = "", const int line = 0)
-	                   : runtime_error(getMessage(type, message, file, line)), err_no(errno) {};
+	                       Error(const std::string type, const std::string message, const std::string file = "", const int line = 0, const int custom_errno = 0)
+	                   : runtime_error(getMessage(type, message, file, line, custom_errno == 0?errno:custom_errno)) {};
 	                   
-	const string getMessage(const string type, const string message, const string file = "", const int line = 0);
+	const std::string getMessage(const std::string type, const std::string message, const std::string file = "", const int line = 0, const int err = 0);
 };
 //------------------------------------------------------------------------------
 /** Für kritische Fehler, die unter keinen Umständen ein weiterlaufen
@@ -33,7 +31,7 @@ public:
 class CriticalError : public runtime_error
 {
 public:
-	CriticalError(const string text) : runtime_error(text) {};
+	CriticalError(const std::string text) : runtime_error(text) {};
 };
 //------------------------------------------------------------------------------
 

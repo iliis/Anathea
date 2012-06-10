@@ -7,8 +7,7 @@
 #include <list>
 
 #include <boost/algorithm/string.hpp>
-
-#include "tools/mathfuncs.hpp"
+#include <boost/foreach.hpp>
 
 using namespace std;
 
@@ -49,6 +48,8 @@ string inline const operator+(string const& a, unsigned int         b) {return a
 string inline const operator+(string const& a, long int             b) {return a+ToString(b);};
 string inline const operator+(string const& a, unsigned long int    b) {return a+ToString(b);};
 //------------------------------------------------------------------------------------------------
+bool isQuote(const char& c);
+//------------------------------------------------------------------------------------------------
 int toAscii(char const& c);
 //------------------------------------------------------------------------------------------------
 int strCount(string haystack, string needle);
@@ -62,6 +63,10 @@ string		getRightSubstring(string text, string delimiter);
 //------------------------------------------------------------------------------------------------
 list<string> splitString(string text, string delimiter);
 list<string> splitStringWithChars(string text, string delimiters = " ,;:|", bool trim=false);
+// splits a string and correctly interprets quotes
+// eg. [a,a,"a,a",a]        -> [a], [a], ["a,a"], [a]
+//     [a,aa'aa,",a,",a',a] -> [a], [aa'aa,",a,",a'], [a]
+list<string> splitStringWithCharsAndQuotes(string text, string delimiters = " ,;:|", bool trim = false);
 //------------------------------------------------------------------------------------------------
 string fillStringLeft (string text, unsigned int lenght, char fill);
 string fillStringRight(string text, unsigned int lenght, char fill);
