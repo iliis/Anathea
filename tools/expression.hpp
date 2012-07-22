@@ -363,10 +363,10 @@ public:
 
 	inline ExpressionRefPtr ref() {return ExpressionRefPtr(new ExprDirectRef(*this));}
 
-	inline void operator=(const Typ& v)     {this->set(v);}
-	inline void operator=(Expression<Typ>& a){this->link(a);}
+	inline Expression<Typ>& operator=(const Typ& v)     {this->set(v);   return *this;}
+	inline Expression<Typ>& operator=(Expression<Typ>& a){this->link(a); return *this;}
 	//inline void operator=(ExpressionRef*   r){this->link(r);}
-	inline void operator=(ExpressionRefPtr r){this->link(r);}
+	inline Expression<Typ>& operator=(ExpressionRefPtr r){this->link(r); return *this;}
 
 
 
@@ -378,12 +378,14 @@ public:
 	ExpressionRef* func (boost::function<Typ(Typ)> f){         return new ExprFuncRef (f, this->ref());};
 
 
-	void operator+=(ExpressionRefPtr r)
+	Expression<Typ>& operator+=(ExpressionRefPtr r)
 	{
 		ExpressionRef* orig = this->expr;
 		this->expr = NULL;
 
 		this->link(new ExprSumRef(orig, r));
+
+		return *this;
 	}
 
 

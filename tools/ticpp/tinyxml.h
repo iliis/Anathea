@@ -107,8 +107,8 @@ const int TIXML_PATCH_VERSION = 3;
 */
 struct TiXmlCursor
 {
-	TiXmlCursor()		{ Clear(); }
-	void Clear()		{ row = col = -1; }
+	TiXmlCursor() : row(0), col(0)	{ Clear(); }
+	void Clear()					{ row = col = -1; }
 
 	int row;	// 0 based.
 	int col;	// 0 based.

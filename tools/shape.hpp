@@ -24,6 +24,8 @@ struct Shape
 	Shape() : pos(Vect(0,0)) {};
 	Shape(Vect position) : pos(position) {};
 
+	virtual ~Shape() {};
+
 	virtual bool collide(Point const& p) const = 0;
 	virtual bool collide(Rect  const& r) const = 0;
 	virtual Box getBoundingBox() const = 0;

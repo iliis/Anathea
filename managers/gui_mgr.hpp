@@ -26,6 +26,10 @@ class GuiManager/* : public enable_shared_from_this<GuiManager>*/
 	Slots events; ///< Dinge wie "Dialog_OK" oderso...
 
 	void removeFromList(WidgetPtr widget);
+
+
+	map<string, ptree> default_parameters; ///< Standardeinstellungen für die Widgets (eg. Schrift, Hintergrund, ...)
+
 public:
 	Expression<bool> draw_bounding_boxes;
 
@@ -71,6 +75,9 @@ public:
 
 		//this->addWidget(newWidget);
 		newWidget->draw_bounding_box = this->draw_bounding_boxes.ref();
+
+		newWidget->set(this->getDefaultParameters(newWidget->getType()));
+
 		return newWidget;
 	};
 
@@ -78,8 +85,10 @@ public:
 
 	void createWidgetsFromXML(string file);
 
-	WidgetPtr  createWidgetFromPT(ptree node, WidgetPtr parent = WidgetPtr());
+	WidgetPtr  createWidgetFromPT   (ptree node, WidgetPtr parent = WidgetPtr());
 	WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
+
+	ptree getDefaultParameters(string widget_type);
 
 	void connectEvents(WidgetPtr widget, string event_name, string event_slot);
 

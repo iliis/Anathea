@@ -13,14 +13,14 @@ void waitForEnter();
 //------------------------------------------------------------------------------------------------
 void combine(boost::function<void ()> first, boost::function<void ()> second);
 //------------------------------------------------------------------------------------------------
-class node
+/*class node
 {
 protected:
 	node* parent;
 	std::list<node*> childs;
 	bool m_isRoot;
 public:
-	node(node* p) : parent(p) {if(p==NULL){this->m_isRoot=true;}else{this->m_isRoot=false;}};
+	node(node* p) : parent(p), m_isRoot(p==NULL) {};
 	node() : parent(NULL), m_isRoot(true) {};
 	void setParent(node* p);
 	node* getParent();
@@ -28,7 +28,7 @@ public:
 	void addChild(node* n);
 	void removeChild(node* n);
 	bool isRoot() {return this->m_isRoot;}
-};
+};*/
 //------------------------------------------------------------------------------------------------
 struct voidFunction
 {

@@ -1,7 +1,7 @@
 #include "misc.hpp"
 
 //------------------------------------------------------------------------------------------------
-node* node::getParent()
+/*node* node::getParent()
 {
 	return this->parent;
 };
@@ -25,7 +25,7 @@ void node::removeChild(node* n)
 void node::setParent(node* p)
 {
 	this->parent = p;
-};
+};*/
 //------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
 void combine(boost::function<void ()> first, boost::function<void ()> second)

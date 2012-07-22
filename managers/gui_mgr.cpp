@@ -35,10 +35,10 @@ GuiManager::removeFromList(WidgetPtr widget)
 WidgetPtr
 GuiManager::createWidget(string typ, string name)
 {
-	/*	 if(typ == "button")return this->createWidget<WButton>(name);
+		 if(typ == "button")return this->createWidget<WButton>(name);
 	else if(typ == "label") return this->createWidget<WLabel>(name);
-	//else if(typ == "image") return this->createWidget<WImage>(name);
-	else*/
+	else if(typ == "image") return this->createWidget<WImage>(name);
+	else
 		throw Error("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
 };
 //------------------------------------------------------------------------------
@@ -209,6 +209,8 @@ GuiManager::createMultipleWidgets(ptree node, WidgetPtr parent)
 WidgetPtr
 GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 {
+	// TODO: Implement this anew (use getDefaultParameters)
+
 	/// lese Name und Typ aus
 	string type = node.get_value<string>();
 	string name = node.get("name", type);
@@ -260,5 +262,13 @@ GuiManager::connectEvents(WidgetPtr widget, string event_name, string event_slot
 {
 	this->events.add(event_name);
 	widget->getSlot(event_slot)->connect(boost::bind(&GuiManager::triggerEvent, this, event_name));
+};
+//------------------------------------------------------------------------------
+ptree
+GuiManager::getDefaultParameters(string widget_type)
+{
+	map<string, ptree>::iterator i = this->default_parameters.find(widget_type);
+	if(i == this->default_parameters.end())
+		return make_
 };
 //------------------------------------------------------------------------------

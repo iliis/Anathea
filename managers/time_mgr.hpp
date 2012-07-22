@@ -24,7 +24,7 @@ class TimeManager
 {
 	TimeVal startTime;
 public:
-	TimeManager() {this->startTime = this->now();}
+	TimeManager() : startTime(0) {this->startTime = this->now();}
 	int getCurSeconds();
 	int getCurMinutes();
 	int getCurHours();
