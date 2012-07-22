@@ -22,9 +22,9 @@ public:
 
 	// GET
 	//-------------------------------------------------------------------------
-	inline Align         getAlign() const {return this->align;}
+	inline Align        getAlign() const {return this->align;}
 	virtual const char* getType()  const {return "Button";}
-	inline WidgetPtr     getLabel() const {return this->label;}
+	inline WidgetPtr    getLabel() const {return this->label;}
 
 	// SET
 	//-------------------------------------------------------------------------
@@ -41,6 +41,7 @@ public:
 	void hideLabel(bool hide=true){this->label->visible = !hide;}
 	void setAlign(Align a);
 
+	void setAutoWidth(FNumber padding){this->width = this->label->width.ref() + 2*padding;};
 
 protected:
 	ButtonState state;

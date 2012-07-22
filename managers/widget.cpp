@@ -121,7 +121,7 @@ Widget::set(ptree n)
 	this->setSize  (Vect(n, "w", "h", this->getSize()));
 
 	bool v = this->visible;
-	setBoolFromPT(n, "visible", v); this->visible = v;
+	setBoolFromPT(n, "visible", v); this->visible = v; // this->visible is an expression<bool>, so no ref possible
 
 	this->_set(n);
 };

@@ -38,7 +38,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @todo add TYPECOUNT support. See ticpp::NodeFactory.
 @todo Add a quick reference
 */
-#ifdef TIXML_USE_TICPP
+#ifndef TIXML_USE_TICPP
+	#define TIXML_USE_TICPP
+#endif
 
 #ifndef TICPP_INCLUDED
 #define TICPP_INCLUDED
@@ -224,7 +226,7 @@ namespace ticpp
 		{
 			return ( GetBasePointer() == rhs.GetBasePointer() );
 		}
-		
+
 		/**
 		Compare internal TiXml pointers to determine is both are wrappers around the same node
 		*/
@@ -232,7 +234,7 @@ namespace ticpp
 		{
 			return ( GetBasePointer() != rhs.GetBasePointer() );
 		}
-		
+
 		/**
 		Builds detailed error string using TiXmlDocument::Error() and others
 		*/
@@ -249,8 +251,8 @@ namespace ticpp
 					if ( doc->Error() )
 					{
 						full_message 	<< "\nDescription: " << doc->ErrorDesc()
-										<< "\nFile: " << (strlen( doc->Value() ) > 0 ? doc->Value() : "<unnamed-file>") 
-										<< "\nLine: " << doc->ErrorRow() 
+										<< "\nFile: " << (strlen( doc->Value() ) > 0 ? doc->Value() : "<unnamed-file>")
+										<< "\nLine: " << doc->ErrorRow()
 										<< "\nColumn: " << doc->ErrorCol();
 					}
 				}
@@ -286,7 +288,7 @@ namespace ticpp
 			{
 				TICPPTHROW( "Internal TiXml Pointer is NULL" );
 			}
-		}		
+		}
 
 		/**
 		@internal
@@ -616,7 +618,7 @@ namespace ticpp
 		@see LinkEndChild
 		@see TiXmlNode::InsertEndChild
 		*/
-		Node* InsertEndChild( Node& addThis );
+		Node* InsertEndChild( const Node& addThis );
 
 		/**
 		Adds a child past the LastChild.
@@ -641,7 +643,7 @@ namespace ticpp
 		@see InsertAfterChild
 		@see TiXmlNode::InsertBeforeChild
 		*/
-		Node* InsertBeforeChild( Node* beforeThis, Node& addThis );
+		Node* InsertBeforeChild( Node* beforeThis, const Node& addThis );
 
 		/**
 		Adds a child after the specified child.
@@ -654,7 +656,7 @@ namespace ticpp
 		@see InsertBeforeChild
 		@see TiXmlNode::InsertAfterChild
 		*/
-		Node* InsertAfterChild( Node* afterThis, Node& addThis );
+		Node* InsertAfterChild( Node* afterThis, const Node& addThis );
 
 		/**
 		Replace a child of this node.
@@ -666,7 +668,7 @@ namespace ticpp
 
 		@see TiXmlNode::ReplaceChild
 		*/
-		Node* ReplaceChild( Node* replaceThis, Node& withThis );
+		Node* ReplaceChild( Node* replaceThis, const Node& withThis );
 
 		/**
 		Delete a child of this node.
@@ -1162,7 +1164,7 @@ namespace ticpp
 
 		/** Sets internal pointer to the Previous Sibling, or Iterator::END, if there are no prior siblings */
 		Iterator operator--(int)
-		{			
+		{
 			Iterator tmp(*this);
 			--(*this);
 			return tmp;
@@ -1397,11 +1399,12 @@ namespace ticpp
 		Document( const char* documentName );
 
 		/**
-		Constructor.
-		Create a document with a name. The name of the document is also the filename of the xml.
-
-		@param documentName Name to set in the Document.
-		*/
+		 * Constructor.
+		 * Create a document with a name. The name of the document is also the filename of the xml.
+		 * @param documentName Name to set in the Document.
+		 * @note LoadFile() needs to be called to actually load the data from the file specified by documentName
+		 * 		 SaveFile() needs to be called to save data to file specified by documentName.
+		 */
 		Document( const std::string& documentName );
 
 		/**
@@ -1746,7 +1749,8 @@ namespace ticpp
 			{
 				if ( throwIfNotFound )
 				{
-					TICPPTHROW( "Attribute does not exist" );
+					const std::string error( std::string( "Attribute '" ) + name + std::string( "' does not exist" ) );
+					TICPPTHROW( error );
 				}
 			}
 			else
@@ -1778,7 +1782,8 @@ namespace ticpp
 			{
 				if ( throwIfNotFound )
 				{
-					TICPPTHROW( "Attribute does not exist" );
+					const std::string error( std::string( "Attribute '" ) + name + std::string( "' does not exist" ) );
+					TICPPTHROW( error );
 				}
 				else
 				{
@@ -1898,5 +1903,3 @@ namespace ticpp
 }
 
 #endif	// TICPP_INCLUDED
-
-#endif // TIXML_USE_TICPP

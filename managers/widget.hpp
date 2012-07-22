@@ -75,7 +75,7 @@ public:
 	inline Box     getBB()               const {return Box(this->getAbsPos(), this->getSize());}
 	inline bool    isVisible()           const {return this->visible and this->alpha != A_TRANSPARENT;}
 
-	inline WidgetPtr  getParent()       const {return this->parent.lock();}
+	inline WidgetPtr  getParent()        const {return this->parent.lock();}
 	inline bool       hasParent()        const {return !this->parent.expired();}
 	unsigned int      getNumberOfChilds()const {return this->childs.size();}
 	inline bool       hasChild(WidgetPtr child);
@@ -94,8 +94,13 @@ public:
 	inline void    setSize  (FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->width = n; else this->height = n;}
 	inline void    setSize  (Vect s) {this->width = s.x; this->height = s.y;}
 
+<<<<<<< HEAD
+	        void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
+	inline void     setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
+=======
 	       void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
 	inline void    setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
+>>>>>>> a61f1cad03b926f7c3b4df31ba823c0d678f5b3a
 				{if(this->hasParent()) setRelativeTo(horiz,h_inside,vert,v_inside,this->parent.lock());
 				else throw Error("illegalOperation","Can't set relativeToParent: There is no parent.");}
 

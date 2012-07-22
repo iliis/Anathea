@@ -23,6 +23,18 @@ WImage::fitToImage()
 };
 //------------------------------------------------------------------------------
 void
+WImage::fitToParent()
+{
+	if(this->hasParent())
+	{
+		this->width  = this->getParent()->width.ref();
+		this->height = this->getParent()->height.ref();
+		this->abs_x  = this->getParent()->abs_x.ref();
+		this->abs_y  = this->getParent()->abs_y.ref();
+	}
+};
+//------------------------------------------------------------------------------
+void
 WImage::_set(ptree n)
 {
 	this->setImage(n.get<string>("image", ""));

@@ -18,6 +18,7 @@ WFileTreeNode::WFileTreeNode(string n, Kernel* k)
 
 
 	label->height = 28; // random :P
+	label->setAutoWidth(10);
 	label->setAlign(LEFT);
 
 	label->abs_x = this->abs_x.ref();

@@ -293,16 +293,17 @@ Kernel::run()
 					SDL_Delay(msPerFrame-diff);
 			}
 		}
-/*		/// Kritischer Fehler -> Programm kann doch nicht weiterlaufen
+		/// Kritischer Fehler -> Programm kann doch nicht weiterlaufen
 		catch(CriticalError& e)
 		{
 			throw e;
-		}*/
+		}
 		/// alles andere schon...
 		catch(std::exception& e)
 		{
 			cerr << "EXCEPTION: " << e.what() << endl;
 			//this->guiMgr->createDialog("ERROR",e.what(),"window", "button_box",true,"OK");
+			this->guiMgr->createPopupOK(string("ERROR:\n")+e.what());
 		}
 		catch(...)
 		{

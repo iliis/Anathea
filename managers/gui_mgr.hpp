@@ -81,9 +81,7 @@ public:
 		return newWidget;
 	};
 
-	WidgetPtr createWidget(string typ, string name);
-
-	void createWidgetsFromXML(string file);
+	void setWidgetDefaults(WidgetPtr widget);
 
 	WidgetPtr  createWidgetFromPT   (ptree node, WidgetPtr parent = WidgetPtr());
 	WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
@@ -92,12 +90,15 @@ public:
 
 	void connectEvents(WidgetPtr widget, string event_name, string event_slot);
 
+
 	inline Slots::SignalPtr getEvent(string name){return events[name];}
 	inline Slots&           getEvents(){return this->events;}
 	inline void				triggerEvent(string name){this->events.call(name);}
 	inline void             addEvent(string name){this->events.add(name);}
 
 	int getUniqueNr(){return unique++;}
+
+	void createPopupOK(string text);
 };
 //------------------------------------------------------------------------------
 

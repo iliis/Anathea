@@ -14,6 +14,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O" />
+					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
 				</Compiler>
@@ -39,7 +40,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="`sdl-config --cflags`" />
+			<Add option="`sdl-config --cflags` -ffast-math" />
 			<Add option="-DTIXML_USE_TICPP" />
 			<Add option="-DUSE_TINYXML" />
 			<Add option="-DUSE_PROPERTY_TREE" />
