@@ -309,6 +309,14 @@ Image::setUV(Box uv, bool normalized)
 }
 //------------------------------------------------------------------------------
 void
+Image::set(ptree pt)
+{
+	if(pt.get_child_optional("UV"))        this->setUV(Box(pt.get_child("UV")), getBoolFromPT(pt, "UV.normalized", false));
+	if(pt.get_child_optional("NinePatch")) this->setNinePatchData(NinePatchData(pt.get_child("NinePatch")));
+	if(pt.get_child_optional("color"))     this->color = Color(pt.get("color", "#FFF"));
+};
+//------------------------------------------------------------------------------
+void
 Image::drawToSurface(SDL_Surface* dst_img, Vect pos)
 {
 	assert(dst_img);
@@ -705,6 +713,15 @@ GraphicsManager::loadImage(string path)
 	this->images.insert(pair<string,Image>(path, newImg));
 	return newImg;
 };
+//------------------------------------------------------------------------------
+Image
+GraphicsManager::loadImage(ptree data)
+{
+	Image i = this->loadImage(data.get<string>("path"));
+	i.set(data);
+
+	return i;
+}
 //------------------------------------------------------------------------------
 Font
 GraphicsManager::loadFont(string path, int size)

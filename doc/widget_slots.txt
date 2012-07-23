@@ -1,0 +1,22 @@
+// WIDGET SLOTS
+
+// general
+parent
+childAdded
+chlidRemoved
+deleted
+
+// Button
+clicked
+
+// Container
+
+// Filetree
+
+// Image
+
+// List
+
+// Text
+
+// Window

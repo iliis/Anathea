@@ -1,5 +1,8 @@
 #include "managers/widget.hpp"
 
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 Widget::Widget(string Name, Kernel* k)
  :  name(Name), visible(true), draw_bounding_box(false), alpha(A_OPAQUE),
@@ -117,11 +120,15 @@ void
 Widget::set(ptree n)
 {
 	/// Standard-Attribute setzten
-	this->setRelPos(Vect(n, "x", "y", this->getRelPos()));
-	this->setSize  (Vect(n, "w", "h", this->getSize()));
+	this->setRelPos(Vect(n, "geometry.x", "geometry.y", this->getRelPos()));
+	this->setSize  (Vect(n, "geometry.w", "geometry.h", this->getSize()));
 
+	// this->visible is an expression<bool>, so no ref possible
 	bool v = this->visible;
-	setBoolFromPT(n, "visible", v); this->visible = v; // this->visible is an expression<bool>, so no ref possible
+	setBoolFromPT(n, "flags.visible", v);      if(this->visible != v)           this->visible = v;
+
+	bool b = this->draw_bounding_box;
+	setBoolFromPT(n, "flags.bounding_box", b); if(this->draw_bounding_box != b) this->draw_bounding_box = b;
 
 	this->_set(n);
 };
@@ -213,8 +220,7 @@ Widget::addChild(WidgetPtr child)
 	child->setParent(shared_from_this());
 };
 //------------------------------------------------------------------------------
-/// It's not possible to call this->addChild(...) in a constructor, because the
-/// shared_ptr doesn't exist yet. (shared_from_this() fails)
+/*
 void
 Widget::addChildDuringConstructor(WidgetPtr child)
 {
@@ -222,7 +228,7 @@ Widget::addChildDuringConstructor(WidgetPtr child)
 	/// It would be better to handle this in guiMgr::createWidget() somehow...
 
 	this->kernel->addToDo(boost::bind(&Widget::addChild, this, child));
-};
+};*/
 //------------------------------------------------------------------------------
 void
 Widget::setParent(WidgetPtr new_parent)

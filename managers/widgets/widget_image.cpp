@@ -37,7 +37,7 @@ WImage::fitToParent()
 void
 WImage::_set(ptree n)
 {
-	this->setImage(n.get<string>("image", ""));
+	this->setImage(n.get<string>("image.path", ""));
 };
 //------------------------------------------------------------------------------
 void

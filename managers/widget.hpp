@@ -20,7 +20,16 @@ using boost::dynamic_pointer_cast;
 #include "managers/input_mgr.hpp"
 #include "managers/animation_mgr.hpp"
 
-
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+template <typename A, typename B>
+inline ptree
+mkPtree(A key, B val)
+{
+	ptree pt;
+	pt.put(key, val);
+	return pt;
+};
 //------------------------------------------------------------------------------
 class Widget;
 class Kernel;
@@ -62,6 +71,10 @@ protected:
 
 public:
 	virtual ~Widget() {this->slots.call("deleted"); cout << "Widget '" << this->name.get() << "' destroyed." << endl;};
+
+	/// It's not possible to call this->addChild(...) in a constructor, because the
+	/// shared_ptr doesn't exist yet. (shared_from_this() fails)
+	virtual void init() {};
 
 //------------- GET ------------------------------------------------------------
 	inline Vect    getSize()             const {return Vect(width, height);};

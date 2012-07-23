@@ -12,15 +12,43 @@ WButton::WButton(string name, Kernel* k)
 	this->slots.add("clicked");
 	label->cast<WText>()->setText(name);
 
-	k->addToDo(boost::bind(&WButton::setLabel, this, label));
-
 	this->setSize(bg_normal.getSize().cast<Vect::T>());
 };
 //------------------------------------------------------------------------------
 void
+WButton::init()
+{
+	this->setLabel(this->label);
+};
+//------------------------------------------------------------------------------
+#include "managers/widgets/widget_image.hpp"
+void
 WButton::_set(ptree n)
 {
 
+	if(n.get_child_optional("label.text"))
+		this->setText(n.get<string>("label.text"));
+
+	if(n.get_child_optional("label.image"))
+	{
+		string path = n.get<string>("label.image");
+		this->setLabel(kernel->guiMgr->createWidget<WImage>(this->name.get() + "_label_image",
+															mkPtree("image.path", path.c_str())));
+	}
+
+	if(n.get_child_optional("triple_background"))
+	{
+		Orientation orient = VERTICAL;
+		string tmp = n.get("triple_background.orientation", "vertical");
+		boost::trim(tmp); boost::to_lower(tmp);
+
+		if(tmp == "horiz" || tmp == "horizontal" || tmp == "h" || tmp == "-" || tmp == "--") orient = HORIZONTAL;
+
+		this->setTripleBG(this->kernel->graphicsMgr->loadImage(n.get<string>("triple_background.path")), orient);
+	}
+
+	if(n.get_child_optional("background_normal"))
+		this->setBGnormal(kernel->graphicsMgr->loadImage(n.get_child("background_normal")));
 };
 //------------------------------------------------------------------------------
 void
@@ -32,6 +60,11 @@ WButton::setLabel(WidgetPtr l)
 
 	/// center label
 	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
+
+	/// set size to label
+	/// TODO: change padding to something variable
+	this->setAutoHeight(5);
+	this->setAutoWidth(5);
 };
 //------------------------------------------------------------------------------
 void

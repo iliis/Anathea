@@ -69,14 +69,16 @@ public:
 	bool pointHitListener(PointKey pk);
 
 	template <typename T>
-	boost::shared_ptr<T> createWidget(string name)
+	boost::shared_ptr<T> createWidget(string name, ptree properties = ptree())
 	{
 		boost::shared_ptr<T> newWidget(new T(name, this->kernel));
+		newWidget->init();
 
 		//this->addWidget(newWidget);
 		newWidget->draw_bounding_box = this->draw_bounding_boxes.ref();
 
 		this->setWidgetDefaults(newWidget);
+		newWidget->set(properties);
 
 		return newWidget;
 	};

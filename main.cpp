@@ -116,6 +116,9 @@ using boost::property_tree::ptree;
 int
 main(int argc, char *argv[])
 {
+	ptree pt = readXML("xml/stylesheets/default/Widget.xml");
+	printPTree(pt);
+
 	try
 	{
 		cout << "Hallo Welt. This is Anathea 1.7." << endl;
@@ -131,6 +134,15 @@ main(int argc, char *argv[])
 		wcontainer->width = 900;
 		wcontainer->height= 400;
 		wcontainer->draw_bounding_box = true;
+
+
+		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("a button with a label...");
+		testbutton->abs_x = 300;
+		testbutton->abs_y = 10;
+		testbutton->width = 400;
+		testbutton->height = 100;
+		testbutton->draw_bounding_box = true;
+		kernel.guiMgr->addWidget(testbutton);
 
 
 		shared_ptr<WImage> wi = kernel.guiMgr->createWidget<WImage>("test");
@@ -168,10 +180,9 @@ main(int argc, char *argv[])
 		wb->setBGhover(bbg2);
 		wb->setBGactive(bbg3);
 
-		wb->width = 200;
-		wb->height = wb->getLabel()->height.ref() + 12;
-
 		wb->setText("just a Button :) asfasdfi aslf jasdlfij\nsecond line...");
+		wb->width = 200;
+		wb->setAutoHeight(6);
 
 
 
@@ -185,6 +196,7 @@ main(int argc, char *argv[])
 		button_exit->abs_x = kernel.graphicsMgr->screen_width .ref() - button_exit->width .ref() - 20;
 		button_exit->abs_y = 20;
 		button_exit->getSlot("clicked")->connect(boost::bind(&Kernel::stop, &kernel));
+		button_exit->setText("quit");
 
 		wcontainer->insert(wi);
 		wcontainer->insert(wi2);

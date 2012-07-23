@@ -197,10 +197,6 @@ GuiManager::setWidgetDefaults(WidgetPtr widget)
 	ptree base = readXML("xml/stylesheets/default/Widget.xml");
 	widget->set(base);
 
-	cout << "////////////////////////////////////////////////////" << endl;
-	printPTree(base);
-	cout << "////////////////////////////////////////////////////" << endl;
-
 	fs::path widget_stylesheet = string("xml/stylesheets/default/")+widget->getType()+".xml";
 	widget->set(readXML(widget_stylesheet));
 

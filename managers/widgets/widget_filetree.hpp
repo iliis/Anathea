@@ -25,6 +25,7 @@ class WFileTreeNode : public WContainer
 	bool collapsed;
 public:
 	WFileTreeNode(string n, Kernel* k);
+	virtual void init();
 
 	void setPath(fs::path p);
 	void setIcon(Image i){icon = i;}
@@ -47,6 +48,7 @@ class WFileTree : public Widget
 	bool show_hidden_files;
 public:
 	WFileTree(string n, Kernel* k);
+	virtual void init();
 
 	// GET
 	//-------------------------------------------------------------------------

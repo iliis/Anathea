@@ -25,8 +25,12 @@ WFileTreeNode::WFileTreeNode(string n, Kernel* k)
 	label->abs_y = this->abs_y.ref();
 	this->width  = label->width.ref();
 	this->height = label->height.ref();
-
-	this->addChildDuringConstructor(label);
+};
+//------------------------------------------------------------------------------
+void
+WFileTreeNode::init()
+{
+	this->addChild(this->label);
 };
 //------------------------------------------------------------------------------
 void
@@ -80,10 +84,15 @@ WFileTree::WFileTree(string n, Kernel* k)
    show_hidden_files(false), indentation(30)
 {
 	this->rootlist = kernel->guiMgr->createWidget<WList>(n + "_rootlist");
-	this->addChildDuringConstructor(rootlist);
 	//this->rootlist->item_spacing = 5; /// just some random spacing
 	/// size update is done in this::update()
 };
+//------------------------------------------------------------------------------
+void
+WFileTree::init()
+{
+	this->addChild(this->rootlist);
+}
 //------------------------------------------------------------------------------
 void
 WFileTree::setRoot(fs::path r)

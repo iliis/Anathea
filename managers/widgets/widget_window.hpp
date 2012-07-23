@@ -17,6 +17,7 @@ class WWindow : public Widget
 	shared_ptr<WButton>    close_button; Slots::Connection close_connection;
 public:
 	WWindow(string name, Kernel* k);
+	virtual void init();
 
 	Expression<FNumber> border, title_bar_height, padding, padding_top, padding_bottom, padding_left, padding_right;
 
@@ -27,7 +28,7 @@ public:
 	inline WidgetPtr              getTitleWidget() {return this->title;}
 	inline Image&                 getTitleBar()    {return this->title_bar;}
 	inline Image&                 getBG()          {return this->content_bg;}
-	virtual const char*           getType()  const {return "Window";}
+	virtual const char*          getType()  const {return "Window";}
 
 	// SET
 	//-------------------------------------------------------------------------

@@ -4,7 +4,11 @@
 void
 WText::_set(ptree n)
 {
-	this->setText(n.get("text", this->text));
+	this->setText(n.get("text.content", this->text));
+
+	this->setFont(this->kernel->graphicsMgr->loadFont(
+													n.get("font.path", this->font.getPath()),
+													n.get("font.size", this->font.getSize())));
 };
 //------------------------------------------------------------------------------
 void
@@ -17,7 +21,8 @@ WText::setFont(Font f)
 void
 WText::setFontSize(int s)
 {
-	this->setFont(this->kernel->graphicsMgr->loadFont(this->font.getPath(), s));
+	if(s != this->font.getSize())
+		this->setFont(this->kernel->graphicsMgr->loadFont(this->font.getPath(), s));
 };
 //------------------------------------------------------------------------------
 void

@@ -2,12 +2,51 @@
 #define MISC_HPP_INCLUDED
 
 #include <boost/function.hpp>
+#include <boost/foreach.hpp>
 #include <list>
 #include <string>
 #include <iostream>
 
+#ifdef USE_TINYXML
+#include "tools/ticpp/ticpp.h"
+#endif
+
 using namespace std;
 
+
+#ifdef USE_PROPERTY_TREE
+#include <boost/property_tree/ptree.hpp>
+using boost::property_tree::ptree;
+#endif
+
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
+//------------------------------------------------------------------------------
+/// TODO: separate xml and ptree stuff with preprocessor directives
+#ifdef USE_TINYXML
+#ifdef USE_PROPERTY_TREE
+void setBoolFromXML(const ticpp::Element* element, const string attr_name, bool& var);
+
+ptree readXML(const fs::path& p);
+void readXML(ticpp::Node* n, ptree& parent);
+
+void setBoolFromPT (const ptree pt,                const string attr_name, bool& var);
+//------------------------------------------------------------------------------romPT(const ptree pt,         const string attr_name, bool default_value);
+void copyAttributes(ticpp::Element* from, ticpp::Element* to, bool recursive=false); ///< Überschreibt Attribute, wenn schon vorhanden!
+void copyAttributes(ptree& from, ptree& to, bool recursive=false); ///< Überschreibt Attribute, wenn schon vorhanden!
+//------------------------------------------------------------------------------
+inline bool
+getBoolFromPT(const ptree pt, const string attr_name, bool default_value)
+{
+	setBoolFromPT(pt, attr_name, default_value);
+	return default_value;
+};
+//------------------------------------------------------------------------------------------------
+void printPTree(ptree& pt, int level=0);
+#endif
+#endif
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
 void waitForEnter();
 //------------------------------------------------------------------------------------------------

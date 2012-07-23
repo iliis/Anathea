@@ -7,22 +7,8 @@
 #include "managers/time_mgr.hpp"
 #include "managers/animation_mgr.hpp"
 #include "tools/errorclass.hpp"
+#include "tools/misc.hpp"
 
-#include <boost/property_tree/ptree.hpp>
-using boost::property_tree::ptree;
-
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-
-void printPTree(ptree& pt, int level=0);
-
-void setBoolFromXML(ticpp::Element* element, string attr_name, bool& var);
-void setBoolFromPT(ptree pt, string attr_name, bool& var);
-void copyAttributes(ticpp::Element* from, ticpp::Element* to, bool recursive=false); ///< Überschreibt Attribute, wenn schon vorhanden!
-void copyAttributes(ptree& from, ptree& to, bool recursive=false); ///< Überschreibt Attribute, wenn schon vorhanden!
-
-ptree readXML(const fs::path& p);
-void readXML(ticpp::Node* n, ptree& parent);
 
 struct ToDo
 {

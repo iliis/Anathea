@@ -18,11 +18,15 @@ WWindow::WWindow(string name, Kernel* k)
 	this->content->height = this->height.ref() - 3*border.ref() - padding_bottom.ref() - padding_top.ref() - title_bar_height.ref();
 	this->content->hideOverflow(true);
 
-	this->addChildDuringConstructor(content);
-
 
 
 	this->slots.add("closed");
+};
+//------------------------------------------------------------------------------
+void
+WWindow::init()
+{
+	this->addChild(this->content);
 };
 //------------------------------------------------------------------------------
 void

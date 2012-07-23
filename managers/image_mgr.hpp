@@ -30,6 +30,14 @@ struct NinePatchData
 	NinePatchData(bool enabled = false, Vect::T top = 0, Vect::T left = 0, Vect::T bottom = 0, Vect::T right = 0)
 		: enabled(enabled), top(top), left(left), bottom(bottom), right(right) {};
 
+	NinePatchData(ptree pt)
+		: enabled(getBoolFromPT(pt, "enabled", true)),
+		  top   (pt.get<Vect::T>("top", 0)),
+		  left  (pt.get<Vect::T>("left", 0)),
+		  bottom(pt.get<Vect::T>("bottom", 0)),
+		  right (pt.get<Vect::T>("right", 0))
+		{}
+
 	NinePatchData normalize_to_size(const Vect& size) const;
 
 	Vect::T getPos (int dim, int p, const Vect& total_size) const;
@@ -169,6 +177,9 @@ public:
 	void         setUV(Box uv, bool normalized=false);
 	inline Box   getUV() const {return this->UV;}
 
+	/// Setze Parameter (UV, NinePatch, ...) via PTree
+	void         set(ptree pt);
+
 	/// Direkter Pointer zur SDL_Surface. Vorsichtig verwenden! Wird nach wie vor von Image verwaltet.
 	inline SDL_Surface* getSurface() const {return this->surface;}
 };
@@ -286,6 +297,9 @@ public:
 
 	/// lädt ein Bild (sofern noch nicht geladen) und speichert es intern
 	Image	loadImage(string path);
+
+	/// lädt ein Bild anhand eines PTrees ("path", ev. "UV", "Color", "NinePatch")
+	Image   loadImage(ptree data);
 
 	/// lädt eine Schrift und speichert sie
 	Font	loadFont(string path, int size);

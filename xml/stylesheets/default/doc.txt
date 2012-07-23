@@ -1,0 +1,33 @@
+// WIDGET PTREE-INTERFACE
+
+// general (valid for every Widget)
+
+geometry.x				[float]
+		.y				[float]
+		.w				[float]
+		.h				[float]
+
+flags.visible			[bool]
+	 .bounding_box		[bool]
+
+// Button
+label.text				[string]
+	 .image (path)		[string]
+
+// Container
+
+// Filetree
+
+// Image
+
+image.path				[string]
+
+// List
+
+// Text
+
+text.content			[string]
+font.path				[string]
+	.size				[int]
+
+// Window
