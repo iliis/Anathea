@@ -32,15 +32,15 @@ GuiManager::removeFromList(WidgetPtr widget)
 	this->root_widgets.remove(widget);
 };
 //------------------------------------------------------------------------------
-WidgetPtr
+/*WidgetPtr
 GuiManager::createWidget(string typ, string name)
 {
-		 if(typ == "button")return this->createWidget<WButton>(name);
+		if(typ == "button")return this->createWidget<WButton>(name);
 	else if(typ == "label") return this->createWidget<WLabel>(name);
 	else if(typ == "image") return this->createWidget<WImage>(name);
 	else
 		throw Error("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
-};
+};*/
 //------------------------------------------------------------------------------
 /// identisch zu Widget::getChild()
 WidgetPtr
@@ -192,17 +192,22 @@ GuiManager::setWidgetDefaults(WidgetPtr widget)
 {
 	// TODO: cache this stuff, so that we don't have to read files from disk every time
 	// TODO: implement the <include>-Tag (implement merge_ptree or something)
+
+	/// load basic defaults
 	ptree base = readXML("xml/stylesheets/default/Widget.xml");
 	widget->set(base);
 
-	fs::path widget_stylesheet = string("xml/stylesheets/default/")+widget->getType()+".xml";
+	cout << "////////////////////////////////////////////////////" << endl;
+	printPTree(base);
+	cout << "////////////////////////////////////////////////////" << endl;
 
-	if(fs::exists(widget_stylesheet)
-	&& fs::is_regular_file(widget_stylesheet))
-	{
-		ptree additional = readXML(widget_stylesheet);
-		widget->set(additional);
-	}
+	fs::path widget_stylesheet = string("xml/stylesheets/default/")+widget->getType()+".xml";
+	widget->set(readXML(widget_stylesheet));
+
+	/// load defaults from runtime-database
+	map<string, ptree>::iterator i = this->default_parameters.find(widget->getType());
+	if(i != this->default_parameters.end())
+		widget->set(i->second);
 };
 //------------------------------------------------------------------------------
 /*
@@ -336,13 +341,5 @@ GuiManager::createPopupOK(string text)
 
 	container_bg->moveToBG();
 	popup->moveToFront();
-};
-//------------------------------------------------------------------------------
-ptree
-GuiManager::getDefaultParameters(string widget_type)
-{
-	map<string, ptree>::iterator i = this->default_parameters.find(widget_type);
-	if(i == this->default_parameters.end())
-		return make_
 };
 //------------------------------------------------------------------------------

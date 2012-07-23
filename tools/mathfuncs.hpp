@@ -6,11 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// some forward declarations due to nasty circular references due to templates in this file
-class Error;
-#define ERROR(type, msg) Error((type), (msg), __FILE__, __LINE__)
 
 #include "errorclass.hpp"
+
+// some forward declarations due to nasty circular references due to templates in this file
+//class Error;
+//#define ERROR(type, msg) Error((type), (msg), __FILE__, __LINE__)
 
 
 #include <boost/foreach.hpp>

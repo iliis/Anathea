@@ -10,11 +10,11 @@
 
 #define BOOST_FILESYSTEM_VERSION 3
 
-typedef float           FNumber;
+typedef float            FNumber;
 typedef vector2<int>     VectInt;
-typedef vector2<FNumber> Vect;
-typedef box<int>         BoxInt;
-typedef box<FNumber>     Box;
+typedef vector2<FNumber>  Vect;
+typedef box<int>          BoxInt;
+typedef box<FNumber>      Box;
 
 template <typename T>
 SDL_Rect toSDL_Rect(box<T> b)

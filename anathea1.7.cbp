@@ -46,7 +46,7 @@
 			<Add option="-DUSE_PROPERTY_TREE" />
 			<Add option="-DDATA_DIR=empty" />
 			<Add directory="/home/samuel/programme/boost_1_43_0" />
-			<Add directory="/home/samuel/projects/cpp/anathea1.7" />
+			<Add directory="../anathea1.7" />
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />

@@ -82,21 +82,32 @@ copyAttributes(ptree& from, ptree& to, bool recursive)
 ptree
 readXML(const fs::path& p)
 {
-	ticpp::Document doc(p.string());
-	doc.LoadFile();
+	if(fs::exists(p)
+	&& fs::is_regular_file(p))
+	{
+		ticpp::Document doc(p.string());
+		doc.LoadFile();
 
-	/// 1. child: <?xml...?>, 2. child: <root>
-	ticpp::Node* n = doc.FirstChild()->NextSibling()->FirstChild();
-	ptree pt;
+		/// 1. child: <?xml...?>, 2. child: <root>
+		ticpp::Node* n = doc.FirstChild()->NextSibling()->FirstChild();
+		ptree pt;
 
-	readXML(n, pt);
+		readXML(n, pt);
 
-	return pt;
+		return pt;
+	}
+	else
+	{
+		//WARNING("XML-File '"+p.string()+"' doesn't exist");
+		return ptree(); /// gib einfach leere Daten falls Datei nicht gefunden
+	}
 };
 //------------------------------------------------------------------------------
 void
 readXML(ticpp::Node* n, ptree& parent)
 {
+	assert(n);
+
 	/// alle Elemente durchgehen
 	do
 	{

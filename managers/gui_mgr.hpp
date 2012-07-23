@@ -38,7 +38,7 @@ public:
 		: graphicsMgr(GraphicsMgr), kernel(_kernel), unique(0)
 		   {assert(_kernel);};
 
-	~GuiManager(){BOOST_FOREACH(WidgetPtr c, this->root_widgets) c->clearSlots();}
+	~GuiManager() {BOOST_FOREACH(WidgetPtr c, this->root_widgets) c->clearSlots();}
 
 	inline	bool		hasWidget(string name){return this->getWidget(name, false) != WidgetPtr();}
 			bool		hasRootWidget(string name);
@@ -76,7 +76,7 @@ public:
 		//this->addWidget(newWidget);
 		newWidget->draw_bounding_box = this->draw_bounding_boxes.ref();
 
-		newWidget->set(this->getDefaultParameters(newWidget->getType()));
+		this->setWidgetDefaults(newWidget);
 
 		return newWidget;
 	};
@@ -86,15 +86,13 @@ public:
 	WidgetPtr  createWidgetFromPT   (ptree node, WidgetPtr parent = WidgetPtr());
 	WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
 
-	ptree getDefaultParameters(string widget_type);
-
 	void connectEvents(WidgetPtr widget, string event_name, string event_slot);
 
 
 	inline Slots::SignalPtr getEvent(string name){return events[name];}
 	inline Slots&           getEvents(){return this->events;}
-	inline void				triggerEvent(string name){this->events.call(name);}
-	inline void             addEvent(string name){this->events.add(name);}
+	inline void            triggerEvent(string name){this->events.call(name);}
+	inline void            addEvent(string name){this->events.add(name);}
 
 	int getUniqueNr(){return unique++;}
 

@@ -1,10 +1,12 @@
 #include "errorclass.hpp"
 
+
+
 //------------------------------------------------------------------------------------------------
 const std::string Error::getMessage(const std::string type, const std::string message, const std::string file, const int line, const int err)
 {
 	const std::string text = message + "\n  (in file '" + file + "' at line " + ToString(line)+")";
-	
+
 	if(type == "init")
 	{
 		return "ERROR while initializing:\n" + text;

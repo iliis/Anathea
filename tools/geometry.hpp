@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "tools/errorclass.hpp"
 #include "tools/mathfuncs.hpp"
 #include "tools/stringhelpers.hpp"
 
@@ -474,7 +475,7 @@ class LINES_PARALLEL : public Error
 	//string text;
 public:
 	LINES_PARALLEL(string lines_data = "")
-	: Error("fail", "Cannot calc intersection of lines because they are parallel."+lines_data) {};
+	: ERROR("fail", "Cannot calc intersection of lines because they are parallel."+lines_data) {};
 };
 
 //------------------------------------------------------------------------------
