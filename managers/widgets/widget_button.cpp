@@ -27,13 +27,27 @@ WButton::_set(ptree n)
 
 
 	if(n.get_child_optional("label.text"))
-		this->setText(n.get<string>("label.text"));
+	{
+		boost::shared_ptr<WText> lbl = boost::dynamic_pointer_cast<WText>(this->label);
+		if(!lbl) this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
+
+		this->label->set(n.get_child("label"));
+	}
 
 	if(n.get_child_optional("label.image"))
 	{
+		/// TODO: use PTree-API here as well (like label.text above)
+
 		string path = n.get<string>("label.image");
 		this->setLabel(kernel->guiMgr->createWidget<WImage>(this->name.get() + "_label_image",
 															mkPtree("image.path", path.c_str())));
+	}
+
+	if(n.get_child_optional("label.padding"))
+	{
+		FNumber p = n.get<FNumber>("label.padding", 0);
+		this->setAutoHeight(p);
+		this->setAutoWidth (p);
 	}
 
 	if(n.get_child_optional("triple_background"))
@@ -44,7 +58,7 @@ WButton::_set(ptree n)
 
 		if(tmp == "horiz" || tmp == "horizontal" || tmp == "h" || tmp == "-" || tmp == "--") orient = HORIZONTAL;
 
-		this->setTripleBG(this->kernel->graphicsMgr->loadImage(n.get<string>("triple_background.path")), orient);
+		this->setTripleBG(this->kernel->graphicsMgr->loadImage(n.get_child("triple_background")), orient);
 	}
 
 	if(n.get_child_optional("background_normal"))
@@ -69,9 +83,10 @@ WButton::setLabel(WidgetPtr l)
 	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
 
 	/// set button size to label
-	/// TODO: change padding to something variable
-	this->setAutoHeight(5);
-	this->setAutoWidth(5);
+	/// this tries to guess padding by looking at the background's NinePatch-Data
+	/// (however, this doesn't change, when updating the background...)
+	this->setAutoHeight();
+	this->setAutoWidth();
 
 	/// link important attributes
 	this->label->alpha   = this->alpha.ref();
@@ -177,4 +192,21 @@ WButton::handlePointHitEvent(PointKey pk)
 		return false;
 };
 //------------------------------------------------------------------------------
+void
+WButton::setAutoWidth()
+{
+	if(this->bg_normal.NinePatch().enabled)
+		this->setAutoWidth(this->bg_normal.NinePatch().left + this->bg_normal.NinePatch().right);
+	else
+		this->setAutoWidth(0);
+};
+//------------------------------------------------------------------------------
+void
+WButton::setAutoHeight()
+{
+	if(this->bg_normal.NinePatch().enabled)
+		this->setAutoHeight(this->bg_normal.NinePatch().top + this->bg_normal.NinePatch().bottom);
+	else
+		this->setAutoHeight(0);
+};
 //------------------------------------------------------------------------------

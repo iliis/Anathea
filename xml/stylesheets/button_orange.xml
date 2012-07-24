@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<style>
+	<triple_background path="images/buttons/default.png" orientation="vertical">
+		<NinePatch top=5 bottom=5 left=5 right=5 />
+	</triple_background>
+</style>

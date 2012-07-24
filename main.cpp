@@ -133,15 +133,15 @@ main(int argc, char *argv[])
 		wcontainer->draw_bounding_box = true;
 
 
-		cout << endl << endl << endl;
-
 		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
 		testbutton->setText("#############################\nasdfsaf sdf\nsdfsafsd\nasdfsfdsf\nasdfsadfsfd\nasdf\nqwefsfe\n##############");
 		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, testbutton, 2, true));
+		testbutton->abs_x = 300;
 
+		/*testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
+		testbutton->setAutoHeight();
+		testbutton->setAutoWidth();*/
 
-
-		cout << endl << endl << endl;
 
 		/*testbutton->abs_x = 300;
 		testbutton->abs_y = 10;

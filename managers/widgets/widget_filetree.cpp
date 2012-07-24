@@ -7,7 +7,7 @@ WFileTreeNode::WFileTreeNode(string n, Kernel* k)
 	label = kernel->guiMgr->createWidget<WButton>(n+"_button");
 	label->getSlot("clicked")->connect(boost::bind(&WFileTreeNode::toggle, this));
 
-	Image bbg1 = kernel->graphicsMgr->loadImage("images/buttons/default.png");
+	/*Image bbg1 = kernel->graphicsMgr->loadImage("images/buttons/default.png");
 		Image bbg2 = bbg1, bbg3 = bbg1;
 		bbg1.setUV(Box(0,  0,119,58)); bbg1.setNinePatchData(NinePatchData(true, 6,6,6,6));
 		bbg2.setUV(Box(0, 58,119,58)); bbg2.setNinePatchData(NinePatchData(true, 6,6,6,6));
@@ -18,13 +18,13 @@ WFileTreeNode::WFileTreeNode(string n, Kernel* k)
 
 
 	label->height = 28; // random :P
-	label->setAutoWidth(10);
+	label->setAutoWidth(10);*/
 	label->setAlign(LEFT);
 
 	label->abs_x = this->abs_x.ref();
 	label->abs_y = this->abs_y.ref();
 	this->width  = label->width.ref();
-	this->height = label->height.ref();
+	this->height = label->height.ref() + this->vert_padding.ref();
 };
 //------------------------------------------------------------------------------
 void
@@ -50,7 +50,7 @@ WFileTreeNode::collapse()
 	this->subtree->hide();
 
 	this->label->setText("   + "+this->obj.filename().generic_string());
-	this->height = label->height.ref();
+	this->height = label->height.ref() + this->vert_padding.ref();
 };
 //------------------------------------------------------------------------------
 void
@@ -60,8 +60,10 @@ WFileTreeNode::expand()
 	{
 		/// create new subtree
 		this->subtree = kernel->guiMgr->createWidget<WFileTree>(this->name.get()+"_subtree");
+		this->subtree->indentation  = this->indentation.ref();
+		this->subtree->vert_padding = this->vert_padding.ref();
 		this->subtree->abs_x = this->abs_x.ref() + this->indentation.ref();
-		this->subtree->abs_y = this->abs_y.ref() + this->label->height.ref();
+		this->subtree->abs_y = this->abs_y.ref() + this->label->height.ref() + this->vert_padding.ref();
 
 		this->subtree->setRoot(this->obj);
 		this->addChild(subtree);
@@ -74,14 +76,14 @@ WFileTreeNode::expand()
 	this->label->setText("   - "+this->obj.filename().generic_string());
 
 	/// and adapt the height
-	this->height = this->label->height.ref() + this->subtree->height.ref();
+	this->height = this->label->height.ref() + this->subtree->height.ref() + this->vert_padding.ref()*2;
 };
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 WFileTree::WFileTree(string n, Kernel* k)
  : Widget(n, k), root("/"),
-   show_hidden_files(false), indentation(30)
+   show_hidden_files(false), indentation(30), vert_padding(2)
 {
 	this->rootlist = kernel->guiMgr->createWidget<WList>(n + "_rootlist");
 	//this->rootlist->item_spacing = 5; /// just some random spacing
@@ -135,7 +137,8 @@ WFileTree::update()
 				shared_ptr<WFileTreeNode> node = kernel->guiMgr->createWidget<WFileTreeNode>(p.filename().generic_string());
 
 				node->setPath(p);
-				node->indentation = this->indentation.ref();
+				node->indentation  = this->indentation.ref();
+				node->vert_padding = this->vert_padding.ref();
 
 				tmp_nodes_dirs.push_back(node);
 			}

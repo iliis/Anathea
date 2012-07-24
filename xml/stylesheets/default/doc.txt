@@ -24,7 +24,7 @@ flags.visible			[bool]
 	 .bounding_box		[bool]
 
 // Button
-label.text				[string]
+label.text				{Widget Text Settings}
 	 .image (path)		[string]
 background_normal
           _hover
@@ -43,7 +43,9 @@ image.path				[string]
 // Text
 
 text.content			[string]
-font.path				[string]
-	.size				[int]
+	.font.path			[string]
+		 .size			[int]
+		 .color			[string]
+		 .background_color	[string]
 
 // Window

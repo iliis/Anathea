@@ -39,6 +39,7 @@ public:
 	// PUBLIC PROPERTIES
 	//-------------------------------------------------------------------------
 	Expression<FNumber> indentation;
+	Expression<FNumber> vert_padding;
 };
 
 class WFileTree : public Widget
@@ -67,6 +68,7 @@ public:
 	// PUBLIC PROPERTIES
 	//-------------------------------------------------------------------------
 	Expression<FNumber> indentation;
+	Expression<FNumber> vert_padding;
 };
 
 #endif // WIDGET_FILETREE_HPP_INCLUDED
