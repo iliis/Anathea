@@ -25,14 +25,14 @@ public:
 	void render();
 
 	// GET
-	inline string getText() const {return this->text;}
-	inline Font   getFont() const {return this->font;}
+	inline string getText()  const {return this->text;}
+	inline Font   getFont()  const {return this->font;}
 	inline Color  getColor() const {return this->color;}
-	inline Color  getBG()   const {return this->background;}
-	inline bool   isTransparent() const {return this->transparent;}
+	inline Color  getBG()    const {return this->background;}
+	inline bool  isTransparent() const {return this->transparent;}
 	inline Align  getAlign() const {return this->align;}
 
-	virtual const char* getType()        const {return "Text";}
+	virtual const char* getType() const {return "Text";}
 
 	//inline Image getBuffer() {return this->buffer;}
 
@@ -41,6 +41,7 @@ public:
 	void setFont(Font f);
 	void setFontSize(int s);
 	void setText(string t);
+	void setText(string t, Align a) {this->align = a; this->setText(t);};
 	void setColor(Color c) {this->color = c;      this->render();}
 	void setBG(Color c)    {this->background = c; this->render();}
 	void setTransparent(bool t){this->transparent = t; this->render();}

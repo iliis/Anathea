@@ -119,16 +119,24 @@ Widget::setRelativeTo(Align horiz, bool h_inside, Vlign vert, bool v_inside, Wid
 void
 Widget::set(ptree n)
 {
+	/// TODO: set only if attribute exists (otherwise, Expressions may get unintentionally unlinked.)
+
 	/// Standard-Attribute setzten
-	this->setRelPos(Vect(n, "geometry.x", "geometry.y", this->getRelPos()));
-	this->setSize  (Vect(n, "geometry.w", "geometry.h", this->getSize()));
+	if(n.get_child_optional("geometry"))
+	{
+		this->setRelPos(Vect(n, "geometry.x", "geometry.y", this->getRelPos()));
+		this->setSize  (Vect(n, "geometry.w", "geometry.h", this->getSize()));
+	}
 
-	// this->visible is an expression<bool>, so no ref possible
-	bool v = this->visible;
-	setBoolFromPT(n, "flags.visible", v);      if(this->visible != v)           this->visible = v;
+	if(n.get_child_optional("flags"))
+	{
+		// this->visible is an expression<bool>, so no ref possible
+		bool v = this->visible;
+		setBoolFromPT(n, "flags.visible", v);      if(this->visible != v)           this->visible = v;
 
-	bool b = this->draw_bounding_box;
-	setBoolFromPT(n, "flags.bounding_box", b); if(this->draw_bounding_box != b) this->draw_bounding_box = b;
+		bool b = this->draw_bounding_box;
+		setBoolFromPT(n, "flags.bounding_box", b); if(this->draw_bounding_box != b) this->draw_bounding_box = b;
+	}
 
 	this->_set(n);
 };

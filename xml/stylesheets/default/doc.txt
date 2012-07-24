@@ -1,3 +1,16 @@
+// IMAGE PTREE-INTERFACE
+
+(path)				[string]
+UV.x				[float]
+  .y
+  .w
+  .h
+NinePatch.top		[Vect::T = float]
+		 .bottom
+		 .left
+		 .right
+color				[string]
+
 // WIDGET PTREE-INTERFACE
 
 // general (valid for every Widget)
@@ -13,6 +26,9 @@ flags.visible			[bool]
 // Button
 label.text				[string]
 	 .image (path)		[string]
+background_normal
+          _hover
+          _active.{image_parameters}
 
 // Container
 

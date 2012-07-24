@@ -116,9 +116,6 @@ using boost::property_tree::ptree;
 int
 main(int argc, char *argv[])
 {
-	ptree pt = readXML("xml/stylesheets/default/Widget.xml");
-	printPTree(pt);
-
 	try
 	{
 		cout << "Hallo Welt. This is Anathea 1.7." << endl;
@@ -130,18 +127,26 @@ main(int argc, char *argv[])
 
 		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
-		wcontainer->abs_y =  10;
+		wcontainer->abs_y = 100;
 		wcontainer->width = 900;
 		wcontainer->height= 400;
 		wcontainer->draw_bounding_box = true;
 
 
-		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("a button with a label...");
-		testbutton->abs_x = 300;
+		cout << endl << endl << endl;
+
+		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
+		testbutton->setText("#############################\nasdfsaf sdf\nsdfsafsd\nasdfsfdsf\nasdfsadfsfd\nasdf\nqwefsfe\n##############");
+
+
+
+		cout << endl << endl << endl;
+
+		/*testbutton->abs_x = 300;
 		testbutton->abs_y = 10;
 		testbutton->width = 400;
 		testbutton->height = 100;
-		testbutton->draw_bounding_box = true;
+		testbutton->draw_bounding_box = true;*/
 		kernel.guiMgr->addWidget(testbutton);
 
 
@@ -182,7 +187,7 @@ main(int argc, char *argv[])
 
 		wb->setText("just a Button :) asfasdfi aslf jasdlfij\nsecond line...");
 		wb->width = 200;
-		wb->setAutoHeight(6);
+		//wb->setAutoHeight(6);
 
 
 
@@ -193,6 +198,7 @@ main(int argc, char *argv[])
 
 		shared_ptr<WButton> button_exit = kernel.guiMgr->createWidget<WButton>("quit");
 		button_exit->setTripleBG("images/buttons/close.png");
+		button_exit->setSizeToBG();
 		button_exit->abs_x = kernel.graphicsMgr->screen_width .ref() - button_exit->width .ref() - 20;
 		button_exit->abs_y = 20;
 		button_exit->getSlot("clicked")->connect(boost::bind(&Kernel::stop, &kernel));
@@ -205,7 +211,7 @@ main(int argc, char *argv[])
 		//wcontainer->hideOverflow(true);
 		wcontainer->removeChild(wi2);
 
-		shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
+		/*shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
 		cont_border->setImage("images/edge.png");
 		cont_border->getImage().setNinePatchData(NinePatchData(true,7,7,7,7));
 		Image edge = cont_border->getImage();
@@ -239,7 +245,7 @@ main(int argc, char *argv[])
 		awindow->getContainer()->insert(wfiletree);
 		//awindow->getContainer()->insert(wi2);
 
-		kernel.guiMgr->addWidget(awindow);
+		kernel.guiMgr->addWidget(awindow);*/
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 

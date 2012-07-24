@@ -1,9 +1,4 @@
 <?xml version="1.0" ?>
 <style>
 	<font size=12 />
-	<label text="hallo welt :P" />
-	<background_normal path="images/buttons/box_normal.png" color="#F00">
-		<NinePatch left=20 top=20 bottom=20 right=10 />
-	</background_normal>
-	<triple_background path="images/buttons/button1.png" orientation="vertical" />
 </style>

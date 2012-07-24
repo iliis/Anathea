@@ -4,9 +4,11 @@
 void
 WText::_set(ptree n)
 {
-	this->setText(n.get("text.content", this->text));
+	if(n.get_child_optional("text"))
+		this->setText(n.get("text.content", this->text));
 
-	this->setFont(this->kernel->graphicsMgr->loadFont(
+	if(n.get_child_optional("font"))
+		this->setFont(this->kernel->graphicsMgr->loadFont(
 													n.get("font.path", this->font.getPath()),
 													n.get("font.size", this->font.getSize())));
 };
@@ -61,7 +63,7 @@ WText::render()
 		throw Error("draw","WText::render(): font isn't valid!");
 
 	if(!this->text.empty())
-	this->buffer = this->font.renderMultiline(this->text,this->kernel->graphicsMgr,
+		this->buffer = this->font.renderMultiline(this->text,this->kernel->graphicsMgr,
 									this->color,this->background,this->align,
 									(this->transparent?Font::BLENDED:Font::SHADED),false);
 

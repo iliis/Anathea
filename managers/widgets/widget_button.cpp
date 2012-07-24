@@ -11,8 +11,6 @@ WButton::WButton(string name, Kernel* k)
 {
 	this->slots.add("clicked");
 	label->cast<WText>()->setText(name);
-
-	this->setSize(bg_normal.getSize().cast<Vect::T>());
 };
 //------------------------------------------------------------------------------
 void
@@ -25,7 +23,6 @@ WButton::init()
 void
 WButton::_set(ptree n)
 {
-
 	if(n.get_child_optional("label.text"))
 		this->setText(n.get<string>("label.text"));
 
@@ -49,6 +46,13 @@ WButton::_set(ptree n)
 
 	if(n.get_child_optional("background_normal"))
 		this->setBGnormal(kernel->graphicsMgr->loadImage(n.get_child("background_normal")));
+
+	if(n.get_child_optional("background_hover"))
+		this->setBGhover (kernel->graphicsMgr->loadImage(n.get_child("background_hover")));
+
+	if(n.get_child_optional("background_active"))
+		this->setBGactive(kernel->graphicsMgr->loadImage(n.get_child("background_active")));
+
 };
 //------------------------------------------------------------------------------
 void
@@ -74,8 +78,7 @@ WButton::setText(string text)
 
 	if(!lbl) this->setLabel(kernel->guiMgr->createWidget<WText>(this->name.get()+"_label"));
 
-	label->cast<WText>()->setText(text);
-	label->cast<WText>()->setAlign(this->align);
+	label->cast<WText>()->setText(text, this->align);
 };
 //------------------------------------------------------------------------------
 void

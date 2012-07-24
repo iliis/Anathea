@@ -33,7 +33,7 @@ public:
 
 	void setLabel(WidgetPtr l);
 	void setText(string text);
-	void setBGnormal(Image const& i){this->bg_normal = i; this->setSize(i.getSize());}
+	void setBGnormal(Image const& i){this->bg_normal = i;}
 	void setBGhover (Image const& i){this->bg_hover  = i;}
 	void setBGactive(Image const& i){this->bg_active = i;}
 	void setTripleBG(Image const& i, Orientation orient = VERTICAL);
@@ -44,6 +44,7 @@ public:
 
 	void setAutoWidth (FNumber padding){this->width  = this->label->width.ref()  + 2*padding;};
 	void setAutoHeight(FNumber padding){this->height = this->label->height.ref() + 2*padding;};
+	void setSizeToBG() {this->setSize(this->bg_normal.getSize().cast<Vect::T>());}
 
 protected:
 	ButtonState state;
