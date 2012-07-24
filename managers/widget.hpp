@@ -141,8 +141,8 @@ public:
 	virtual  void  removeChild(string child_name);
 	virtual  void  removeParent();
 
-	virtual  void  moveToFront(); ///< Bewegt Objekt ans Ende der Liste, so dass es zuletzt, also zuoberst, gezeichnet wird.
-	virtual  void  moveToBG   (); ///< Bewegt Objekt an den Anfang der Liste, so dass es zuerst, also zuunters, gezeichnet wird.
+	virtual  void  moveToFront(); ///< Bewegt Objekt ans    Ende   der Liste, so dass es zuletzt, also zuoberst,  gezeichnet wird.
+	virtual  void  moveToBG   (); ///< Bewegt Objekt an den Anfang der Liste, so dass es zuerst,  also zuunterst, gezeichnet wird.
 	virtual  void  moveChildToFront(WidgetPtr obj);
 	virtual  void  moveChildToBG   (WidgetPtr obj);
 	virtual  void  deleteMe(bool deleteFromMgr = true);
@@ -158,12 +158,11 @@ public:
 	inline shared_ptr<T> cast(){return dynamic_pointer_cast<T>(shared_from_this());}
 
 //---------- ANIMATIONS --------------------------------------------------------
-	// TODO: implement these:
 	TimelinePtr fadeOut(FNumber sec = 0.5);
 	TimelinePtr fadeOutAndDelete(FNumber sec = 0.5, bool deleteFromMgr = true);
 	TimelinePtr fadeIn (FNumber sec = 0.5);
 
-	void moveAnim(Vect dest, FNumber sec = 0.5){this->setRelPos(dest);};
+	TimelinePtr moveAnim(Vect dest, FNumber sec = 0.5);//{this->setRelPos(dest);};
 };
 //------------------------------------------------------------------------------
 bool order_by_name(WidgetPtr& A, WidgetPtr& B);

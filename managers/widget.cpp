@@ -389,26 +389,19 @@ Widget::fadeIn(FNumber sec)
 	return tl;
 };
 //------------------------------------------------------------------------------
-/*TimelinePtr
+TimelinePtr
 Widget::moveAnim(Vect dest, FNumber sec)
 {
-	TimelinePtr tlX(new Timeline(boost::bind(&Widget::setRelX, this, _1)));
-	TimelinePtr tlY(new Timeline(boost::bind(&Widget::setRelY, this, _1)));
+	/// TODO: implement relative and absolute version of this?
 
-	tlX->addKeyframe(Keyframe(0, this->getRelPos().x));
-	tlX->addKeyframe(Keyframe(fromSeconds(sec), dest.x));
+	TimelinePtr tlX = this->kernel->animMgr->from_to(this->abs_x, dest.x, fromSeconds(sec), true);
+	TimelinePtr tlY = this->kernel->animMgr->from_to(this->abs_y, dest.y, fromSeconds(sec), true);
 
-	tlY->addKeyframe(Keyframe(0, this->getRelPos().y));
-	tlY->addKeyframe(Keyframe(fromSeconds(sec), dest.y));
-
-	tlX->setRepeat(true);
-	tlX->setPingPong(true);
-
-	this->kernel->animMgr->addAnim(tlX, true);
-	this->kernel->animMgr->addAnim(tlY, true);
+	this->abs_x = tlX->value.ref();
+	this->abs_y = tlY->value.ref();
 
 	return tlX;
-};*/
+};
 //------------------------------------------------------------------------------
 TimelinePtr
 Widget::fadeOutAndDelete(FNumber sec, bool deleteFromMgr)

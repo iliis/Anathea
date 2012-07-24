@@ -127,7 +127,7 @@ main(int argc, char *argv[])
 
 		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
-		wcontainer->abs_y = 100;
+		wcontainer->abs_y =  10;
 		wcontainer->width = 900;
 		wcontainer->height= 400;
 		wcontainer->draw_bounding_box = true;
@@ -158,7 +158,7 @@ main(int argc, char *argv[])
 		wi2->setImage("images/greenedge_shadow.png");
 		//wi2->getImage().setUV(Box(10,10,45,45));
 		wi2->getImage().setNinePatchData(NinePatchData(true,2,2,33,33));
-		wi2->width = 300;
+		wi2->width  = 300;
 		wi2->height = 100;
 
 		wi->setImage("images/anathea_icon.png");
@@ -204,6 +204,8 @@ main(int argc, char *argv[])
 		button_exit->abs_y = 20;
 		button_exit->getSlot("clicked")->connect(boost::bind(&Kernel::stop, &kernel));
 		button_exit->setText("quit");
+		button_exit->getLabel()->cast<WText>()->setFontSize(20);
+		button_exit->getLabel()->cast<WText>()->setColor(WHITE);
 
 		wcontainer->insert(wi);
 		wcontainer->insert(wi2);
@@ -251,7 +253,7 @@ main(int argc, char *argv[])
 		kernel.guiMgr->addWidget(button_exit);
 
 
-		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, awindow, 0.5, true));
+		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::moveAnim, awindow, Vect(500,300), 2));
 
 
 		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");
