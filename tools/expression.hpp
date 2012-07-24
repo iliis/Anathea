@@ -11,6 +11,12 @@
 #include "tools/errorclass.hpp"
 
 
+#ifdef USE_PROPERTY_TREE
+#include <boost/property_tree/ptree.hpp>
+using boost::property_tree::ptree;
+#endif
+
+
 
 #define CHECK_FOR_CYCLES /// still possible! (a -> b -> a)
 
@@ -229,6 +235,8 @@ private:
 	ExpressionRef* expr;
 	list<Expression*> children;
 
+	typedef Typ T;
+
 
 public:
 
@@ -358,16 +366,28 @@ public:
 	}
 
 
+/// GET A POINTER
 ///----------------------------------------------------------------------------
-
 
 	inline ExpressionRefPtr ref() {return ExpressionRefPtr(new ExprDirectRef(*this));}
 
-	inline Expression<Typ>& operator=(const Typ& v)     {this->set(v);   return *this;}
+
+/// ASSIGNMENT
+///----------------------------------------------------------------------------
+
+	inline Expression<Typ>& operator=(const Typ& v)     {this->set(v);  return *this;}
 	inline Expression<Typ>& operator=(Expression<Typ>& a){this->link(a); return *this;}
 	//inline void operator=(ExpressionRef*   r){this->link(r);}
 	inline Expression<Typ>& operator=(ExpressionRefPtr r){this->link(r); return *this;}
 
+
+#ifdef USE_PROPERTY_TREE
+	/// TODO: test this
+	Expression<Typ>& operator=(const boost::optional<Typ>& val) {if(val) this->set(val.get()); return *this;}
+#endif
+
+
+///----------------------------------------------------------------------------
 
 
 	ExpressionRef* plus (ExpressionRef* r)         {assert(r); return new ExprSumRef  (this->ref(), r);};

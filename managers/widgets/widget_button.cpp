@@ -23,6 +23,9 @@ WButton::init()
 void
 WButton::_set(ptree n)
 {
+	/// TODO: implement a text&image-label?
+
+
 	if(n.get_child_optional("label.text"))
 		this->setText(n.get<string>("label.text"));
 

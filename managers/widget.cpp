@@ -119,14 +119,14 @@ Widget::setRelativeTo(Align horiz, bool h_inside, Vlign vert, bool v_inside, Wid
 void
 Widget::set(ptree n)
 {
-	/// TODO: set only if attribute exists (otherwise, Expressions may get unintentionally unlinked.)
+	/// set only if attribute exists (otherwise, Expressions may get unintentionally unlinked.)
 
 	/// Standard-Attribute setzten
-	if(n.get_child_optional("geometry"))
-	{
-		this->setRelPos(Vect(n, "geometry.x", "geometry.y", this->getRelPos()));
-		this->setSize  (Vect(n, "geometry.w", "geometry.h", this->getSize()));
-	}
+	this->rel_x  = n.get_optional<Vect::T>("geometry.x");
+	this->rel_y  = n.get_optional<Vect::T>("geometry.y");
+	this->width  = n.get_optional<Vect::T>("geometry.w");
+	this->height = n.get_optional<Vect::T>("geometry.h");
+
 
 	if(n.get_child_optional("flags"))
 	{
