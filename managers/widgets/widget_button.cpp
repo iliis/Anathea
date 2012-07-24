@@ -68,10 +68,14 @@ WButton::setLabel(WidgetPtr l)
 	/// center label
 	label->setRelativeTo(this->align, true, MIDDLE, true, shared_from_this());
 
-	/// set size to label
+	/// set button size to label
 	/// TODO: change padding to something variable
 	this->setAutoHeight(5);
 	this->setAutoWidth(5);
+
+	/// link important attributes
+	this->label->alpha   = this->alpha.ref();
+	this->label->visible = this->visible.ref();
 };
 //------------------------------------------------------------------------------
 void

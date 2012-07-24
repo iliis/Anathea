@@ -251,6 +251,7 @@ Widget::setParent(WidgetPtr new_parent)
 		new_parent->childs.push_back(shared_from_this());
 
 		//this->setRelativeToParent(LEFT,true,TOP,true);
+		this->alpha = new_parent->alpha.ref();
 
 		this->slots.call("parent");
 		new_parent->slots.call("childAdded");
@@ -287,6 +288,8 @@ Widget::removeParent()
 	{
 		tmp_parent->childs.remove(shared_from_this());
 		this->parent.reset();
+
+		this->alpha.unlink();
 
 		this->slots.call("parent");
 		tmp_parent->slots.call("childRemoved");

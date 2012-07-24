@@ -137,6 +137,7 @@ main(int argc, char *argv[])
 
 		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
 		testbutton->setText("#############################\nasdfsaf sdf\nsdfsafsd\nasdfsfdsf\nasdfsadfsfd\nasdf\nqwefsfe\n##############");
+		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, testbutton, 2, true));
 
 
 
@@ -211,7 +212,7 @@ main(int argc, char *argv[])
 		//wcontainer->hideOverflow(true);
 		wcontainer->removeChild(wi2);
 
-		/*shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
+		shared_ptr<WImage> cont_border = kernel.guiMgr->createWidget<WImage>("container border");
 		cont_border->setImage("images/edge.png");
 		cont_border->getImage().setNinePatchData(NinePatchData(true,7,7,7,7));
 		Image edge = cont_border->getImage();
@@ -245,9 +246,12 @@ main(int argc, char *argv[])
 		awindow->getContainer()->insert(wfiletree);
 		//awindow->getContainer()->insert(wi2);
 
-		kernel.guiMgr->addWidget(awindow);*/
+		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
+
+
+		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, awindow, 0.5, true));
 
 
 		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");

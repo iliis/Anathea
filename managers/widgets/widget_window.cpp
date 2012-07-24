@@ -78,7 +78,10 @@ WWindow::close()
 void
 WWindow::_draw()
 {
+	this->content_bg.color.a = this->alpha;
 	this->content_bg.draw(Box(abs_x,abs_y+title_bar_height,width,height-title_bar_height));
+
+	this->title_bar .color.a = this->alpha;
 	this->title_bar .draw(Box(abs_x,abs_y,width,title_bar_height));
 
 	//this->close_button->draw();
