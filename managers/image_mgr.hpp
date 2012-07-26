@@ -156,7 +156,7 @@ public:
 	inline bool valid(){return this->surface != NULL and this->texture > 0;}
 
 	/// Ermittelt die Grösse des Bildes.
-	inline Vect          getSize()         const {return Vect(this->surface->w, this->surface->h)*this->UV.size;}
+	Vect                 getSize()          const;
 	inline vector2<int> getPhysicalSize()  const {return vector2<int>(this->surface->w, this->surface->h);}
 
 	/// gibt den Pfad zurück, falls das Bild nicht von einer existierenenden SDL_Surface erzeugt wurde
@@ -289,7 +289,7 @@ class GraphicsManager
 	/// lädt Bildschirm neu, z.B. bei Fenstergrössenänderungen
 	void	reloadScreen();
 public:
-	GraphicsManager() : screen(NULL), nullImg(NULL), background("#000F"), scissors_enabled(false) {};
+	GraphicsManager() : screen(NULL), nullImg(NULL), background(0,0,0,0,0), scissors_enabled(false) {};
 	~GraphicsManager();
 
 	/// initialisiert SDL und öffnet ein Grafik-Fenster (oder gerade den ganzen Bildschirm)
@@ -334,6 +334,7 @@ public:
 	void	cls(){glClear(GL_COLOR_BUFFER_BIT);}
 
 	void	setBackgroundColor(Color bg){this->background = bg; glClearColor(bg.fr(), bg.fg(), bg.fb(), bg.fa());}
+	inline Color getBackgroundColor() const {return this->background;}
 
 	void	setVideoMode(vector2<int> size, int bpp=32, Uint32 flags = SDL_OPENGL | SDL_FULLSCREEN);
 

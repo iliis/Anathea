@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<style>
+	<children>
+		<image path="images/greenedge.png">
+			<NinePatch left=2 top=2 bottom=10 right=10 />
+			<layout preset="fit_size_of_parent" />
+		</image>
+	</children>
+</style>

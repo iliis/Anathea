@@ -294,6 +294,13 @@ Image::operator=(const Image& img)
 	this->nine_patch = img.nine_patch;
 };
 //------------------------------------------------------------------------------
+Vect
+Image::getSize() const
+{
+	Vect s = Vect(this->surface->w, this->surface->h)*this->UV.size;
+	return s.abs(); ///< UV may be negative (for flipped images)
+}
+//------------------------------------------------------------------------------
 void
 Image::setUV(Box uv, bool normalized)
 {

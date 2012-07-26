@@ -73,7 +73,7 @@ public:
 
 	inline vector2<Typ> Xonly() const {return vector2<Typ>(this->x,0);}
 	inline vector2<Typ> Yonly() const {return vector2<Typ>(0,this->y);}
-	inline vector2<Typ> abs()   const {return vector2<Typ>(abs(this->x), abs(this->y));}
+	inline vector2<Typ> abs()   const {return vector2<Typ>(Abs(this->x), Abs(this->y));}
 
 	template <typename T>
 	vector2<Typ>& operator=(vector2<T>& other)

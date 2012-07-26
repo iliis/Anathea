@@ -8,7 +8,7 @@
 			maxFPS=100
 			doublebuf="false"
 			resizable="true"
-			background="#0d1e28" />
+			background="#0d1e2800" />
 	
 	<styles sprites="xml/stylesheets/sprites.xml"
 			widgets="xml/stylesheets/widgets.xml" />

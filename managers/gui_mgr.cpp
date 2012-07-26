@@ -224,7 +224,7 @@ GuiManager::createMultipleWidgets(ptree node, WidgetPtr parent)
 			last = this->createWidgetFromPT(v.second, parent);
 	}
 	return last;
-};
+};*/
 //------------------------------------------------------------------------------
 WidgetPtr
 GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
@@ -245,7 +245,7 @@ GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 	}
 
 	/// node definiert einen Event?
-	if(node.get_optional<string>("event"))
+	if(node.get_optional("event"))
 	{
 		//if(!node->ToElement()->HasAttribute("event-slot"))
 		//	cerr << "Warning: Widget '" << name << "' has event-attribute but no attribute 'event-slot', using 'clicked' instead." << endl;
@@ -282,7 +282,7 @@ GuiManager::connectEvents(WidgetPtr widget, string event_name, string event_slot
 {
 	this->events.add(event_name);
 	widget->getSlot(event_slot)->connect(boost::bind(&GuiManager::triggerEvent, this, event_name));
-};*/
+};
 //------------------------------------------------------------------------------
 #include "widgets/widget_container.hpp"
 #include "widgets/widget_text.hpp"

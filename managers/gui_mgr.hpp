@@ -86,7 +86,7 @@ public:
 	void setWidgetDefaults(WidgetPtr widget);
 
 	WidgetPtr  createWidgetFromPT   (ptree node, WidgetPtr parent = WidgetPtr());
-	WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
+	//WidgetPtr  createMultipleWidgets(ptree node, WidgetPtr parent = WidgetPtr());
 
 	void connectEvents(WidgetPtr widget, string event_name, string event_slot);
 

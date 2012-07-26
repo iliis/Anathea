@@ -110,6 +110,25 @@ void add_some_text(shared_ptr<WText> w)
 	w->setText(w->getText()+"\nanother line");
 };
 
+void update_screenshot(Kernel& k, shared_ptr<WImage> wdest, TimeVal)
+{
+	Image dest = wdest->getImage();
+
+	glViewport(0,0,200,200);
+
+	k.graphicsMgr->cls();
+	k.guiMgr->drawEverything();
+
+	glBindTexture(GL_TEXTURE_2D, dest.getTexture());
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 200, 200, 0);
+
+	glViewport(0,0,k.graphicsMgr->screen_width, k.graphicsMgr->screen_height);
+
+	dest.setUV(Box(0,1,1,-1), true);
+
+	wdest->setImage(dest);
+};
+
 #include <limits.h>
 using boost::property_tree::ptree;
 
@@ -135,8 +154,22 @@ main(int argc, char *argv[])
 
 		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
 		testbutton->setText("#############################\nasdfsaf sdf\nsdfsafsd\nasdfsfdsf\nasdfsadfsfd\nasdf\nqwefsfe\n##############");
-		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, testbutton, 2, true));
+		//testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, testbutton, 2, true));
 		testbutton->abs_x = 300;
+
+		Image screenshot = kernel.graphicsMgr->createNewImage(VectInt(200,200));
+
+
+
+		shared_ptr<WImage> screenshot_widget = kernel.guiMgr->createWidget<WImage>("screenshot");
+		screenshot_widget->setImage(screenshot);
+		screenshot_widget->abs_x = kernel.graphicsMgr->screen_width.ref() - screenshot_widget->width.ref() - 10;
+		screenshot_widget->abs_y = 100;
+		screenshot_widget->draw_bounding_box = true;
+
+
+
+		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, screenshot_widget, _1));
 
 		/*testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
 		testbutton->setAutoHeight();
@@ -248,9 +281,13 @@ main(int argc, char *argv[])
 		awindow->getContainer()->insert(wfiletree);
 		//awindow->getContainer()->insert(wi2);
 
+		kernel.guiMgr->addWidget(screenshot_widget);
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
+
+		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
+
 
 
 		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::moveAnim, awindow, Vect(500,300), 2));

@@ -97,7 +97,8 @@ public:
 	inline list<WidgetPtr> getChilds()   const {return this->childs;};
 
 	inline Slots::SignalPtr getSlot(string name) const {return slots[name];}
-	inline const Slots&     getSlots()    const {return this->slots;}
+	inline const Slots&    getSlots()    const {return this->slots;}
+	inline bool            hasSlot(string name) const {return this->slots.hasSlot(name);}
 
 //------------- SET ------------------------------------------------------------
 	inline void    setAbsPos(FNumber n, int dim) {assert(valid_dim2(dim)); if(dim==1)this->abs_x = n; else this->abs_y = n;}
@@ -133,7 +134,7 @@ public:
 	virtual  void  drawChilds();
 
 	virtual  void  addChild(WidgetPtr child);
-			 void  addChildDuringConstructor(WidgetPtr child);
+			  void  addChildDuringConstructor(WidgetPtr child);
 	virtual  void  setParent(WidgetPtr new_parent);
 
 	virtual  void  removeChildren();

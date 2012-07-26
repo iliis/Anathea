@@ -138,6 +138,29 @@ Widget::set(ptree n)
 		setBoolFromPT(n, "flags.bounding_box", b); if(this->draw_bounding_box != b) this->draw_bounding_box = b;
 	}
 
+	/// define slots  (for widget-specifig events like "button clicked" or "window closed")
+	BOOST_FOREACH(ptree::value_type& child, node.get_child("slot"))
+		this->slots.add(child.second.get<string>("name")); ///< will not create duplicates
+
+	/// define events (global slots, if the corresponding slot of this widget gets called, a global
+	///                event gets triggered trough the guiManager)
+	BOOST_FOREACH(ptree::value_type& child, node.get_child("event"))
+	{
+		string event_name = child.second.get<string>("name");
+		string event_slot = child.second.get("slot", "clicked"); /// default widget slot is "clicked" (every button has one)
+
+		/// add Slot if this widget doesn't have it already
+		if(!this->hasSlot(event_slot)) this->slots.add(event_slot);
+
+		this->connectEvents(newWidget, event_name, event_slot);
+	}
+
+	/// TODO: somehow iterate over every widget child
+	if(n.get_child_optional("children"))
+	{
+		kernel->guiMgr->createWidgetFromPT(...);
+	}
+
 	this->_set(n);
 };
 //------------------------------------------------------------------------------
