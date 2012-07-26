@@ -83,6 +83,8 @@ public:
 		return newWidget;
 	};
 
+	WidgetPtr createWidget(string typ, string name);
+
 	void setWidgetDefaults(WidgetPtr widget);
 
 	WidgetPtr  createWidgetFromPT   (ptree node, WidgetPtr parent = WidgetPtr());

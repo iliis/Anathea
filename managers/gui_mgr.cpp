@@ -32,13 +32,23 @@ GuiManager::removeFromList(WidgetPtr widget)
 	this->root_widgets.remove(widget);
 };
 //------------------------------------------------------------------------------
+#include "managers/widgets/all_widgets.hpp"
+
 WidgetPtr
 GuiManager::createWidget(string typ, string name)
 {
-	/// TODO: implement the rest
-	      if(typ == "button")return this->createWidget<WButton>(name);
-	else if(typ == "label") return this->createWidget<WLabel>(name);
-	else if(typ == "image") return this->createWidget<WImage>(name);
+	/// who needs case-sensitivity anyway?
+	boost::trim(typ);
+	boost::to_lower(typ);
+
+	      if(typ == "button")    return this->createWidget<WButton>   (name);
+	else if(typ == "label"
+		  or typ == "text")      return this->createWidget<WText>     (name);
+	else if(typ == "image")     return this->createWidget<WImage>    (name);
+	else if(typ == "container") return this->createWidget<WContainer>(name);
+	else if(typ == "filetree")  return this->createWidget<WFileTree> (name);
+	else if(typ == "list")      return this->createWidget<WList>     (name);
+	else if(typ == "window")    return this->createWidget<WWindow>   (name);
 	else
 		throw Error("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
 };
@@ -230,7 +240,9 @@ GuiManager::createMultipleWidgets(ptree node, WidgetPtr parent)
 WidgetPtr
 GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 {
-	// TODO: Implement this anew (use getDefaultParameters)
+	cout << "creating widget from ptree:" << endl;
+	printPTree(node);
+	cout << endl << endl;
 
 	/// lese Name und Typ aus
 	string type = node.get_value<string>();
@@ -241,9 +253,12 @@ GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 	if(parent != WidgetPtr())
 	{
 		parent->addChild(newWidget);
+
 		/// kopiere Attribute der Eltern (is this a good idea? default stylesheets should be enough, shouldn't they?)
 		//newWidget->copyAttrs(parent);
 	}
+
+	newWidget->set(node);
 
 	/*
 	this stuff is now done in Widget::set(ptree)

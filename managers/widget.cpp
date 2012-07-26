@@ -138,27 +138,35 @@ Widget::set(ptree n)
 		setBoolFromPT(n, "flags.bounding_box", b); if(this->draw_bounding_box != b) this->draw_bounding_box = b;
 	}
 
-	/// define slots  (for widget-specifig events like "button clicked" or "window closed")
-	BOOST_FOREACH(ptree::value_type& child, node.get_child("slot"))
-		this->slots.add(child.second.get<string>("name")); ///< will not create duplicates
 
-	/// define events (global slots, if the corresponding slot of this widget gets called, a global
-	///                event gets triggered trough the guiManager)
-	BOOST_FOREACH(ptree::value_type& child, node.get_child("event"))
+	BOOST_FOREACH(ptree::value_type& child, n)
 	{
-		string event_name = child.second.get<string>("name");
-		string event_slot = child.second.get("slot", "clicked"); /// default widget slot is "clicked" (every button has one)
+		/// define slots  (for widget-specifig events like "button clicked" or "window closed")
+		if(child.first == "slot")
+			this->slots.add(child.second.get<string>("name")); ///< will not create duplicates
 
-		/// add Slot if this widget doesn't have it already
-		if(!this->hasSlot(event_slot)) this->slots.add(event_slot);
 
-		this->connectEvents(newWidget, event_name, event_slot);
+		/// define events (global slots, if the corresponding slot of this widget gets called, a global
+		///                event gets triggered trough the guiManager)
+		if(child.first == "event")
+		{
+			string event_name = child.second.get<string>("name");
+			string event_slot = child.second.get("slot", "clicked"); /// default widget slot is "clicked" (every button has one)
+
+			/// add Slot if this widget doesn't have it already
+			if(!this->hasSlot(event_slot)) this->slots.add(event_slot);
+
+			this->kernel->guiMgr->connectEvents(shared_from_this(), event_name, event_slot);
+		}
+
+		/// we can add new widgets by adding them in a sub-tag <children>
+		/// WARNING: make sure, this isn't global or of the same type as this widget, as this WILL cause an infinite loop!
+		if(child.first == "children")
+		{
+			BOOST_FOREACH(ptree::value_type& c, child.second)
+				WidgetPtr child_widget = kernel->guiMgr->createWidgetFromPT(c.second, shared_from_this());
+		}
 	}
-
-	/// we can add new widgets by adding them in a sub-tag <children>
-	/// WARNING: make sure, this isn't global or of the same type as this widget, as this WILL cause an infinite loop!
-	BOOST_FOREACH(ptree::value_type& child, node.get_child("children"))
-		kernel->guiMgr->createWidgetFromPT(node.second, shared_from_this());
 
 	this->_set(n);
 };

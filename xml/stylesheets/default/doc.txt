@@ -23,6 +23,8 @@ geometry.x				[float]
 flags.visible			[bool]
 	 .bounding_box		[bool]
 
+children				{Any Widget}
+
 // Button
 label.text				{Widget Text Settings}
 	 .image (path)		[string]
@@ -36,7 +38,7 @@ background_normal
 
 // Image
 
-image.path				[string]
+image.path				[{Image settings}]
 
 // List
 

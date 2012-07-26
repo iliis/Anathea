@@ -75,6 +75,7 @@
 		<Unit filename="managers/time_mgr.hpp" />
 		<Unit filename="managers/widget.cpp" />
 		<Unit filename="managers/widget.hpp" />
+		<Unit filename="managers/widgets/all_widgets.hpp" />
 		<Unit filename="managers/widgets/widget_button.cpp" />
 		<Unit filename="managers/widgets/widget_button.hpp" />
 		<Unit filename="managers/widgets/widget_container.cpp" />
