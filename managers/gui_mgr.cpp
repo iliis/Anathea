@@ -32,15 +32,16 @@ GuiManager::removeFromList(WidgetPtr widget)
 	this->root_widgets.remove(widget);
 };
 //------------------------------------------------------------------------------
-/*WidgetPtr
+WidgetPtr
 GuiManager::createWidget(string typ, string name)
 {
-		if(typ == "button")return this->createWidget<WButton>(name);
+	/// TODO: implement the rest
+	      if(typ == "button")return this->createWidget<WButton>(name);
 	else if(typ == "label") return this->createWidget<WLabel>(name);
 	else if(typ == "image") return this->createWidget<WImage>(name);
 	else
 		throw Error("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
-};*/
+};
 //------------------------------------------------------------------------------
 /// identisch zu Widget::getChild()
 WidgetPtr
@@ -240,9 +241,13 @@ GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 	if(parent != WidgetPtr())
 	{
 		parent->addChild(newWidget);
-		/// kopiere Attribute der Eltern
+		/// kopiere Attribute der Eltern (is this a good idea? default stylesheets should be enough, shouldn't they?)
 		//newWidget->copyAttrs(parent);
 	}
+
+	/*
+	this stuff is now done in Widget::set(ptree)
+
 
 	/// node definiert einen Event?
 	if(node.get_optional("event"))
@@ -272,7 +277,7 @@ GuiManager::createWidgetFromPT(ptree node, WidgetPtr parent)
 			else
 				this->createWidgetFromPT(child.second, newWidget);
 		}
-	}
+	}*/
 
 	return newWidget;
 };

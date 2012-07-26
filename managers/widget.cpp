@@ -155,11 +155,10 @@ Widget::set(ptree n)
 		this->connectEvents(newWidget, event_name, event_slot);
 	}
 
-	/// TODO: somehow iterate over every widget child
-	if(n.get_child_optional("children"))
-	{
-		kernel->guiMgr->createWidgetFromPT(...);
-	}
+	/// we can add new widgets by adding them in a sub-tag <children>
+	/// WARNING: make sure, this isn't global or of the same type as this widget, as this WILL cause an infinite loop!
+	BOOST_FOREACH(ptree::value_type& child, node.get_child("children"))
+		kernel->guiMgr->createWidgetFromPT(node.second, shared_from_this());
 
 	this->_set(n);
 };
