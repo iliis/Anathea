@@ -2,7 +2,11 @@
 #define DEFINITIONS_HPP_INCLUDED
 
 #include <SDL/SDL.h>
+
+#define NO_SDL_GLEXT
+#include <GL/glew.h>
 #include <SDL/SDL_opengl.h>
+
 
 #include "tools/geometry.hpp"
 #include "tools/color.hpp"

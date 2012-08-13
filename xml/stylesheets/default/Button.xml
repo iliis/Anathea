@@ -17,9 +17,4 @@
 		<NinePatch left=12 top=12 bottom=12 right=12 />
 	</background_active>
 
-	<children>
-		<image>
-			<image path="images/default.png" />
-		</image>
-	</children>
 </style>

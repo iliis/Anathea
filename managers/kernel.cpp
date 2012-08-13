@@ -118,7 +118,7 @@ void
 Kernel::run()
 {
 	if(!this->init_complete)
-		throw Error("illegalOperation", "Can't start mainloop. Kernel was not properly initialized.");
+		throw ERROR("illegalOperation", "Can't start mainloop. Kernel was not properly initialized.");
 
 	this->running = true;
 	Uint32 starttime=0;
@@ -241,13 +241,5 @@ Kernel::handleToDos()
 
 	//this->todos.clear();
 	this->todos.remove_if(boost::bind(&ToDo::expired, _1, now));
-};
-//------------------------------------------------------------------------------
-void
-Kernel::checkGLerrors()
-{
-	GLenum errCode;
-	if((errCode = glGetError()) != GL_NO_ERROR)
-		throw Error("opengl", getOpenGLError(errCode));
 };
 //------------------------------------------------------------------------------

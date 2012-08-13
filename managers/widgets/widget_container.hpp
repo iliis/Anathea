@@ -27,7 +27,7 @@ public:
 
 	// MISC
 	//-------------------------------------------------------------------------
-	void draw();
+	virtual void draw();
 	virtual void insert(WidgetPtr w);
 
 	bool pointMovListener(PointKey oldPoint, PointKey newPoint);

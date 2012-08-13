@@ -151,7 +151,7 @@ WButton::_draw()
 	if(img.valid())
 		img.draw(this->getBB());
 	else
-		throw Error("draw", "WButton::_draw(): Background image not valid.");
+		throw ERROR("draw", "WButton::_draw(): Background image not valid.");
 };
 //------------------------------------------------------------------------------
 bool

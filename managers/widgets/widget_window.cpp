@@ -86,6 +86,7 @@ WWindow::_draw()
 
 	//this->close_button->draw();
 	//this->title->draw();
-	this->content->draw();
+
+	//this->content->draw(); // should be handled by draw()->drawChilds() (was added as a child in WWindow::init())
 };
 //------------------------------------------------------------------------------

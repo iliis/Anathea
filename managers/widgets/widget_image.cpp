@@ -49,6 +49,6 @@ WImage::_draw()
 	if(this->img.valid())
 		this->img.draw(this->getBB());
 	else
-		throw Error("draw","WImage::draw(): Image is not valid!");
+		throw ERROR("draw","WImage::draw(): Image is not valid!");
 };
 //------------------------------------------------------------------------------

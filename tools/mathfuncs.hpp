@@ -176,7 +176,7 @@ typename std::list<T>::iterator getIteratorFromList(std::list<T> l, unsigned int
 		++i;
 	}
 
-	//throw Error("illegal Operation", string("THIS SHOULDN'T HAPPEN... getItemFromList hasn't found Position ")+pos+" in List (with Size "+l.size()+")");
+	//throw ERROR("illegal Operation", string("THIS SHOULDN'T HAPPEN... getItemFromList hasn't found Position ")+pos+" in List (with Size "+l.size()+")");
 };
 //------------------------------------------------------------------------------------------------
 unsigned int countOnes(char val);

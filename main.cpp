@@ -110,23 +110,72 @@ void add_some_text(shared_ptr<WText> w)
 	w->setText(w->getText()+"\nanother line");
 };
 
-void update_screenshot(Kernel& k, shared_ptr<WImage> wdest, TimeVal)
+void update_screenshot(Kernel& k, WidgetPtr srcwidget, shared_ptr<WImage> wdest, TimeVal)
 {
 	Image dest = wdest->getImage();
 
 	glViewport(0,0,200,200);
 
-	k.graphicsMgr->cls();
-	k.guiMgr->drawEverything();
+	glDisable(GL_SCISSOR_TEST);
+
+	/// todo: add glOrtho call to properly project our stuff. handle scissors correclty.
+
+	/*
 
 	glBindTexture(GL_TEXTURE_2D, dest.getTexture());
-	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 200, 200, 0);
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 200, 200, 0);*/
+CHECK_GL_ERROR();
+
+
+	GLuint fb = 0;
+	glGenFramebuffers(1, &fb);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb);
+	CHECK_GL_ERROR();
+
+	glBindTexture(GL_TEXTURE_2D, dest.getTexture());
+	CHECK_GL_ERROR();
+
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 200, 200, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+CHECK_GL_ERROR();
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	CHECK_GL_ERROR();
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, dest.getTexture(), 0);
+
+	GLenum draw_buffers[2] = {GL_COLOR_ATTACHMENT0};
+	glDrawBuffers(1, draw_buffers);
+	CHECK_GL_ERROR();
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		throw ERROR("fail", "frambuffer-thing didn't work");
+
+
+	k.graphicsMgr->cls();
+
+	//srcwidget->draw();
+	k.guiMgr->drawEverything();
+
+	CHECK_GL_ERROR();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // reset (eg. use normal screen again)
+
+	glDeleteFramebuffers(1, &fb);
+
+CHECK_GL_ERROR();
+
+
+
 
 	glViewport(0,0,k.graphicsMgr->screen_width, k.graphicsMgr->screen_height);
 
 	dest.setUV(Box(0,1,1,-1), true);
 
 	wdest->setImage(dest);
+
 };
 
 #include <limits.h>
@@ -169,7 +218,7 @@ main(int argc, char *argv[])
 
 
 
-		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, screenshot_widget, _1));
+
 
 		/*testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
 		testbutton->setAutoHeight();
@@ -240,6 +289,7 @@ main(int argc, char *argv[])
 		button_exit->getLabel()->cast<WText>()->setFontSize(20);
 		button_exit->getLabel()->cast<WText>()->setColor(WHITE);
 
+
 		wcontainer->insert(wi);
 		wcontainer->insert(wi2);
 		wcontainer->insert(wt);
@@ -281,16 +331,27 @@ main(int argc, char *argv[])
 		awindow->getContainer()->insert(wfiletree);
 		//awindow->getContainer()->insert(wi2);
 
-		kernel.guiMgr->addWidget(screenshot_widget);
+
+		shared_ptr<WImage> testimg2 = kernel.guiMgr->createWidget<WImage>("asdfycxvwev");
+		testimg2->setImage("images/anathea_icon.png");
+		awindow->getContainer()->addChild(testimg2);
+		testimg2->rel_x = 200;
+
+
+
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
+		kernel.guiMgr->addWidget(screenshot_widget);
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
 
 
 
 		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::moveAnim, awindow, Vect(500,300), 2));
+
+
+		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, awindow, screenshot_widget, _1));
 
 
 		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");

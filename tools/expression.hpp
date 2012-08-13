@@ -341,7 +341,7 @@ public:
 
 #ifdef CHECK_FOR_CYCLES
 			if(r->check_for_cycle(this))
-				throw Error("illegalOperation", "Can't create a reference as this would create a cycle.");
+				throw ERROR("illegalOperation", "Can't create a reference as this would create a cycle.");
 #endif
 
 			this->unlink();
@@ -461,7 +461,7 @@ typename Expression<T>::ExpressionRefPtr EXPR(string name,
 	else if(name == "neg" || name == "negate")
 		return new typename E::ExprNegRef(a);
 	else
-		throw Error("parse", "Unknown expression token '"+name+"'.");
+		throw ERROR("parse", "Unknown expression token '"+name+"'.");
 };
 
 

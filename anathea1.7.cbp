@@ -13,7 +13,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
@@ -58,6 +57,7 @@
 			<Add library="GL" />
 			<Add library="boost_system-mt" />
 			<Add library="boost_filesystem-mt" />
+			<Add library="GLEW" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="managers/animation_mgr.cpp" />

@@ -45,7 +45,7 @@ Color::set(string col)
 				{a = col.substr(3, 1); a=a+a;}
 		}
 		else
-			throw Error("parse", "Color ("+col+") is not in a legal HEX-format (#RRGGBB[AA] or 0xRRGGBB[AA] or 0x/#RGB[A]): too long/short.");
+			throw ERROR("parse", "Color ("+col+") is not in a legal HEX-format (#RRGGBB[AA] or 0xRRGGBB[AA] or 0x/#RGB[A]): too long/short.");
 
 		try
 		{
@@ -56,7 +56,7 @@ Color::set(string col)
 		}
 		catch(boost::bad_lexical_cast &)
 		{
-			throw Error("parse", "Color ("+col+") is not in a legal HEX-format (#RRGGBB[AA] or 0xRRGGBB[AA] or 0x/#RGB[A]).");
+			throw ERROR("parse", "Color ("+col+") is not in a legal HEX-format (#RRGGBB[AA] or 0xRRGGBB[AA] or 0x/#RGB[A]).");
 		}
 	}
 	else
@@ -85,7 +85,7 @@ Color::set(string col)
 			}
 			catch(boost::bad_lexical_cast &)
 			{
-				throw Error("parse", "Color ("+col+") is not in a legal Format (r,g,b[,a]).\nr='"+r+"', g='"+g+"', b='"+b+"', a='"+a+"'");
+				throw ERROR("parse", "Color ("+col+") is not in a legal Format (r,g,b[,a]).\nr='"+r+"', g='"+g+"', b='"+b+"', a='"+a+"'");
 			}
 		}
 		/// versuches mit Namen
@@ -105,7 +105,7 @@ Color::set(string col)
 			else	if(col == "brown")	retval = BROWN;
 			else	if(col == "grey")	retval = GREY;
 			else
-				throw Error("parse", "Color ("+col+") couldn't be parsed.");
+				throw ERROR("parse", "Color ("+col+") couldn't be parsed.");
 		}
 	}
 

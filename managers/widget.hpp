@@ -111,7 +111,7 @@ public:
 	        void    setRelativeTo      (Align horiz, bool h_inside, Vlign vert, bool v_inside, WidgetPtr relativeTo);
 	inline void    setRelativeToParent(Align horiz, bool h_inside, Vlign vert, bool v_inside)
 				{if(this->hasParent()) setRelativeTo(horiz,h_inside,vert,v_inside,this->parent.lock());
-				else throw Error("illegalOperation","Can't set relativeToParent: There is no parent.");}
+				else throw ERROR("illegalOperation","Can't set relativeToParent: There is no parent.");}
 
 	inline  void   show(){this->visible = true;}
 	inline  void   hide(){this->visible = false;}

@@ -91,7 +91,7 @@ public:
 			}
 			else
 				cerr << "WARNING: There is no slot named '" << name << "' to call. Omitting." << endl;
-				//throw Error("notFound", "There is no slot named '"+name+"' to call.");
+				//throw ERROR("notFound", "There is no slot named '"+name+"' to call.");
 		}
 	};
 
@@ -102,7 +102,7 @@ public:
 		if(it != this->slots.end())
 			return it->second;
 		else
-			throw Error("notFound", "There is no slot named '"+name+"'.");
+			throw ERROR("notFound", "There is no slot named '"+name+"'.");
 	}
 
 	inline
@@ -119,7 +119,7 @@ public:
 			return it->second->connect(func);
 		}
 		else
-			throw Error("notFound", "There is no slot named '"+name+"'.");
+			throw ERROR("notFound", "There is no slot named '"+name+"'.");
 	}
 
 	SignalPtr operator[](const string& name) const
