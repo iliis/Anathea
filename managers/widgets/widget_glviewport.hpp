@@ -19,9 +19,9 @@ class WGLViewport : public Widget
 	void resizeTexture(VectInt newsize);
 	void createTexture();
 
-	void render();
-
 	list<Mesh> meshes;
+
+	Color background;
 
 public:
 	WGLViewport(string Name, Kernel* k);
@@ -35,6 +35,13 @@ public:
 
 
 	inline void addMesh(const Mesh& m){this->meshes.push_back(m);}
+
+
+	inline void setBackground(Color c){this->background = c;}
+	inline Color getBackground() const {return this->background;}
+
+
+	void render();
 
 protected:
 	virtual void _draw();

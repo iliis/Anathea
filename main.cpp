@@ -2,12 +2,7 @@
 #include "boost/lexical_cast.hpp"
 
 #include "managers/kernel.hpp"
-#include "managers/widgets/widget_image.hpp"
-#include "managers/widgets/widget_text.hpp"
-#include "managers/widgets/widget_button.hpp"
-#include "managers/widgets/widget_list.hpp"
-#include "managers/widgets/widget_window.hpp"
-#include "managers/widgets/widget_filetree.hpp"
+#include "managers/widgets/all_widgets.hpp"
 
 #include "3d/gl_mesh.hpp"
 
@@ -122,8 +117,9 @@ void update_screenshot(Kernel& k, WidgetPtr srcwidget, shared_ptr<WImage> wdest,
 	glViewport(0,0,200,200);
 	glLoadIdentity();
 	glOrtho(400.0f, 600, 600, 400.0f, -1.0f, 1.0f);
+	glMatrixMode(GL_MODELVIEW);
 
-	glDisable(GL_SCISSOR_TEST);
+	glPushAttrib( GL_SCISSOR_BIT );
 
 	/// todo: add glOrtho call to properly project our stuff. handle scissors correclty.
 
@@ -181,6 +177,9 @@ CHECK_GL_ERROR();
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+	glPopAttrib();
 
 	dest.setUV(Box(0,1,1,-1), true);
 
@@ -361,17 +360,19 @@ main(int argc, char *argv[])
 		testviewport->rel_x = 100;
 		testviewport->rel_y = kernel.graphicsMgr->screen_height.ref() - testviewport->height.ref() - 100;
 		testviewport->draw_bounding_box = true;
+		testviewport->setBackground(RED);
+		testviewport->render();
 
 
 
 
 
-
+		kernel.guiMgr->addWidget(testviewport);
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 		kernel.guiMgr->addWidget(screenshot_widget);
-		kernel.guiMgr->addWidget(testviewport);
+
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
 

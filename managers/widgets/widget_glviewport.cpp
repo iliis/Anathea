@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 WGLViewport::WGLViewport(string Name, Kernel* k)
  : Widget(Name,k), framebuffer(0),
-   tex_size(1024,1024), texture(0)
+   tex_size(200,200), texture(0)
 {
 	glGenFramebuffers(1, &this->framebuffer);
 	CHECK_GL_ERROR();
@@ -19,10 +19,14 @@ WGLViewport::~WGLViewport()
 void
 WGLViewport::switchToFB()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+
 
 	/// save currently used attributes (eg. viewport)
-	glPushAttrib( GL_VIEWPORT_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glPushAttrib( GL_VIEWPORT_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_SCISSOR_BIT | GL_TRANSFORM_BIT );
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->texture, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -30,24 +34,65 @@ WGLViewport::switchToFB()
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	glLoadIdentity();							// Reset The Projection Matrix
+	glLoadIdentity();
 
 	gluPerspective(45.0f, (GLfloat) tex_size.x / (GLfloat) tex_size.y, 0.1f, 100.0f);
-	// Calculate The Aspect Ratio Of The Window
 
 	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	gluLookAt(-10,0,0, 0,0,0, 0,1,0);
 
+	//glEnable(GL_DEPTH_TEST);
+	glDisable(GL_SCISSOR_TEST);
+
+	CHECK_GL_ERROR();
+
+};
+//------------------------------------------------------------------------------
+void
+WGLViewport::render()
+{
+	switchToFB();
+
+	glClearColor(background.fr(), background.fg(), background.fb(), background.fa());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+	//BOOST_FOREACH(Mesh& m, this->meshes)
+		//m.render();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBegin(GL_TRIANGLES);
+		glColor3f(0,1,0);
+		glVertex3f(0,0,1);
+		glVertex3f(1,0,0);
+		glVertex3f(0,1,0);
+	glEnd();
+
+	CHECK_GL_ERROR();
+
+	switchToScreen();
 };
 //------------------------------------------------------------------------------
 void
 WGLViewport::switchToScreen()
 {
-	glPopAttrib(); /// restore previously saved attributes
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); /// reset (use normal screen again)
-
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+ CHECK_GL_ERROR();
+
+ glBegin();
+
+  CHECK_GL_ERROR();
+
+	glPopAttrib();  CHECK_GL_ERROR();/// restore previously saved attributes
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); /// reset (use normal screen again)
+
+	CHECK_GL_ERROR();
 };
 //------------------------------------------------------------------------------
 void
@@ -83,45 +128,42 @@ WGLViewport::createTexture()
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_size.x, tex_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
+	CHECK_GL_ERROR();
+
 	// attach texture to framebuffer color buffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->texture, 0);
+
+	GLenum draw_buffers[2] = {GL_COLOR_ATTACHMENT0};
+	glDrawBuffers(1, draw_buffers);
 
 	CHECK_GL_ERROR();
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		throw ERROR("init", "Something went wrong initializing a framebuffer object.");
-};
-//------------------------------------------------------------------------------
-void
-WGLViewport::render()
-{
-	switchToFB();
 
-	BOOST_FOREACH(Mesh& m, this->meshes)
-		m.render();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); /// reset (use normal screen again)
 
-	switchToScreen();
+	CHECK_GL_ERROR();
 };
 //------------------------------------------------------------------------------
 void
 WGLViewport::_draw()
 {
-	/*this->texture.color.a = this->alpha;
+	this->render();
 
-	this->texture.draw(this->getBB());*/
 	Box pos = this->getBB();
 
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 
-	Color c = this->color;
-
 	glBegin(GL_QUADS);
-		glColor4f(c.fr(),c.fg(),c.fb(),c.fa());
+		glColor4f(1,1,0,this->alpha.get());
 
 		glTexCoord2f(0, 0); glVertex2f(pos.pos.x, 				pos.pos.y);
 		glTexCoord2f(1, 0); glVertex2f(pos.pos.x + pos.size.x, 	pos.pos.y);
 		glTexCoord2f(1, 1); glVertex2f(pos.pos.x + pos.size.x, 	pos.pos.y + pos.size.y);
 		glTexCoord2f(0, 1); glVertex2f(pos.pos.x,				pos.pos.y + pos.size.y);
 	glEnd();
+
+	CHECK_GL_ERROR();
 };
 //------------------------------------------------------------------------------

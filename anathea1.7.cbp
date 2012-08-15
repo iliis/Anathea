@@ -58,6 +58,7 @@
 			<Add library="boost_system-mt" />
 			<Add library="boost_filesystem-mt" />
 			<Add library="GLEW" />
+			<Add library="GLU" />
 		</Linker>
 		<Unit filename="3d/gl_mesh.cpp" />
 		<Unit filename="3d/gl_mesh.hpp" />
