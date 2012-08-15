@@ -45,6 +45,9 @@ Mesh::load_from_STL(string filename)
 			//cout << " > vertex = " << tmp.print() << endl;
 			t.p3 = tmp;
 
+			t.setUniColor(Color(A_OPAQUE, A_OPAQUE, A_OPAQUE, A_OPAQUE));
+			t.tex = 0; ///< disable texture
+
 			this->addTriangle(t);
 			//cout << "END" << endl;
 		}

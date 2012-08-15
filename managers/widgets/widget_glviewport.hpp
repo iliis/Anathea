@@ -11,7 +11,10 @@ class WGLViewport : public Widget
 {
 	GLuint framebuffer;
 	VectInt tex_size; ///< the actual size of the texture and framebuffer
-	GLuint texture;
+	GLuint texture, depth_buffer;
+
+	/// just a quick hack to add some rotation ;)
+	FNumber rotation;
 
 	void switchToFB();
 	void switchToScreen();
