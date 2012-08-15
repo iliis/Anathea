@@ -116,7 +116,7 @@ Color::set(string col)
 };
 //------------------------------------------------------------------------------
 bool
-Color::operator==(Color const& col)
+Color::operator==(Color const& col) const
 {
 	return this->r == col.r &&
 	        this->g == col.g &&

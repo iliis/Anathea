@@ -294,7 +294,7 @@ public:
 	};
 #endif
 
-	vector3(string v) : x(0),y(0),z(0)
+	vector3(const string& v) : x(0),y(0),z(0)
 	{
 		string::size_type
 		c1 = v.find_first_of(','),
@@ -305,18 +305,18 @@ public:
 		this->z = atoi(v.substr(c2+1).c_str());
 	}
 
-	inline vector3<Typ> Xonly(){return vector3<Typ>(this->x,0,0);}
-	inline vector3<Typ> Yonly(){return vector3<Typ>(0,this->y,0);}
-	inline vector3<Typ> Zonly(){return vector3<Typ>(0,0,this->z);}
+	inline vector3<Typ> Xonly() const {return vector3<Typ>(this->x,0,0);}
+	inline vector3<Typ> Yonly() const {return vector3<Typ>(0,this->y,0);}
+	inline vector3<Typ> Zonly() const {return vector3<Typ>(0,0,this->z);}
 
-	inline vector3<Typ> abs()  {return vector3<Typ>(abs(this->x), abs(this->y), abs(this->z));}
+	inline vector3<Typ> abs()   const {return vector3<Typ>(abs(this->x), abs(this->y), abs(this->z));}
 
-    bool operator==(vector3<Typ> vgl)
+    bool operator==(const vector3<Typ>& vgl) const
     {return this->x == vgl.x && this->y == vgl.y && this->z == vgl.z;}
-    bool operator!=(const vector3<Typ> &vgl)
+    bool operator!=(const vector3<Typ>& vgl) const
     {return !(*this == vgl);}
 
-    vector3<Typ> operator+(const vector3<Typ> &add)
+    vector3<Typ> operator+(const vector3<Typ> &add) const
     {
     	vector3<Typ> p;
 		p.x = this->x + add.x;
@@ -324,7 +324,7 @@ public:
 		p.z = this->z + add.z;
 		return p;
 	};
-	vector3<Typ> operator-(const vector3<Typ> &sub)
+	vector3<Typ> operator-(const vector3<Typ> &sub) const
     {
     	vector3<Typ> p;
 		p.x = this->x - sub.x;
@@ -332,7 +332,7 @@ public:
 		p.z = this->z - sub.z;
 		return p;
 	};
-	vector3<Typ> operator*(const Typ &scalar)
+	vector3<Typ> operator*(const Typ &scalar) const
 	{
 		vector3<Typ> p;
 		p.x = this->x*scalar;
@@ -340,7 +340,7 @@ public:
 		p.z = this->z*scalar;
 		return p;
 	};
-	vector3<Typ> operator*(const vector3<Typ> &vect)
+	vector3<Typ> operator*(const vector3<Typ> &vect) const
 	{
 		vector2<Typ> p;
 		p.x = this->x*vect.x;
@@ -348,7 +348,7 @@ public:
 		p.z = this->z*vect.z;
 		return p;
 	};
-	vector3<Typ> operator/(const Typ &scalar)
+	vector3<Typ> operator/(const Typ &scalar) const
 	{
 		vector3<Typ> p;
 		p.x = this->x/scalar;
@@ -356,6 +356,18 @@ public:
 		p.z = this->z/scalar;
 		return p;
 	};
+
+	Typ dotProduct(const vector3<Typ>& vect) const
+	{
+		return this->x * vect.x  +  this->y * vect.y  +  this->z * vect.z;
+	};
+
+	vector3<Typ> crossProduct(const vector3<Typ>& vect) const
+	{
+		return vector3<Typ>(y * vect.z  -   z * vect.y,
+							 z * vect.x  -   x * vect.z,
+							 x * vect.y  -   y * vect.x );
+	}
 
 	Typ& operator[](const int dim)
 	{
@@ -374,7 +386,7 @@ public:
 		return this->x == 0 && this->y == 0 && this->z == 0;
 	}
 
-	vector3<Typ> getUnitVector()
+	vector3<Typ> normalize()
 	{
 		Typ l = this->length();
 		this->x = this->x / l;

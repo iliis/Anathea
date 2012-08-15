@@ -9,6 +9,8 @@
 #include "managers/widgets/widget_window.hpp"
 #include "managers/widgets/widget_filetree.hpp"
 
+#include "3d/gl_mesh.hpp"
+
 using namespace std;
 
 
@@ -114,7 +116,12 @@ void update_screenshot(Kernel& k, WidgetPtr srcwidget, shared_ptr<WImage> wdest,
 {
 	Image dest = wdest->getImage();
 
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+
 	glViewport(0,0,200,200);
+	glLoadIdentity();
+	glOrtho(400.0f, 600, 600, 400.0f, -1.0f, 1.0f);
 
 	glDisable(GL_SCISSOR_TEST);
 
@@ -171,6 +178,9 @@ CHECK_GL_ERROR();
 
 
 	glViewport(0,0,k.graphicsMgr->screen_width, k.graphicsMgr->screen_height);
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
 
 	dest.setUV(Box(0,1,1,-1), true);
 
@@ -339,10 +349,29 @@ main(int argc, char *argv[])
 
 
 
+
+
+		Mesh m;
+		m.load_from_STL("/home/samuel/Downloads/replicator_grill.stl");
+
+		shared_ptr<WGLViewport> testviewport = kernel.guiMgr->createWidget<WGLViewport>("an opengl viewport");
+		testviewport->addMesh(m);
+		testviewport->width  = 300;
+		testviewport->height = 300;
+		testviewport->rel_x = 100;
+		testviewport->rel_y = kernel.graphicsMgr->screen_height.ref() - testviewport->height.ref() - 100;
+		testviewport->draw_bounding_box = true;
+
+
+
+
+
+
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 		kernel.guiMgr->addWidget(screenshot_widget);
+		kernel.guiMgr->addWidget(testviewport);
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
 
