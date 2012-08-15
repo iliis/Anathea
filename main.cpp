@@ -360,8 +360,7 @@ main(int argc, char *argv[])
 		testviewport->rel_x = 100;
 		testviewport->rel_y = kernel.graphicsMgr->screen_height.ref() - testviewport->height.ref() - 100;
 		testviewport->draw_bounding_box = true;
-		//testviewport->setBackground(Color(A_OPAQUE, A_TRANSPARENT, A_TRANSPARENT, A_HALF_TRANSPARENT));
-		testviewport->setBackground(RED);
+		testviewport->setBackground(Color(A_OPAQUE, A_TRANSPARENT, A_TRANSPARENT, A_HALF_TRANSPARENT));
 		testviewport->render();
 
 

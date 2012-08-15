@@ -47,6 +47,9 @@ WGLViewport::switchToFB()
 	glPushMatrix();
 	glLoadIdentity();
 	gluLookAt(100,0,100, 0,0,0, 0,1,0);
+	glRotatef(this->rotation, 0, 1, 0);
+	rotation += 0.1;
+	if(rotation > 360) rotation -= 360;
 
 	/// use some simple lightning
 	GLfloat LightAmbient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
