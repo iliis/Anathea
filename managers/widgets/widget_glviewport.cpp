@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 WGLViewport::WGLViewport(string Name, Kernel* k)
  : Widget(Name,k), framebuffer(0),
-   tex_size(200,200), texture(0)
+   tex_size(256,256), texture(0)
 {
 	glGenFramebuffers(1, &this->framebuffer);
 	CHECK_GL_ERROR();
@@ -19,13 +19,13 @@ WGLViewport::~WGLViewport()
 void
 WGLViewport::switchToFB()
 {
-
+	glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
 
 	/// save currently used attributes (eg. viewport)
 	glPushAttrib( GL_VIEWPORT_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_SCISSOR_BIT | GL_TRANSFORM_BIT );
 
 
-	glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->texture, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -83,11 +83,7 @@ WGLViewport::switchToScreen()
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
- CHECK_GL_ERROR();
-
- glBegin();
-
-  CHECK_GL_ERROR();
+	CHECK_GL_ERROR();
 
 	glPopAttrib();  CHECK_GL_ERROR();/// restore previously saved attributes
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); /// reset (use normal screen again)
@@ -130,6 +126,18 @@ WGLViewport::createTexture()
 
 	CHECK_GL_ERROR();
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	/// disables texture-repetations so that there are no border-artefacts
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	CHECK_GL_ERROR();
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+	CHECK_GL_ERROR();
+
 	// attach texture to framebuffer color buffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->texture, 0);
 
@@ -149,14 +157,14 @@ WGLViewport::createTexture()
 void
 WGLViewport::_draw()
 {
-	this->render();
+	//this->render();
 
 	Box pos = this->getBB();
 
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 
 	glBegin(GL_QUADS);
-		glColor4f(1,1,0,this->alpha.get());
+		//glColor4f(1,1,0,this->alpha.get());
 
 		glTexCoord2f(0, 0); glVertex2f(pos.pos.x, 				pos.pos.y);
 		glTexCoord2f(1, 0); glVertex2f(pos.pos.x + pos.size.x, 	pos.pos.y);

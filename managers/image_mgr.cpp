@@ -203,6 +203,8 @@ convertSDL_SurfaceToTexture(SDL_Surface*& surface, const string& filename)
 	if((errCode = glGetError()) != GL_NO_ERROR)
 		throw ERROR("load", "OpenGL caused an error while loading the image \"" + filename + "\":\n"+getOpenGLError(errCode));
 
+	CHECK_GL_ERROR();
+
 	if(!texture)
 		throw ERROR("load", "Couldn't load image \""+filename+"\". Cause unknown.");
 
