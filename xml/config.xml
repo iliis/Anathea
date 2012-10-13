@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <settings>
 	<!-- bpp (bits per pixel): 0 = use current -->
-	<screen w=500
-			h=150
+	<screen w=1024
+			h=768
 			bpp=0
 			fullscreen="false"
 			maxFPS=30

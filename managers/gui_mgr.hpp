@@ -75,7 +75,10 @@ public:
 	}
 
 	inline bool hasFocus(WidgetPtr w) {
-		return (this->focus_widget != null) && (w == this->focus_widget);
+		if(this->focus_widget)
+			return w == this->focus_widget;
+		else
+			return false;
 	}
 
 
