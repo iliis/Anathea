@@ -68,12 +68,12 @@ bool parse_vertex(Iter begin, Iter end, vector3<FNumber>& v)
 
 class Mesh
 {
-	std::list<Triangle> triangles;
+	std::list<Triangle> triangles; int tmp;
 
 public:
 	inline void addTriangle(Triangle t){this->triangles.push_back(t);}
 
-	void render() const;
+	void render() ;
 
 	void load_from_STL(string filename);
 };

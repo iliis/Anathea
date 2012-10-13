@@ -52,8 +52,8 @@ WGLViewport::switchToFB()
 	if(rotation > 360) rotation -= 360;
 
 	/// use some simple lightning
-	GLfloat LightAmbient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-	GLfloat LightDiffuse[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	GLfloat LightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	GLfloat LightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat LightPos[]     = { 20, 100, 100 };
 
 	glLightfv(GL_LIGHT1, GL_AMBIENT,  LightAmbient);
@@ -62,6 +62,10 @@ WGLViewport::switchToFB()
 	glEnable (GL_LIGHT1);
 
 	glEnable(GL_LIGHTING);
+
+	/// enable simple coloring materials (enabling lighting changes the way colors work)
+	glEnable(GL_COLOR_MATERIAL);
+	//glColorMaterial() // is set by default correclty
 
 	/// enable depth
 	glEnable(GL_DEPTH_TEST);
@@ -195,11 +199,11 @@ WGLViewport::_draw()
 
 	Box pos = this->getBB();
 
+	glColor4f(1.0f,1.0f,1.0f,this->alpha.get());
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 
-	glBegin(GL_QUADS);
-		//glColor4f(1,1,0,this->alpha.get());
 
+	glBegin(GL_QUADS);
 		glTexCoord2f(0, 0); glVertex2f(pos.pos.x, 				pos.pos.y);
 		glTexCoord2f(1, 0); glVertex2f(pos.pos.x + pos.size.x, 	pos.pos.y);
 		glTexCoord2f(1, 1); glVertex2f(pos.pos.x + pos.size.x, 	pos.pos.y + pos.size.y);

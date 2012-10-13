@@ -2,10 +2,23 @@
 
 //------------------------------------------------------------------------------
 void
-Mesh::render() const
+Mesh::render()
 {
-	BOOST_FOREACH(const Triangle& t, this->triangles)
+	int i = 0;
+
+	BOOST_FOREACH(Triangle& t, this->triangles)
+	{
+		if(i <= tmp)
+			t.setUniColor(RED);
+		else
+			t.setUniColor(WHITE);
+
 		t.render();
+		++i;
+	}
+
+	++tmp;
+	if(tmp > i) tmp = 0;
 };
 //------------------------------------------------------------------------------
 using namespace std;
@@ -13,6 +26,8 @@ using namespace std;
 void
 Mesh::load_from_STL(string filename)
 {
+	tmp = 0;
+
 	/// for now, this function assumes the file is in ascii-format
 	/// will probably behave unexpectedly (= crash) if it's binary
 
@@ -32,6 +47,7 @@ Mesh::load_from_STL(string filename)
 			//cout << "BEGIN facet" << endl;
 			//cout << " > normal = " << tmp.print() << endl;
 			t.n = tmp;
+			t.flipNormal();
 
 			do {getline(file, line);} while(!parse_vertex(line.begin(), line.end(), tmp));
 			//cout << " > vertex = " << tmp.print() << endl;

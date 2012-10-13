@@ -53,7 +53,8 @@ WText::setText(string t)
 {
 	if(t != this->text)
 	{
-		this->text = t;
+		/// copy text in order to prevent invalid iterators (WTextInput)
+		this->text.assign(t.begin(), t.end());
 		this->render();
 	}
 };

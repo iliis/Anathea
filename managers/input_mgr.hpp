@@ -27,7 +27,7 @@ protected:
 	map<KEY, bool> keys;
 	map<PointName, PointKey> points;
 
-	boost::signal<void (KEY, bool)>           keyListeners;
+	boost::signal<void (KEY, bool)>          keyListeners;
 	boost::signal<void (PointKey, PointKey)>  pointMovListeners;
 	boost::signal<void (PointKey)>            pointHitListeners;
 public:

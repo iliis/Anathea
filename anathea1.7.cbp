@@ -95,6 +95,7 @@
 		<Unit filename="managers/widgets/widget_list.hpp" />
 		<Unit filename="managers/widgets/widget_text.cpp" />
 		<Unit filename="managers/widgets/widget_text.hpp" />
+		<Unit filename="managers/widgets/widget_textinput.hpp" />
 		<Unit filename="managers/widgets/widget_window.cpp" />
 		<Unit filename="managers/widgets/widget_window.hpp" />
 		<Unit filename="tools/color.cpp" />

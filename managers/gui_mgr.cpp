@@ -151,6 +151,10 @@ GuiManager::updateWidgetParent(WidgetPtr w)
 bool
 GuiManager::keyListener(KEY name, bool state)
 {
+	/// Das Widget, das den Fokus hat, kriegt alle Tastatureingaben zuerst
+	if(this->focus_widget && this->focus_widget->keyListener(name, state))
+		return true;
+
 	BOOST_FOREACH(WidgetPtr w, this->root_widgets)
 		if(w->keyListener(name, state))
 			return true; /// Widget oder eines seiner Kinder hat Input verarbeitet

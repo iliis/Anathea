@@ -11,7 +11,7 @@ struct Triangle
 	Vect uv1, uv2, uv3;
 	Color c1, c2, c3;
 
-
+	Triangle() : tex(0) {};
 
 	void render() const;
 
