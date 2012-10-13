@@ -53,7 +53,8 @@ WText::setText(string t)
 {
 	if(t != this->text)
 	{
-		this->text = t;
+		/// copy text in order to prevent invalid iterators (WTextInput)
+		this->text.assign(t.begin(), t.end());
 		this->render();
 	}
 };
@@ -74,14 +75,14 @@ WText::_draw()
 		this->buffer.draw(there);
 	}
 	else
-		throw Error("draw","WText::draw(): Font isn't valid.");
+		throw ERROR("draw","WText::draw(): Font isn't valid.");
 };
 //------------------------------------------------------------------------------
 void
 WText::render()
 {
 	if(!this->font.isValid())
-		throw Error("draw","WText::render(): font isn't valid!");
+		throw ERROR("draw","WText::render(): font isn't valid!");
 
 	if(!this->text.empty())
 		this->buffer = this->font.renderMultiline(this->text,this->kernel->graphicsMgr,

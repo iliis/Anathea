@@ -64,17 +64,17 @@ struct Color
 
 //---------- GET ---------------------------------------------------------------
 	/// for opengl:
-	inline float fr(){return float(r)/A_OPAQUE;}
-	inline float fg(){return float(g)/A_OPAQUE;}
-	inline float fb(){return float(b)/A_OPAQUE;}
-	inline float fa(){return float(a*a2)/float(A_OPAQUE*A_OPAQUE);}
+	inline float fr() const {return float(r)/A_OPAQUE;}
+	inline float fg() const {return float(g)/A_OPAQUE;}
+	inline float fb() const {return float(b)/A_OPAQUE;}
+	inline float fa() const {return float(a*a2)/float(A_OPAQUE*A_OPAQUE);}
 
 //---------- MISC --------------------------------------------------------------
-	bool operator==(Color const& col);
-	bool operator!=(Color const& col){return ! (*this == col);}
+	bool operator==(Color const& col) const;
+	bool operator!=(Color const& col) const {return ! (*this == col);}
 
 	SDL_Color getSDL_Color();
-	string getString(){return ToString(r)+","+ToString(g)+","+ToString(b)+","+ToString(a);}
+	string getString() const {return ToString(r)+","+ToString(g)+","+ToString(b)+","+ToString(a);}
 };
 //------------------------------------------------------------------------------
 

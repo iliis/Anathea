@@ -9,6 +9,7 @@
 #include "managers/widgets/widget_text.hpp"
 #include "managers/widgets/widget_window.hpp"
 #include "managers/widgets/widget_sprite.hpp"
+#include "managers/widgets/widget_glviewport.hpp"
 
 
 #endif // ALL_WIDGETS_HPP_INCLUDED

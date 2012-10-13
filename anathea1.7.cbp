@@ -13,7 +13,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
@@ -58,7 +57,13 @@
 			<Add library="GL" />
 			<Add library="boost_system-mt" />
 			<Add library="boost_filesystem-mt" />
+			<Add library="GLEW" />
+			<Add library="GLU" />
 		</Linker>
+		<Unit filename="3d/gl_mesh.cpp" />
+		<Unit filename="3d/gl_mesh.hpp" />
+		<Unit filename="3d/gl_triangle.cpp" />
+		<Unit filename="3d/gl_triangle.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="managers/animation_mgr.cpp" />
 		<Unit filename="managers/animation_mgr.hpp" />
@@ -82,12 +87,15 @@
 		<Unit filename="managers/widgets/widget_container.hpp" />
 		<Unit filename="managers/widgets/widget_filetree.cpp" />
 		<Unit filename="managers/widgets/widget_filetree.hpp" />
+		<Unit filename="managers/widgets/widget_glviewport.cpp" />
+		<Unit filename="managers/widgets/widget_glviewport.hpp" />
 		<Unit filename="managers/widgets/widget_image.cpp" />
 		<Unit filename="managers/widgets/widget_image.hpp" />
 		<Unit filename="managers/widgets/widget_list.cpp" />
 		<Unit filename="managers/widgets/widget_list.hpp" />
 		<Unit filename="managers/widgets/widget_text.cpp" />
 		<Unit filename="managers/widgets/widget_text.hpp" />
+		<Unit filename="managers/widgets/widget_textinput.hpp" />
 		<Unit filename="managers/widgets/widget_window.cpp" />
 		<Unit filename="managers/widgets/widget_window.hpp" />
 		<Unit filename="tools/color.cpp" />

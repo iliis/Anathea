@@ -27,6 +27,8 @@ class GuiManager/* : public enable_shared_from_this<GuiManager>*/
 
 	void removeFromList(WidgetPtr widget);
 
+	WidgetPtr focus_widget; ///< Widget das den Fokus hat. Ansich empfaengt jedes Widget Inputs, aber dieses kriegts zuerst.
+
 
 	map<string, ptree> default_parameters; ///< Standardeinstellungen für die Widgets (eg. Schrift, Hintergrund, ...)
 
@@ -67,6 +69,15 @@ public:
 	bool keyListener(KEY name, bool state);
 	bool pointMovListener(PointKey oldPoint, PointKey newPoint);
 	bool pointHitListener(PointKey pk);
+
+	inline void setFocusToWidget(WidgetPtr w) {
+		this->focus_widget = w;
+	}
+
+	inline bool hasFocus(WidgetPtr w) {
+		return (this->focus_widget != null) && (w == this->focus_widget);
+	}
+
 
 	template <typename T>
 	boost::shared_ptr<T> createWidget(string name, ptree properties = ptree())

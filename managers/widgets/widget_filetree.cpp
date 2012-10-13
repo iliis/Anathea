@@ -105,7 +105,7 @@ WFileTree::setRoot(fs::path r)
 		this->update();
 	}
 	else
-		throw Error("notFound", "'"+r.filename().generic_string()+"' isn't a valid directory.");
+		throw ERROR("notFound", "'"+r.filename().generic_string()+"' isn't a valid directory.");
 };
 //------------------------------------------------------------------------------
 void

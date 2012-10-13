@@ -53,7 +53,9 @@ void drawLine(Vect start, Vect stop, Color color=WHITE, double border_with=1);
 void drawRectangle(Box shape, Color color=WHITE, double border_with=1, bool fill=false);
 
 const char* getOpenGLError(GLenum code);
-void checkOpenGLError();
+
+#define CHECK_GL_ERROR() checkOpenGLError(__FILE__, __LINE__)
+void checkOpenGLError(const char* filename, const int line);
 
 //------------------------------------------------------------------------------
 /// Eine einfache Klasse, die ein Bild lädt, zeichnet und automatisch wieder freigibt.
@@ -101,7 +103,7 @@ public:
 	Image(SDL_Surface* srf)
 	 : name("from SDL_Surface"), UV(0,0,1,1), texture(new GLuint(0)), surface(srf), counter(new int(1)), color(Color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE))
 		{if(srf){*texture = convertSDL_SurfaceToTexture(surface,name);}}
-		//else throw Error("load", "Cannot create Image from SDL_Surface: NULL");}; /// für Screen etc.
+		//else throw ERROR("load", "Cannot create Image from SDL_Surface: NULL");}; /// für Screen etc.
 
 	Image(const Image& i)
 	 : name(i.name), nine_patch(i.nine_patch), UV(i.UV), texture(i.texture), surface(i.surface), counter(i.counter), color(i.color)
@@ -163,7 +165,7 @@ public:
 	inline const string getName() const {return this->name;}
 
 	/// kopiert ein Bild
-	Image createCopy(){throw Error("notImplemented", "Image::createCopy()");}
+	Image createCopy(){throw ERROR("notImplemented", "Image::createCopy()");}
 
 	/// NinePatch-Einstellungen
 	/// Zeichnet ein Bild entweder normal (nd.enabled = false)

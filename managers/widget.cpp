@@ -56,7 +56,7 @@ Widget::getChild(string path, bool throwIfNotFound)
 	}
 
 	if(throwIfNotFound)
-		throw Error("notFound", "Widget '"+this->name.get()+"' ("+this->getType()+") has no child named '"+path+"'.");
+		throw ERROR("notFound", "Widget '"+this->name.get()+"' ("+this->getType()+") has no child named '"+path+"'.");
 	else
 		return WidgetPtr();
 };

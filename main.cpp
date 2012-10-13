@@ -2,14 +2,14 @@
 #include "boost/lexical_cast.hpp"
 
 #include "managers/kernel.hpp"
-#include "managers/widgets/widget_image.hpp"
-#include "managers/widgets/widget_text.hpp"
-#include "managers/widgets/widget_button.hpp"
-#include "managers/widgets/widget_list.hpp"
-#include "managers/widgets/widget_window.hpp"
+#include "managers/widgets/all_widgets.hpp"
+
+#include "3d/gl_mesh.hpp"
 
 #include "managers/widgets/widget_filetree.hpp"
 using namespace std;
+
+
 
 
 class TestApp : public Kernel
@@ -17,7 +17,10 @@ class TestApp : public Kernel
 public:
 	TestApp( int argc, char *argv[] ) : Kernel(argc,argv) {};
 
-	void calcFrame(TimeVal delta){cout << "calculating Frame. Time: " << toSeconds(delta)*1000 << " ms (= " << 1/toSeconds(delta) << " FPS)" << endl;}
+	void calcFrame(TimeVal delta)//{cout << "calculating Frame. Time: " << toSeconds(delta)*1000 << " ms (= " << 1/toSeconds(delta) << " FPS)" << endl;}
+	{
+
+	}
 
 	void escapeKeyListener(KEY key, bool state)
 	{
@@ -40,6 +43,19 @@ public:
 		}
 	}
 };
+
+
+void setclock(TimeVal delta, shared_ptr<WText> wclock, Kernel& k)//{cout << "calculating Frame. Time: " << toSeconds(delta)*1000 << " ms (= " << 1/toSeconds(delta) << " FPS)" << endl;}
+{
+	int m = k.timeMgr->getCurMinutes();
+
+	string min = ToString(m);
+	if(m < 10) min = "0"+min;
+
+	wclock->setText(ToString(k.timeMgr->getCurHours())+":"+min);
+};
+
+
 
 class TestTexture
 {
@@ -110,23 +126,84 @@ void add_some_text(shared_ptr<WText> w)
 	w->setText(w->getText()+"\nanother line");
 };
 
-void update_screenshot(Kernel& k, shared_ptr<WImage> wdest, TimeVal)
+void update_screenshot(Kernel& k, WidgetPtr srcwidget, shared_ptr<WImage> wdest, TimeVal)
 {
 	Image dest = wdest->getImage();
 
-	glViewport(0,0,200,200);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
 
-	k.graphicsMgr->cls();
-	k.guiMgr->drawEverything();
+	glViewport(0,0,200,200);
+	glLoadIdentity();
+	glOrtho(400.0f, 600, 600, 400.0f, -1.0f, 1.0f);
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushAttrib( GL_SCISSOR_BIT );
+
+	/// todo: add glOrtho call to properly project our stuff. handle scissors correclty.
+
+	/*
 
 	glBindTexture(GL_TEXTURE_2D, dest.getTexture());
-	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 200, 200, 0);
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 200, 200, 0);*/
+CHECK_GL_ERROR();
+
+
+	GLuint fb = 0;
+	glGenFramebuffers(1, &fb);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb);
+	CHECK_GL_ERROR();
+
+	glBindTexture(GL_TEXTURE_2D, dest.getTexture());
+	CHECK_GL_ERROR();
+
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 200, 200, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+CHECK_GL_ERROR();
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	CHECK_GL_ERROR();
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, dest.getTexture(), 0);
+
+	GLenum draw_buffers[2] = {GL_COLOR_ATTACHMENT0};
+	glDrawBuffers(1, draw_buffers);
+	CHECK_GL_ERROR();
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		throw ERROR("fail", "frambuffer-thing didn't work");
+
+
+	k.graphicsMgr->cls();
+
+	//srcwidget->draw();
+	k.guiMgr->drawEverything();
+
+	CHECK_GL_ERROR();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // reset (eg. use normal screen again)
+
+	glDeleteFramebuffers(1, &fb);
+
+CHECK_GL_ERROR();
+
+
+
 
 	glViewport(0,0,k.graphicsMgr->screen_width, k.graphicsMgr->screen_height);
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+	glPopAttrib();
 
 	dest.setUV(Box(0,1,1,-1), true);
 
 	wdest->setImage(dest);
+
 };
 
 #include <limits.h>
@@ -142,9 +219,19 @@ main(int argc, char *argv[])
 		TestApp kernel(argc,argv);
 		kernel.init();
 
-		kernel.inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, &kernel, _1, _2)); ///< sollte eigentlich in TestApp hinein
+		//kernel.inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, &kernel, _1, _2)); ///< sollte eigentlich in TestApp hinein
 
-		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
+		shared_ptr<WText> wclock = kernel.guiMgr->createWidget<WText>("clock");
+		wclock->setText("Hallo Welt");
+		wclock->setFont(kernel.graphicsMgr->loadFont("fonts/courier.ttf", 100));
+		wclock->rel_x = kernel.graphicsMgr->screen_width.ref()/2  - wclock->width.ref()/2;
+		wclock->rel_y = kernel.graphicsMgr->screen_height.ref()/2 - wclock->height.ref()/2;
+
+		kernel.guiMgr->addWidget(wclock);
+
+		kernel.setCalcFrameFunc(boost::bind(&setclock, _1, wclock, kernel));
+
+		/*shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
 		wcontainer->abs_y =  10;
 		wcontainer->width = 900;
@@ -169,9 +256,9 @@ main(int argc, char *argv[])
 
 
 
-		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, screenshot_widget, _1));
 
-		/*testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
+
+		/ *testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
 		testbutton->setAutoHeight();
 		testbutton->setAutoWidth();*/
 
@@ -180,7 +267,7 @@ main(int argc, char *argv[])
 		testbutton->abs_y = 10;
 		testbutton->width = 400;
 		testbutton->height = 100;
-		testbutton->draw_bounding_box = true;*/
+		testbutton->draw_bounding_box = true;* /
 		kernel.guiMgr->addWidget(testbutton);
 
 
@@ -240,6 +327,7 @@ main(int argc, char *argv[])
 		button_exit->getLabel()->cast<WText>()->setFontSize(20);
 		button_exit->getLabel()->cast<WText>()->setColor(WHITE);
 
+
 		wcontainer->insert(wi);
 		wcontainer->insert(wi2);
 		wcontainer->insert(wt);
@@ -281,10 +369,39 @@ main(int argc, char *argv[])
 		awindow->getContainer()->insert(wfiletree);
 		//awindow->getContainer()->insert(wi2);
 
-		kernel.guiMgr->addWidget(screenshot_widget);
+
+		shared_ptr<WImage> testimg2 = kernel.guiMgr->createWidget<WImage>("asdfycxvwev");
+		testimg2->setImage("images/anathea_icon.png");
+		awindow->getContainer()->addChild(testimg2);
+		testimg2->rel_x = 200;
+
+
+
+
+
+		Mesh m;
+		m.load_from_STL("replicator_grill.stl");
+
+		shared_ptr<WGLViewport> testviewport = kernel.guiMgr->createWidget<WGLViewport>("an opengl viewport");
+		testviewport->addMesh(m);
+		testviewport->width  = 300;
+		testviewport->height = 300;
+		testviewport->rel_x = 100;
+		testviewport->rel_y = kernel.graphicsMgr->screen_height.ref() - testviewport->height.ref() - 100;
+		testviewport->draw_bounding_box = true;
+		testviewport->setBackground(Color(A_OPAQUE, A_TRANSPARENT, A_TRANSPARENT, A_HALF_TRANSPARENT));
+		testviewport->render();
+
+
+
+
+
+		kernel.guiMgr->addWidget(testviewport);
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
+		kernel.guiMgr->addWidget(screenshot_widget);
+
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
 
@@ -293,7 +410,10 @@ main(int argc, char *argv[])
 		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::moveAnim, awindow, Vect(500,300), 2));
 
 
-		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");
+		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, awindow, screenshot_widget, _1));
+
+
+		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");*/
 		kernel.run();
 
 		return EXIT_SUCCESS;

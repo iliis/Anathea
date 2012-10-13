@@ -59,7 +59,7 @@ Timeline::calc(TimeVal now)
 			case EXP:
 			case LOG:
 			case RAND:
-				throw Error("notImplemented","Only linear and cosinus interpolation are valid for now.");
+				throw ERROR("notImplemented","Only linear and cosinus interpolation are valid for now.");
 				y = 0; break; /// NOT YET IMPLEMENTED!
 		}
 

@@ -50,7 +50,7 @@ GuiManager::createWidget(string typ, string name)
 	else if(typ == "list")      return this->createWidget<WList>     (name);
 	else if(typ == "window")    return this->createWidget<WWindow>   (name);
 	else
-		throw Error("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
+		throw ERROR("illegalOperation", "GuiManager can't create Widget '"+typ+"' (name:'"+name+"').");
 };
 //------------------------------------------------------------------------------
 /// identisch zu Widget::getChild()
@@ -84,7 +84,7 @@ GuiManager::getWidget(string path, bool throwIfNotFound)
 	}
 
 	if(throwIfNotFound)
-		throw Error("notFound", "GuiManager has no child named '"+path+"'.");
+		throw ERROR("notFound", "GuiManager has no child named '"+path+"'.");
 	else
 		return WidgetPtr();
 };
@@ -151,6 +151,10 @@ GuiManager::updateWidgetParent(WidgetPtr w)
 bool
 GuiManager::keyListener(KEY name, bool state)
 {
+	/// Das Widget, das den Fokus hat, kriegt alle Tastatureingaben zuerst
+	if(this->focus_widget && this->focus_widget->keyListener(name, state))
+		return true;
+
 	BOOST_FOREACH(WidgetPtr w, this->root_widgets)
 		if(w->keyListener(name, state))
 			return true; /// Widget oder eines seiner Kinder hat Input verarbeitet

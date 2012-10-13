@@ -51,6 +51,10 @@ const std::string Error::getMessage(const std::string type, const std::string me
 	{
 		return "ERROR: " + text + "\n error #" + ToString(err) + ": " + strerror(err) + "\n";
 	}
+	else if(type == "opengl" || type == "GL" || type == "OpenGL")
+	{
+		return "ERROR: The OpenGL-subsystem reported a problem:\n" + text;
+	}
 	else
 	{
 		return "UNSPECIFIC ERROR\n(This usually means, that something went TOTALLY WRONG, it's just something unimportant, or i was just too lazy to write an handle for this type of error.)\n\n"+text;

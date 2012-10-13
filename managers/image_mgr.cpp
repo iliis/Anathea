@@ -29,7 +29,7 @@ const
 	case 3:
 		return (dim==1?total_size.x:total_size.y);
 	default:
-		throw Error("illegalOperation", "NinePatchData::getPos(): invalid dim: "+ToString(dim));
+		throw ERROR("illegalOperation", "NinePatchData::getPos(): invalid dim: "+ToString(dim));
 	}
 };
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ const
 	case 2:
 		return (dim==1?right:bottom);
 	default:
-		throw Error("illegalOperation", "NinePatchData::getSize(): invalid dim: "+ToString(dim));
+		throw ERROR("illegalOperation", "NinePatchData::getSize(): invalid dim: "+ToString(dim));
 	}
 };
 //------------------------------------------------------------------------------
@@ -105,12 +105,12 @@ getOpenGLError(GLenum code)
 };
 //------------------------------------------------------------------------------
 void
-checkOpenGLError()
+checkOpenGLError(const char* filename, const int line)
 {
 #ifdef DEBUG
 	GLenum code = glGetError();
 	if(code != GL_NO_ERROR)
-		throw Error("opengl", getOpenGLError(code));
+		throw Error("opengl", getOpenGLError(code), filename, line);
 #endif
 };
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ GLuint
 convertSDL_SurfaceToTexture(SDL_Surface*& surface, const string& filename)
 {
 	if(!surface)
-		throw Error("illegalOperation", "Can't convert SDL_Surface to texture because surface '"+filename+"' is NULL.");
+		throw ERROR("illegalOperation", "Can't convert SDL_Surface to texture because surface '"+filename+"' is NULL.");
 
 	//see: http://wiki.gamedev.net/index.php/SDL:Tutorials:Using_SDL_with_OpenGL -> How To Load an OpenGL Texture from an SDL_Surface (04.09.08)
 	if((!isPowerOfTwo(surface->w) || !isPowerOfTwo(surface->h)) && (((string)((char*)glGetString(GL_EXTENSIONS))).find("ARB_texture_non_power_of_two")) == string::npos)
@@ -149,7 +149,7 @@ convertSDL_SurfaceToTexture(SDL_Surface*& surface, const string& filename)
 		if(surface){SDL_FreeSurface(surface);}
 		surface = tmp;*/
 
-		throw Error("notImplemented", "The height/width "+vector2<int>(surface->w, surface->h).print()+" from \""+filename+"\" are not a power of 2 and that's not supported on your system!");
+		throw ERROR("notImplemented", "The height/width "+vector2<int>(surface->w, surface->h).print()+" from \""+filename+"\" are not a power of 2 and that's not supported on your system!");
 	}
 
 	GLuint texture = 0;
@@ -180,7 +180,7 @@ convertSDL_SurfaceToTexture(SDL_Surface*& surface, const string& filename)
 		cout << "WARNING: Image is not truecolor...  this will probably break.\n";
 
 	// Have OpenGL generate a texture object handle for us
-	glGenTextures(1, &texture); checkOpenGLError();
+	glGenTextures(1, &texture); CHECK_GL_ERROR();
 
 	// Bind the texture object
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -201,10 +201,12 @@ convertSDL_SurfaceToTexture(SDL_Surface*& surface, const string& filename)
 
 	GLenum errCode;
 	if((errCode = glGetError()) != GL_NO_ERROR)
-		throw Error("load", "OpenGL caused an error while loading the image \"" + filename + "\":\n"+getOpenGLError(errCode));
+		throw ERROR("load", "OpenGL caused an error while loading the image \"" + filename + "\":\n"+getOpenGLError(errCode));
+
+	CHECK_GL_ERROR();
 
 	if(!texture)
-		throw Error("load", "Couldn't load image \""+filename+"\". Cause unknown.");
+		throw ERROR("load", "Couldn't load image \""+filename+"\". Cause unknown.");
 
 	return texture;
 };
@@ -265,13 +267,13 @@ Image::Image(string path)
 	SDL_Surface* tmp = IMG_Load(path.c_str());
 
 	if(!tmp) ///< pointer is NULL ergo the loading failed
-		throw Error("load", "Cannot load image '"+path+"': "+SDL_GetError());
+		throw ERROR("load", "Cannot load image '"+path+"': "+SDL_GetError());
 
 	/// convert the loaded image to a screen-compatible format
 	this->surface = SDL_DisplayFormatAlpha(tmp); SDL_FreeSurface(tmp);
 
 	if( ! this->surface)
-		throw Error("load", "Cannot convert image '"+path+"' to screen-format.");
+		throw ERROR("load", "Cannot convert image '"+path+"' to screen-format.");
 
 	*texture = convertSDL_SurfaceToTexture(this->surface);
 };
@@ -358,7 +360,7 @@ void
 Image::draw(Box pos, Box uv, bool uvnormal)
 {
 	if(!this->valid())
-		throw Error("null", "Cannot draw Image ('"+this->name+"'): Texture is NULL.");
+		throw ERROR("null", "Cannot draw Image ('"+this->name+"'): Texture is NULL.");
 
 	if(!uvnormal)
 	{
@@ -398,7 +400,7 @@ Image::draw_rotated(Box pos, double angle, Vect center, Box uv, bool uvnormal)
 	else
 	{
 		if(!this->valid())
-			throw Error("null", "Cannot draw Image ('"+this->name+"'): Texture is NULL.");
+			throw ERROR("null", "Cannot draw Image ('"+this->name+"'): Texture is NULL.");
 
 		if(!uvnormal)
 		{
@@ -483,7 +485,7 @@ Font::Font(string path, int size) : name(path)
 	TTF_Font* tmp = TTF_OpenFont(path.c_str(), size);
 
 	if(!tmp)
-		throw Error("load", "Cannot load font '"+path+"': "+TTF_GetError());
+		throw ERROR("load", "Cannot load font '"+path+"': "+TTF_GetError());
 
 	/// create a shared_ptr which will automatically delete the font
 	/// at the end of its lifetime
@@ -535,7 +537,7 @@ Font::render(string text, Color textCol, Color bgCol, Quality render_quality, bo
 	}
 
 	if(rendered == NULL) /// NULL == Error
-		throw Error("draw", string("Rendering font failed: ")+string(TTF_GetError())
+		throw ERROR("draw", string("Rendering font failed: ")+string(TTF_GetError())
 					+string("\ntext: '")+text
 					+string("'\nutf: ")+ToString(utf)+string(" quality: ")+ToString(render_quality));
 
@@ -657,11 +659,11 @@ GraphicsManager::init(vector2<int> size, int bpp, Uint32 flags)
 {
 	/// SDL selber initialisieren
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-		throw Error("init", "Unable to init SDL: "+string(SDL_GetError()));
+		throw ERROR("init", "Unable to init SDL: "+string(SDL_GetError()));
 
 	/// SDL-TTF für Schriften initialisieren
 	if(!TTF_WasInit() && TTF_Init() == -1)
-		throw Error("init", "Unable to init SDL_TTF: "+string(TTF_GetError()));
+		throw ERROR("init", "Unable to init SDL_TTF: "+string(TTF_GetError()));
 
 	/// beim Programmende SDL_Quit sowie evlt. TTF_Quit aufrufen
 	atexit(quit_sdl_and_ttf);
@@ -671,6 +673,20 @@ GraphicsManager::init(vector2<int> size, int bpp, Uint32 flags)
 
 	this->setVideoMode(size, bpp, flags);
 	size = this->getScreenSize();
+
+
+	/// GLEW initialisieren (für OpenGL Extensions; muss nach dem initialisieren eines OpenGL-Kontextes erfolgen)
+	GLenum e = glewInit();
+	if(e != GLEW_OK)
+	{
+		string err = (const char*) glewGetErrorString(e);
+		throw ERROR("init", "Unable to init GLEW: "+err);
+	}
+
+		/// sind benötigte Extensions auch verfügbar?
+		if(!GLEW_EXT_framebuffer_object)
+			throw ERROR("init", "Sory, your system doesn't support Framebuffer Objects. Either you have bad drivers or you're screwed.");
+
 
 	/// OpenGL-Settings
 	glShadeModel(GL_SMOOTH);
@@ -753,7 +769,7 @@ GraphicsManager::createNewImage(vector2<int> size, Uint32 flags)
 											fmt.Rmask, fmt.Gmask, fmt.Bmask, AMASK); ///< screen hat keinen Alpha-Kanal
 
 	if(tmp == NULL)
-		throw Error("create", "Cannot create new SDL-Surface:\n"+string(SDL_GetError())+"\nSize: "+size.print());
+		throw ERROR("create", "Cannot create new SDL-Surface:\n"+string(SDL_GetError())+"\nSize: "+size.print());
 
 	Image newImg(tmp);
 	this->images.insert(pair<string,Image>("created image "+ToString(rand()),newImg));
@@ -813,7 +829,7 @@ GraphicsManager::getFallbackFont()
 {
 #ifdef DEBUG
 	if(this->fonts.empty())
-		throw Error("notFound", "FallbackFont not found: GraphicsManager doesn't have any Font at all.");
+		throw ERROR("notFound", "FallbackFont not found: GraphicsManager doesn't have any Font at all.");
 #endif
 	return *this->fonts.begin();
 }
@@ -830,7 +846,7 @@ GraphicsManager::setVideoMode(vector2<int> size, int bpp, Uint32 flags)
 	/// Grafikmodus setzen
 	SDL_Surface* tmp = SDL_SetVideoMode(size.x, size.y, 32, flags);
 	if(!tmp)
-		throw Error("init", "Unable to set video mode: "+string(SDL_GetError()));
+		throw ERROR("init", "Unable to set video mode: "+string(SDL_GetError()));
 
 	/// und nen Pointer zum screen speichern; wird von SDL gelöscht
 	this->screen = tmp;

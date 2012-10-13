@@ -63,7 +63,6 @@ private:
 	void drawFrame();
 	void processInput();
 	void handleToDos();
-	void checkGLerrors();
 
 public:
 	Kernel( int argc, char *argv[] );
