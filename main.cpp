@@ -7,8 +7,8 @@
 #include "managers/widgets/widget_button.hpp"
 #include "managers/widgets/widget_list.hpp"
 #include "managers/widgets/widget_window.hpp"
-#include "managers/widgets/widget_filetree.hpp"
 
+#include "managers/widgets/widget_filetree.hpp"
 using namespace std;
 
 
