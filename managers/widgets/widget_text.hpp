@@ -7,6 +7,7 @@
 
 class WText : public Widget
 {
+protected:
 	string text;
 	Font   font;
 	Image  buffer;
@@ -14,6 +15,8 @@ class WText : public Widget
 	bool transparent;
 	Align align;
 public:
+	Expression<FNumber> padding;
+
 	WText(string name, Kernel* k)
 	 : Widget(name,k), text(""), font(k->graphicsMgr->getFallbackFont()), buffer(k->graphicsMgr->getFallbackImage()),
 	   color(A_OPAQUE,A_OPAQUE,A_OPAQUE,A_OPAQUE),background(A_TRANSPARENT,A_TRANSPARENT,A_TRANSPARENT,A_TRANSPARENT),
@@ -29,8 +32,11 @@ public:
 	inline Font   getFont()  const {return this->font;}
 	inline Color  getColor() const {return this->color;}
 	inline Color  getBG()    const {return this->background;}
-	inline bool  isTransparent() const {return this->transparent;}
+	inline bool   isTransparent() const {return this->transparent;}
 	inline Align  getAlign() const {return this->align;}
+
+	/// warning: only for one line
+	inline VectInt calculateTextSize(string text){return this->font.calculateLineSize(text);}
 
 	virtual const char* getType() const {return "Text";}
 

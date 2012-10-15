@@ -27,13 +27,13 @@ protected:
 	map<KEY, bool> keys;
 	map<PointName, PointKey> points;
 
-	boost::signal<void (KEY, bool)>          keyListeners;
+	boost::signal<void (KEY, bool)>           keyListeners;
 	boost::signal<void (PointKey, PointKey)>  pointMovListeners;
 	boost::signal<void (PointKey)>            pointHitListeners;
 public:
 	inline	bool		getKeyState(KEY name)	{return keys[name];};
 	inline	PointKey	getPoint(PointName name){return points[name];};
-	inline map<string, PointKey>& getPoints() {return this->points;}
+	inline map<string, PointKey>& getPoints()   {return this->points;}
 
 	inline	bool	isShiftOrCapsPressed()	{return this->getKeyState(KEY_LSHIFT) || this->getKeyState(KEY_RSHIFT) || this->getKeyState(KEY_CAPSLOCK);}
 

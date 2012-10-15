@@ -13,5 +13,5 @@
 	<styles sprites="xml/stylesheets/sprites.xml"
 			widgets="xml/stylesheets/widgets.xml" />
 	
-	<misc appname="sam's time display" />
+	<misc appname="Anathea 1.7" />
 </settings>

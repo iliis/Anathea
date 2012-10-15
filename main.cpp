@@ -289,6 +289,7 @@ main(int argc, char *argv[])
 		shared_ptr<WText> wt = kernel.guiMgr->createWidget<WText>("foobar");
 
 		wt->setText("Hallo Welt asf asdf asdf \na sdfiweiofasjod f\nthis is the third line :)\nsome chars:*ç%&/()=?\nmore rubbish... nor not");
+		wt->padding = 5;
 		wt->abs_x = 10;
 		wt->abs_y = wi->height.ref()+10;
 
@@ -399,11 +400,25 @@ main(int argc, char *argv[])
 
 
 
+		shared_ptr<WTextInput> testtextinput = kernel.guiMgr->createWidget<WTextInput>("test input");
+		testtextinput->setText("Just enter some text here");
+		testtextinput->rel_x = 20;
+		testtextinput->rel_y = kernel.graphicsMgr->screen_height.ref() - testtextinput->height.ref() - 20;
+
+		shared_ptr<WTextInput> testtextinput2 = kernel.guiMgr->createWidget<WTextInput>("test input2");
+		testtextinput2->setText("Hallo Welt");
+		testtextinput2->rel_x = 20;
+		testtextinput2->rel_y = kernel.graphicsMgr->screen_height.ref() - testtextinput->height.ref() - testtextinput2->height.ref() - 30;
+
+
+
 		kernel.guiMgr->addWidget(testviewport);
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 		kernel.guiMgr->addWidget(screenshot_widget);
+		kernel.guiMgr->addWidget(testtextinput);
+		kernel.guiMgr->addWidget(testtextinput2);
 
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");

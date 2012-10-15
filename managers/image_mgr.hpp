@@ -250,6 +250,8 @@ public:
 					Align align=LEFT,
 					Quality render_quality=BLENDED, bool utf=false);
 
+	VectInt calculateLineSize(string text, bool utf=false);
+
 	/// Gibt an, wieviele Punkt (= Pixel ?) die geladene Font hat.
 	inline int getSize(){return this->size;}
 
