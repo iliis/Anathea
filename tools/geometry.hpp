@@ -41,6 +41,7 @@ public:
 
     vector2() : x(0), y(0) {};
     vector2(Typ xx, Typ yy) : x(xx), y(yy) {};
+    vector2(Typ arr[]) : x(arr[0]), y(arr[1]) {};
 #ifdef USE_TINYXML
     vector2(ticpp::Element* element, string X="x", string Y="y", vector2<Typ> def = vector2<Typ>()) : x(0),y(0)// x(getAttribute<Typ>(element, X, def.x)), y(getAttribute<Typ>(element, Y, def.y))
     {
@@ -267,6 +268,7 @@ public:
 
     vector3() : x(0), y(0), z(0) {};
     vector3(Typ xx, Typ yy, Typ zz) : x(xx), y(yy), z(zz) {};
+    vector3(Typ arr[]) : x(arr[0]), y(arr[1]), z(arr[2]) {};
 #ifdef USE_TINYXML
     /*vector3(TiXmlElement* element, string X, string Y, string Z) : x(0), y(0), z(0)
     {
