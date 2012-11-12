@@ -6,6 +6,7 @@
 
 #include "3d/gl_mesh.hpp"
 
+#include "managers/widgets/widget_filetree.hpp"
 using namespace std;
 
 
@@ -220,17 +221,20 @@ main(int argc, char *argv[])
 
 		//kernel.inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, &kernel, _1, _2)); ///< sollte eigentlich in TestApp hinein
 
+
+		/// uncomment for a simple clock
+		/*
 		shared_ptr<WText> wclock = kernel.guiMgr->createWidget<WText>("clock");
 		wclock->setText("Hallo Welt");
-		wclock->setFont(kernel.graphicsMgr->loadFont("fonts/courier.ttf", 100));
+		wclock->setFont(kernel.graphicsMgr->loadFont("fonts/FreeMono.ttf", 100));
 		wclock->rel_x = kernel.graphicsMgr->screen_width.ref()/2  - wclock->width.ref()/2;
 		wclock->rel_y = kernel.graphicsMgr->screen_height.ref()/2 - wclock->height.ref()/2;
 
 		kernel.guiMgr->addWidget(wclock);
 
-		kernel.setCalcFrameFunc(boost::bind(&setclock, _1, wclock, kernel));
+		kernel.setCalcFrameFunc(boost::bind(&setclock, _1, wclock, kernel));*/
 
-		/*shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
+		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
 		wcontainer->abs_y =  10;
 		wcontainer->width = 900;
@@ -257,7 +261,7 @@ main(int argc, char *argv[])
 
 
 
-		/ *testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
+		/*testbutton->set(readXML("xml/stylesheets/button_orange.xml"));
 		testbutton->setAutoHeight();
 		testbutton->setAutoWidth();*/
 
@@ -266,7 +270,7 @@ main(int argc, char *argv[])
 		testbutton->abs_y = 10;
 		testbutton->width = 400;
 		testbutton->height = 100;
-		testbutton->draw_bounding_box = true;* /
+		testbutton->draw_bounding_box = true;*/
 		kernel.guiMgr->addWidget(testbutton);
 
 
@@ -285,6 +289,7 @@ main(int argc, char *argv[])
 		shared_ptr<WText> wt = kernel.guiMgr->createWidget<WText>("foobar");
 
 		wt->setText("Hallo Welt asf asdf asdf \na sdfiweiofasjod f\nthis is the third line :)\nsome chars:*ç%&/()=?\nmore rubbish... nor not");
+		wt->padding = 5;
 		wt->abs_x = 10;
 		wt->abs_y = wi->height.ref()+10;
 
@@ -395,11 +400,25 @@ main(int argc, char *argv[])
 
 
 
+		shared_ptr<WTextInput> testtextinput = kernel.guiMgr->createWidget<WTextInput>("test input");
+		testtextinput->setText("Just enter some text here");
+		testtextinput->rel_x = 20;
+		testtextinput->rel_y = kernel.graphicsMgr->screen_height.ref() - testtextinput->height.ref() - 20;
+
+		shared_ptr<WTextInput> testtextinput2 = kernel.guiMgr->createWidget<WTextInput>("test input2");
+		testtextinput2->setText("Hallo Welt");
+		testtextinput2->rel_x = 20;
+		testtextinput2->rel_y = kernel.graphicsMgr->screen_height.ref() - testtextinput->height.ref() - testtextinput2->height.ref() - 30;
+
+
+
 		kernel.guiMgr->addWidget(testviewport);
 		kernel.guiMgr->addWidget(awindow);
 		kernel.guiMgr->addWidget(wcontainer);
 		kernel.guiMgr->addWidget(button_exit);
 		kernel.guiMgr->addWidget(screenshot_widget);
+		kernel.guiMgr->addWidget(testtextinput);
+		kernel.guiMgr->addWidget(testtextinput2);
 
 
 		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
@@ -412,7 +431,7 @@ main(int argc, char *argv[])
 		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, awindow, screenshot_widget, _1));
 
 
-		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");*/
+		//kernel.guiMgr->createWidgetsFromXML("xml/layout1.xml");
 		kernel.run();
 
 		return EXIT_SUCCESS;

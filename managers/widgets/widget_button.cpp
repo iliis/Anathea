@@ -45,6 +45,8 @@ WButton::_set(ptree n)
 
 	if(n.get_child_optional("label.padding"))
 	{
+		/// TODO: use text.padding instead of baking own thing (or not, as button may have a generic widget as label)
+
 		FNumber p = n.get<FNumber>("label.padding", 0);
 		this->setAutoHeight(p);
 		this->setAutoWidth (p);

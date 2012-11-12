@@ -545,6 +545,21 @@ Font::render(string text, Color textCol, Color bgCol, Quality render_quality, bo
 	return Image(rendered);
 };
 //------------------------------------------------------------------------------
+VectInt
+Font::calculateLineSize(string text, bool utf)
+{
+	assert(this->valid);
+
+	VectInt size;
+
+	if(utf)
+		TTF_SizeUTF8(this->font.get(), text.c_str(), &size.x, &size.y); ///< get the width for utf8-text
+	else
+		TTF_SizeText(this->font.get(), text.c_str(), &size.x, &size.y); ///< get the width for normal text
+
+	return size;
+};
+//------------------------------------------------------------------------------
 Image
 Font::renderMultiline(string text, boost::shared_ptr<GraphicsManager> graphicsMgr,
 					Color textCol,

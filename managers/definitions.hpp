@@ -223,4 +223,103 @@ enum KEY
 	KEY_MOUSE_WHEELDOWN = SDL_BUTTON_WHEELDOWN
 };
 
+
+/// if you are using these for full fledged text input, you should probabyl use
+/// SDL Events directly (as they provide a unicode field)
+
+inline const char* keyToString(KEY k)
+{
+	switch(k)
+	{
+		case KEY_a: return "a";
+		case KEY_b: return "b";
+		case KEY_c: return "c";
+		case KEY_d: return "d";
+		case KEY_e: return "e";
+		case KEY_f: return "f";
+		case KEY_g: return "g";
+		case KEY_h: return "h";
+		case KEY_i: return "i";
+		case KEY_j: return "j";
+		case KEY_k: return "k";
+		case KEY_l: return "l";
+		case KEY_m: return "m";
+		case KEY_n: return "n";
+		case KEY_o: return "o";
+		case KEY_p: return "p";
+		case KEY_q: return "q";
+		case KEY_r: return "r";
+		case KEY_s: return "s";
+		case KEY_t: return "t";
+		case KEY_u: return "u";
+		case KEY_v: return "v";
+		case KEY_w: return "w";
+		case KEY_x: return "x";
+		case KEY_y: return "y";
+		case KEY_z: return "z";
+
+		case KEY_0: return "0";
+		case KEY_1: return "1";
+		case KEY_2: return "2";
+		case KEY_3: return "3";
+		case KEY_4: return "4";
+		case KEY_5: return "5";
+		case KEY_6: return "6";
+		case KEY_7: return "7";
+		case KEY_8: return "8";
+		case KEY_9: return "9";
+
+		case KEY_SPACE: return " ";
+
+		default: return "<UNKNOWN>";
+	}
+};
+
+inline bool isReadable(KEY k)
+{
+	switch(k)
+	{
+		case KEY_a:
+		case KEY_b:
+		case KEY_c:
+		case KEY_d:
+		case KEY_e:
+		case KEY_f:
+		case KEY_g:
+		case KEY_h:
+		case KEY_i:
+		case KEY_j:
+		case KEY_k:
+		case KEY_l:
+		case KEY_m:
+		case KEY_n:
+		case KEY_o:
+		case KEY_p:
+		case KEY_q:
+		case KEY_r:
+		case KEY_s:
+		case KEY_t:
+		case KEY_u:
+		case KEY_v:
+		case KEY_w:
+		case KEY_x:
+		case KEY_y:
+		case KEY_z:
+		case KEY_SPACE:
+		case KEY_0:
+		case KEY_1:
+		case KEY_2:
+		case KEY_3:
+		case KEY_4:
+		case KEY_5:
+		case KEY_6:
+		case KEY_7:
+		case KEY_8:
+		case KEY_9:
+			return true;
+		default:
+			return false;
+	}
+};
+
 #endif

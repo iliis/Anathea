@@ -45,9 +45,15 @@ image.path				[{Image settings}]
 // Text
 
 text.content			[string]
+	.padding			[float]
 	.font.path			[string]
 		 .size			[int]
 		 .color			[string]
 		 .background_color	[string]
+
+// TextInput
+border_normal
+      _focused.{image_parameters}
+
 
 // Window

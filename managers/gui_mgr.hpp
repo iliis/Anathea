@@ -74,8 +74,12 @@ public:
 		this->focus_widget = w;
 	}
 
+	inline void removeFocus() {
+		this->focus_widget.reset();
+	}
+
 	inline bool hasFocus(WidgetPtr w) {
-		return (this->focus_widget != null) && (w == this->focus_widget);
+			return w == this->focus_widget;
 	}
 
 
