@@ -1,0 +1,7 @@
+`sdl-config --cflags`
+TIXML_USE_TICPP
+USE_TINYXML
+USE_PROPERTY_TREE
+DATA_DIR=empty
+-I/home/samuel/programme/boost_1_43_0
+-I.

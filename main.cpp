@@ -55,6 +55,35 @@ void setclock(TimeVal delta, shared_ptr<WText> wclock, Kernel& k)//{cout << "cal
 	wclock->setText(ToString(k.timeMgr->getCurHours())+":"+min);
 };
 
+bool running = false;
+float v = 0;
+TimeVal starttime = 0;
+void tick_physics(TimeVal delta, WidgetPtr obj, shared_ptr<WButton> label, Kernel& k)
+{
+	if(running)
+	{
+		float t = toSeconds(k.timeMgr->now() - starttime);
+
+		v += 1;
+		obj->abs_y = 0.5 * 9.81 * t * t * 5000;
+
+		if(obj->abs_y >= 500) // ca. 10cm
+		{
+			//obj->abs_y = 500;
+			running = false;
+
+			label->setText(ToString(t));
+		}
+
+
+	}
+};
+
+void start_simulation(Kernel& k)
+{
+	running = true;
+	starttime = k.timeMgr->now();
+}
 
 
 class TestTexture
@@ -234,6 +263,15 @@ main(int argc, char *argv[])
 
 		kernel.setCalcFrameFunc(boost::bind(&setclock, _1, wclock, kernel));*/
 
+		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
+
+		shared_ptr<WImage> ball = kernel.guiMgr->createWidget<WImage>("ball");
+		ball->setImage("images/default.png");
+		ball->fitToImage();
+		ball->abs_x = 400;
+		kernel.guiMgr->addWidget(ball);
+		kernel.setCalcFrameFunc(boost::bind(&tick_physics, _1, ball, testbutton, kernel));
+
 		shared_ptr<WList> wcontainer = kernel.guiMgr->createWidget<WList>("a container");
 		wcontainer->abs_x =  10;
 		wcontainer->abs_y =  10;
@@ -242,7 +280,7 @@ main(int argc, char *argv[])
 		wcontainer->draw_bounding_box = true;
 
 
-		shared_ptr<WButton> testbutton = kernel.guiMgr->createWidget<WButton>("qwer");
+
 		testbutton->setText("#############################\nasdfsaf sdf\nsdfsafsd\nasdfsfdsf\nasdfsadfsfd\nasdf\nqwefsfe\n##############");
 		//testbutton->getSlot("clicked")->connect(boost::bind(&Widget::fadeOutAndDelete, testbutton, 2, true));
 		testbutton->abs_x = 300;
@@ -421,11 +459,12 @@ main(int argc, char *argv[])
 		kernel.guiMgr->addWidget(testtextinput2);
 
 
-		kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
+		//kernel.guiMgr->createPopupOK("popup test\nlet0s see if this still works...");
 
 
 
 		testbutton->getSlot("clicked")->connect(boost::bind(&Widget::moveAnim, awindow, Vect(500,300), 2));
+		testbutton->getSlot("clicked")->connect(boost::bind(&start_simulation, kernel));
 
 
 		kernel.setCalcFrameFunc(boost::bind(&update_screenshot, kernel, awindow, screenshot_widget, _1));
