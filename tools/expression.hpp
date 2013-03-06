@@ -16,6 +16,43 @@
 using boost::property_tree::ptree;
 #endif
 
+/*
+ * Expression<T>:
+ *   A general way of expressing dependent variables (similiar to constraints
+ *   in CAD software but without clever 'dependency resolution'). A simple
+ *   example:
+ * 
+ *   Expression<int> a, b, c;
+ * 
+ *   c = a.ref() + b.ref(); // create expression (
+ *   a = 10;
+ *   b =  5;  // c is now 15
+ * 
+ *   c = a.ref() + b.ref() - 4; // c is now 11
+ *   b = 4; // c is now 10
+ *   c = 1; // this destroys the expression created above
+ *   a = 100; // c is still 1
+ * 
+ *   The implementation is feed-forward based, eg. when @a changes a foreach
+ *   travels each dependency of @a (only @c here) and calls their 'get()'
+ *   methods which in turn call their 'predecessors' get().
+ * 
+ *   c = a.ref() + b.ref();
+ *   a = 10;
+ * 
+ *   call stack:
+ *   
+ *   a.set(10)
+ *    a.on_change()
+ *     c.update()
+ *      c.get()
+ *       c.val = a.get() + b.get() // may be quite recursive ;)
+ *      c.on_update() // does nothing (no Expression depends on c)
+ * 
+ * ExpressionRef<T>:
+ *   Actually stores the calculations done when Expression.get() is called.
+ * 
+ */ 
 
 
 #define CHECK_FOR_CYCLES /// still possible! (a -> b -> a)
@@ -231,9 +268,9 @@ private:
 ///   PROPERTIES
 ///----------------------------------------------------------------------------
 
-	Typ val;
-	ExpressionRef* expr;
-	list<Expression*> children;
+	Typ val; // the actual value of this Expression, may be the result of a complex calculation stored in @expr
+	ExpressionRef* expr; // how to calculate the value of this instance based on other Expressions (NOT the children, this is 'backwards')
+	list<Expression*> children; // Expressions which depend on this value -> forward (on_change traverses this)
 
 	typedef Typ T;
 
