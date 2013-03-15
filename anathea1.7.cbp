@@ -39,6 +39,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-g" />
 			<Add option="`sdl-config --cflags` -ffast-math" />
 			<Add option="-DTIXML_USE_TICPP" />
 			<Add option="-DUSE_TINYXML" />
@@ -59,11 +60,14 @@
 			<Add library="boost_filesystem-mt" />
 			<Add library="GLEW" />
 			<Add library="GLU" />
+			<Add library="bfd" />
 		</Linker>
 		<Unit filename="3d/gl_mesh.cpp" />
 		<Unit filename="3d/gl_mesh.hpp" />
 		<Unit filename="3d/gl_triangle.cpp" />
 		<Unit filename="3d/gl_triangle.hpp" />
+		<Unit filename="backward-cpp/backward.cpp" />
+		<Unit filename="backward-cpp/backward.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="managers/animation_mgr.cpp" />
 		<Unit filename="managers/animation_mgr.hpp" />
