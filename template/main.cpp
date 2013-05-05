@@ -20,6 +20,8 @@ public:
 	void init()
 	{
 		Kernel::init();
+		this->inputMgr->addKeyListener(boost::bind(&TestApp::escapeKeyListener, this, _1, _2));
+
 		wclock = this->guiMgr->createWidget<WText>("clock");
 		wclock->setText("Hallo Welt");
 		wclock->setFont(this->graphicsMgr->loadFont("fonts/FreeMono.ttf", 100));
