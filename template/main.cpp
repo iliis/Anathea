@@ -31,8 +31,9 @@ public:
 		this->guiMgr->addWidget(wclock);
 	}
 
-	void calcFrame(TimeVal delta)//{cout << "calculating Frame. Time: " << toSeconds(delta)*1000 << " ms (= " << 1/toSeconds(delta) << " FPS)" << endl;}
+	void calcFrame(TimeVal delta)
 	{
+		// cout << "calculating Frame. Time: " << toSeconds(delta)*1000 << " ms (= " << 1/toSeconds(delta) << " FPS)" << endl;}
 		int m = this->timeMgr->getCurMinutes();
 
 		string minutes = ToString(m);
@@ -45,7 +46,7 @@ public:
 	{
 		if(state) /// only react to key-DOWN events
 		{
-				switch(key)
+			switch(key)
 			{
 			case KEY_ESCAPE:
 				this->stop();
@@ -57,7 +58,6 @@ public:
 
 			default:
 				break;
-
 			}
 		}
 	}
