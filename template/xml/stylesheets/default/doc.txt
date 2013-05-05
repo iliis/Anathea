@@ -1,0 +1,59 @@
+// IMAGE PTREE-INTERFACE
+
+(path)				[string]
+UV.x				[float]
+  .y
+  .w
+  .h
+NinePatch.top		[Vect::T = float]
+		 .bottom
+		 .left
+		 .right
+color				[string]
+
+// WIDGET PTREE-INTERFACE
+
+// general (valid for every Widget)
+
+geometry.x				[float]
+		.y				[float]
+		.w				[float]
+		.h				[float]
+
+flags.visible			[bool]
+	 .bounding_box		[bool]
+
+children				{Any Widget}
+
+// Button
+label.text				{Widget Text Settings}
+	 .image (path)		[string]
+background_normal
+          _hover
+          _active.{image_parameters}
+
+// Container
+
+// Filetree
+
+// Image
+
+image.path				[{Image settings}]
+
+// List
+
+// Text
+
+text.content			[string]
+	.padding			[float]
+	.font.path			[string]
+		 .size			[int]
+		 .color			[string]
+		 .background_color	[string]
+
+// TextInput
+border_normal
+      _focused.{image_parameters}
+
+
+// Window

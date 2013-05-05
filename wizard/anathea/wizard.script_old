@@ -1,0 +1,201 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Anathea project wizard (modified from SDL)
+//
+////////////////////////////////////////////////////////////////////////////////
+
+// globals
+LibPath_Boost     <- _T("/home/samuel/programme/boost/");
+LibPath_Anathea   <- _T("./anathea/");
+
+BinPath_Debug     <- _T("bin" + wxFILE_SEP_PATH + "debug_linux"     + wxFILE_SEP_PATH);
+BinPath_Release   <- _T("bin" + wxFILE_SEP_PATH + "release_linux"   + wxFILE_SEP_PATH);
+BinPath_Windows   <- _T("bin" + wxFILE_SEP_PATH + "release_windows" + wxFILE_SEP_PATH);
+
+
+function BeginWizard()
+{
+
+
+
+    local anathea_path_descr = _T("Please select the location of Anathea on your computer.\n" +
+                             "This is the top-level folder where Anathea was installed (unpacked).\n" +
+                             "Execute the following in this directory:\n" +
+                             "git clone git@github.com:iliis/Anathea.git .\t// for rw access\n" +
+                             "git clone git://github.com/iliis/Anathea.git .\t// read only");
+
+    local boost_path_descr   = _T("Select the location of the boost library.\n" +
+                                  "(The place of the unpacked zip from boost.org is enough)" +
+                                  "If Boost is installed globally through a package manager, this value doesn't really matter...");
+
+    Wizard.AddProjectPathPage();
+    //Wizard.AddGenericSelectPathPage(_T("Boost Path"),   boost_path_descr   , _T("Path:"), LibPath_Boost);
+    Wizard.AddGenericSelectPathPage(_T("Anathea Path"), anathea_path_descr,  _T("Path:"), LibPath_Anathea);
+    //if (PLATFORM == PLATFORM_MSW)
+    //    Wizard.AddGenericSelectPathPage(_T("SDLPath"), sdlpath_descr, _T("Please select SDL's location:"), SDLPathDefault);
+    //Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// SDL's path page
+////////////////////////////////////////////////////////////////////////////////
+
+function OnLeave_SDLPath(fwd)
+{
+    /*if (fwd)
+    {
+        local dir         = Wizard.GetTextControlValue(_T("txtFolder")); // txtFolder is the text control in GenericSelectPathPage
+        local dir_nomacro = VerifyDirectory(dir);
+
+        if (dir_nomacro.IsEmpty())
+            return false;
+
+        // verify include dependencies
+        local dir_nomacro_inc = GetCompilerIncludeDir(dir, SDLPathDefault, SDLPathDefaultInc);
+        if (dir_nomacro_inc.IsEmpty())
+            return false;
+
+        if (!IO.FileExists(dir_nomacro_inc + wxFILE_SEP_PATH + _T("SDL.h")))
+        {
+            if (VerifyFile(dir_nomacro_inc, _T("SDL/SDL.h"), _T("SDL's include")))
+                SDLPathDefaultInc = SDLPathDefaultInc + _T("/SDL");
+            else
+                return false;
+        }
+
+        // verify library dependencies
+        local dir_nomacro_lib = GetCompilerLibDir(dir, SDLPathDefault, SDLPathDefaultLib);
+        if (dir_nomacro_lib.IsEmpty())
+            return false;
+
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDLmain"), _T("SDL's")))
+            return false;
+
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL.dll"), _T("SDL's")))
+            return false;
+
+        SDLPath = dir; // Remember the original selection.
+
+        local is_macro = _T("");
+
+        // try to resolve the include directory as macro
+        is_macro = GetCompilerIncludeMacro(dir, SDLPathDefault, SDLPathDefaultInc);
+        if (is_macro.IsEmpty())
+        {
+            // not possible -> use the real inc path we had computed instead
+            SDLPathDefaultInc = dir_nomacro_inc;
+        }
+
+        // try to resolve the library directory as macro
+        is_macro = GetCompilerLibMacro(dir, SDLPathDefault, SDLPathDefaultLib);
+        if (is_macro.IsEmpty())
+        {
+            // not possible -> use the real lib path we had computed instead
+            SDLPathDefaultLib = dir_nomacro_lib;
+        }
+    }*/
+    return true;
+}
+
+// return the files this project contains
+function GetFilesDir()
+{
+    return _T("anathea/files");
+}
+
+// setup the already created project
+function SetupProject(project)
+{
+	// enable compiler warnings (project-wide)
+    WarningsOn(project, Wizard.GetCompilerID());
+
+    project.AddIncludeDir(LibPath_Anathea);
+
+    // remove standard targets
+    project.RemoveBuildTarget(Wizard.GetDebugName());
+    project.RemoveBuildTarget(Wizard.GetReleaseName());
+
+    // add linux debug
+    project.AddBuildTarget(_T("linux debug"));
+    local target = project.GetBuildTarget(_T("linux debug"));
+
+    target.SetTargetType(ttConsoleOnly); // ttConsoleOnly: console for debugging
+    target.	SetObjectOutput (BinPath_Debug);
+	target.SetOutputFilename(BinPath_Debug + Wizard.GetProjectName() + DOT_EXT_EXECUTABLE);
+    // enable generation of debugging symbols for target
+    DebugSymbolsOn(target, Wizard.GetCompilerID());
+
+
+    // add linux release
+    project.AddBuildTarget(_T("linux release"));
+    target = project.GetBuildTarget(_T("linux release"));
+
+    target.SetTargetType(ttExecutable); // ttExecutable: no console
+    target.	SetObjectOutput (BinPath_Release);
+	target.SetOutputFilename(BinPath_Release + Wizard.GetProjectName() + DOT_EXT_EXECUTABLE);
+	// enable optimizations for target
+	OptimizationsOn(target, Wizard.GetCompilerID());
+
+	target.AddCompilerOption(_T("`sdl-config --cflags`"));
+	target.AddLinkerOption  (_T("`sdl-config --libs`"));
+
+
+
+    // add windows release
+    project.AddBuildTarget(_T("windows release"));
+    target = project.GetBuildTarget(_T("windows release"));
+
+    target.SetTargetType(ttExecutable); // ttExecutable: no console
+    target.	SetObjectOutput (BinPath_Windows);
+	target.SetOutputFilename(BinPath_Windows + Wizard.GetProjectName() + DOT_EXT_EXECUTABLE);
+	// enable optimizations for target
+	OptimizationsOn(target, Wizard.GetCompilerID());
+
+
+
+
+    /*if (PLATFORM == PLATFORM_MSW)
+    {
+        project.AddIncludeDir(SDLPathDefaultInc);
+        project.AddLibDir(SDLPathDefaultLib);
+
+        // add link libraries
+        project.AddLinkLib(_T("mingw32"));
+        project.AddLinkLib(_T("SDLmain"));
+        project.AddLinkLib(_T("SDL.dll"));
+        project.AddLinkLib(_T("user32"));
+        project.AddLinkLib(_T("gdi32"));
+        project.AddLinkLib(_T("winmm"));
+        project.AddLinkLib(_T("dxguid"));
+    }
+    else
+    {
+        // unix way
+        project.AddCompilerOption(_T("`sdl-config --cflags`"));
+        project.AddLinkerOption(_T("`sdl-config --libs`"));
+    }
+
+
+
+    // Debug
+    local target = project.GetBuildTarget(Wizard.GetDebugName());
+    if (!IsNull(target))
+    {
+        target.SetTargetType(ttConsoleOnly); // ttConsoleOnly: console for debugging
+        target.SetOutputFilename(Wizard.GetDebugOutputDir() + Wizard.GetProjectName() + DOT_EXT_EXECUTABLE);
+        // enable generation of debugging symbols for target
+        DebugSymbolsOn(target, Wizard.GetCompilerID());
+    }
+
+    // Release
+    target = project.GetBuildTarget(Wizard.GetReleaseName());
+    if (!IsNull(target))
+    {
+        target.SetTargetType(ttExecutable); // ttExecutable: no console
+        target.SetOutputFilename(Wizard.GetReleaseOutputDir() + Wizard.GetProjectName() + DOT_EXT_EXECUTABLE);
+        // enable optimizations for target
+        OptimizationsOn(target, Wizard.GetCompilerID());
+    }*/
+
+    return true;
+}
