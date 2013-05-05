@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<style>
+	<text padding=10 />
+	<border_normal  path="images/border_white.png">
+		<NinePatch left=12 top=12 bottom=12 right=12 />
+	</border_normal>
+	<border_focused path="images/border_white_filled.png">
+		<NinePatch left=12 top=12 bottom=12 right=12 />
+	</border_focused>
+</style>

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<style>
+	<label padding=10>
+		<text content="asdfsadf">
+			<font color="#000" />
+		</text>
+	</label>
+	<background_normal path="images/buttons/button1_normal.png">
+		<NinePatch left=12 top=12 bottom=12 right=12 />
+	</background_normal>
+
+	<background_hover path="images/buttons/button1_hover.png">
+		<NinePatch left=12 top=12 bottom=12 right=12 />
+	</background_hover>
+
+	<background_active path="images/buttons/button1_pressed.png">
+		<NinePatch left=12 top=12 bottom=12 right=12 />
+	</background_active>
+
+</style>
