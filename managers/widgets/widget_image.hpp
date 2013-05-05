@@ -10,7 +10,10 @@ class WImage : public Widget
 	Image img;
 public:
 	WImage(string Name, Kernel* k)
-	 : Widget(Name,k), img(k->graphicsMgr->getFallbackImage()) {};
+	 : Widget(Name,k), img(k->graphicsMgr->getFallbackImage())
+	 {
+		fitToImage();
+	 };
 
 	void setImage(Image i);
 	void setImage(string path);

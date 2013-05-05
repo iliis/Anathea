@@ -144,7 +144,7 @@ Kernel::run()
 
 			TimeVal delta = this->animMgr->letTimeElapse();
 
-			//this->calcFrame(delta);
+			this->calcFrame(delta);
 			if(this->calc_frame_func)
 				this->calc_frame_func(delta);
 

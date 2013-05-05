@@ -6,6 +6,7 @@
 #include <boost/function.hpp>
 //#include <boost/bind.hpp>
 #include "tools/stringhelpers.hpp"
+#include "tools/mathfuncs.hpp"
 
 using namespace std;
 

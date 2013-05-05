@@ -46,29 +46,17 @@ list <string> scanDir(string dir, string extension, bool filterOutPointFiles, bo
 		{
 //#ifdef _WIN32
             string name = dirIter->path().filename().string();//boost >= 1.36
-<<<<<<< HEAD
 //#else
 //           string name = dirIter->leaf(); //boost <= 1.35
 //#endif
-=======
-/*#else
-            string name = dirIter->leaf(); //boost <= 1.35
-#endif*/
->>>>>>> a61f1cad03b926f7c3b4df31ba823c0d678f5b3a
 
             //same goes here:
             //string ext = fs::extension(dirIter->leaf());
 //#ifdef _WIN32
             string ext = boost_fs::extension(dirIter->path().filename());//extractFileExtension(name);
-<<<<<<< HEAD
 //#else
 //            string ext = boost_fs::extension(dirIter->leaf());
 //#endif
-=======
-/*#else
-            string ext = boost_fs::extension(dirIter->leaf());
-#endif*/
->>>>>>> a61f1cad03b926f7c3b4df31ba823c0d678f5b3a
 
             string completePath = dirIter->path().string();
 

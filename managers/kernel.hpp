@@ -71,6 +71,7 @@ public:
 
 	virtual void init();
 	virtual void run();
+	virtual void calcFrame(TimeVal delta){}; ///< overload this or use setCalcFrameFunc
 	inline void stop(){this->running = false;}
 
 	inline void addToDo        (boost::function<void()> func, TimeVal when=0){this->todos.push_back(ToDo(func,when));};

@@ -102,8 +102,7 @@ readXML(const fs::path& p)
 	}
 	else
 	{
-		/// TODO: create default stylesheet for every widget, then enable this warning again
-		//cout << "WARNING: XML-File '" << p.string() << "' doesn't exist" << endl;
+		cout << "WARNING: XML-File '" << p.string() << "' doesn't exist" << endl;
 		return ptree(); /// gib einfach leere Daten falls Datei nicht gefunden
 	}
 };
