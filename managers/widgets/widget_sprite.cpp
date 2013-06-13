@@ -31,10 +31,10 @@ WSprite::_set(ptree n)
 	string type = n.get("type", "");
 
 	if(type == "")
-		throw Error("notFound", "Can't create WidgetSprite: Attribute 'type' is missing.");
+		throw ERROR("notFound", "Can't create WidgetSprite: Attribute 'type' is missing.");
 
 	// TODO
-	throw Error("notImplemented", "WSprite::_set(ptree n)");
+	throw ERROR("notImplemented", "WSprite::_set(ptree n)");
 	//this->setSprite(this->kernel->guiMgr->createSpriteFromPT(type, n));
 };
 //------------------------------------------------------------------------------

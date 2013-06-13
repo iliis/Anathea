@@ -181,10 +181,12 @@ SkeletonEditorWidget::handleKeyEvent(KEY key, bool state)
 			case KEY_s:
 				this->active_kf->fetch(); break;
 			case KEY_KP_PLUS:
+			case KEY_k:
 				++this->active_kf; if(this->active_kf == this->keyframes.end()) this->active_kf = this->keyframes.begin();
 				this->active_kf->apply();
 				break;
 			case KEY_KP_MINUS:
+			case KEY_j:
 				--this->active_kf; if(this->active_kf == this->keyframes.end()) --this->active_kf;
 				this->active_kf->apply();
 				break;
@@ -203,15 +205,15 @@ SkeletonEditorWidget::handleKeyEvent(KEY key, bool state)
 				}break;
 			case KEY_F1:
 			{
-				this->skeleton.loadFromFile("skeletons/player.skt");
+				this->skeleton.loadFromFile("skeletons/tmp.skt"); //player.skt");
 				this->skeleton.setLineWidth(2);
-				this->load_animation("animations/player.ska");
+				this->load_animation("animations/tmp.ska"); //player.ska");
 
 				cout << "LOADED" << endl; break;
 			}
 			case KEY_F2:
-				this->skeleton.saveToFile("skeletons/player.skt");
-				this->save_animation("animations/player.ska");
+				this->skeleton.saveToFile("skeletons/tmp.skt");
+				this->save_animation("animations/tmp.ska");
 				cout << "SAVED" << endl; break;
 			default:
 				return false;
@@ -290,7 +292,7 @@ SkeletonEditorWidget::save_animation(std::string filename)
 		file.close();
 	}
 	else
-		throw Error("fail", "Can't write animation-data to file '"+filename+"'.");
+		throw ERROR("fail", "Can't write animation-data to file '"+filename+"'.");
 };
 //------------------------------------------------------------------------------
 void

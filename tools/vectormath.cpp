@@ -96,7 +96,7 @@ list<group> groupPoints(list<group>::iterator start, list<group> points, float d
 //------------------------------------------------------------------------------------------------
 list<list<Vect2 > > seperateByDistance(list<Vect2 > points, float dist)
 {
-	if(points.empty()){throw Error("illegalOperation", "seperateByDistance() needs at least two points!");}
+	if(points.empty()) {throw ERROR("illegalOperation", "seperateByDistance() needs at least two points!");}
 	if(points.size() == 1)
 	{
 		cout << "WARNING: seperateByDistance(): Can't seperate a single Point..." << endl;

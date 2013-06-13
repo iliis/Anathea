@@ -147,7 +147,7 @@ SpriteSkeleton::loadFromFile(std::string filename)
 				list<std::string> vals = splitString(line, ",");
 
 				if(vals.size() != 4)
-					throw Error("parse", "Can't parse skeleton data from file '"+filename+"' at line "+line_nr+": expected 4 values.");
+					throw ERROR("parse", "Can't parse skeleton data from file '"+filename+"' at line "+line_nr+": expected 4 values.");
 
 				string name   = trimString(vals.front()); vals.pop_front();
 				string parent = trimString(vals.front()); vals.pop_front();
@@ -163,7 +163,7 @@ SpriteSkeleton::loadFromFile(std::string filename)
 					if(it != this->allBones.end())
 						b = &(it->second->addBone(Bone(angle,length, name)));
 					else
-						throw Error("parse", "Can't parse skeleton data from file '"+filename+"' at line "+line_nr+": Couln't find parent '"+parent+"'.");
+						throw ERROR("parse", "Can't parse skeleton data from file '"+filename+"' at line "+line_nr+": Couln't find parent '"+parent+"'.");
 				}
 				this->allBones[name] = b;
 
@@ -174,7 +174,7 @@ SpriteSkeleton::loadFromFile(std::string filename)
 		file.close();
 	}
 	else
-		throw Error("load", "Can't load skeleton from file '"+filename+"': Can't open that file.");
+		throw ERROR("load", "Can't load skeleton from file '"+filename+"': Can't open that file.");
 };
 //------------------------------------------------------------------------------
 void
@@ -187,7 +187,7 @@ SpriteSkeleton::saveToFile(std::string filename)
 		file.close();
 	}
 	else
-		throw Error("fail", "Can't write skeleton-data to file '"+filename+"'.");
+		throw ERROR("fail", "Can't write skeleton-data to file '"+filename+"'.");
 };
 //------------------------------------------------------------------------------
 Vect
@@ -453,7 +453,7 @@ list<SkeletonKeyframe> load_sk_animation(SpriteSkeleton& skeleton, std::string f
 				list<std::string> vals = splitString(line, ",");
 
 				if(vals.size() != 2)
-					throw Error("parse", "Can't parse skeleton-animation data from file '"+filename+"' at line "+line_nr+": expected 2 values.");
+					throw ERROR("parse", "Can't parse skeleton-animation data from file '"+filename+"' at line "+line_nr+": expected 2 values.");
 
 				string name   = trimString(vals.front()); vals.pop_front();
 				double angle  = lexical_cast<double>(trimString(vals.front())); vals.pop_front();
@@ -463,14 +463,14 @@ list<SkeletonKeyframe> load_sk_animation(SpriteSkeleton& skeleton, std::string f
 				if(b != NULL)
 					kf->data[b] = angle;
 				else
-					throw Error("parse", "Can't parse skeleton-animation data from file '"+filename+"' at line "+line_nr+": Couln't find bone '"+name+"'.");
+					throw ERROR("parse", "Can't parse skeleton-animation data from file '"+filename+"' at line "+line_nr+": Couln't find bone '"+name+"'.");
 
 			}
 			++line_nr;
 		}
 
 		if(anim.empty())
-			throw Error("parse", "There is not skeleton-animation data in file '"+filename+"'.");
+			throw ERROR("parse", "There is not skeleton-animation data in file '"+filename+"'.");
 
 		file.close();
 
@@ -479,5 +479,5 @@ list<SkeletonKeyframe> load_sk_animation(SpriteSkeleton& skeleton, std::string f
 		return anim;
 	}
 	else
-		throw Error("load", "Can't load skeleton-animation from file '"+filename+"': Can't open that file.");
+		throw ERROR("load", "Can't load skeleton-animation from file '"+filename+"': Can't open that file.");
 };

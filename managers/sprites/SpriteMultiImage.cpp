@@ -37,7 +37,7 @@ Box
 SpriteMultiImage::getFrame(unsigned int nr)
 {
 	if(nr >= this->frames.size())
-		throw Error("illegalOperation","MultiImage '"+this->img.getName()+"' has no frame No."+nr+"!");
+		throw ERROR("illegalOperation","MultiImage '"+this->img.getName()+"' has no frame No."+nr+"!");
 	else
 		return this->frames[nr];
 }

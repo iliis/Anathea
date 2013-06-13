@@ -6,14 +6,14 @@
 
 /**
  *  LM    select bone
- *  CTRL-LM
- *        add bone
+ *  CTRL-LM		set center
+ *  SHIFT-LM     add bone
  *  DEL   delete selected bone
  *
  *  F1    load
  *  F2    save
- *  NUM+  frame++
- *  NUM-  frame--
+ *  NUM+/k  frame++
+ *  NUM-/j  frame--
  *  i     insert frame
  *  r     remove frame
  *  s     save current state to current frame
@@ -59,6 +59,8 @@ public:
 
 	void save_animation(std::string filename);
 	void load_animation(std::string filename);
+
+	virtual const char* getType() const {return "SkeletonEditor";}
 };
 
 

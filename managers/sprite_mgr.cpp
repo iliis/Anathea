@@ -57,7 +57,7 @@ SpriteManager::createSprite(string typ, ptree params)
 	else if(typ == "multi_image")   return this->createSprite<SpriteMultiImage>(params);
 	else if(typ == "text")          return this->createSprite<SpriteText>(params);
 	else
-		throw Error("notFound", "SpriteManager can't create sprite '"+typ+"'.");
+		throw ERROR("notFound", "SpriteManager can't create sprite '"+typ+"'.");
 };
 //------------------------------------------------------------------------------
 void

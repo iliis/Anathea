@@ -33,7 +33,7 @@ ContainerToken::getValue()
 	BOOST_FOREACH(Token* t, this->tokens)
 	{
 		if(t->isOperator() != op)
-			throw Error("parse", string("Expected a")+(op?"n operator":" value")+"-token instead of a"+(!op?"n operator":" value")+"-token.");
+			throw ERROR("parse", string("Expected a")+(op?"n operator":" value")+"-token instead of a"+(!op?"n operator":" value")+"-token.");
 
 		if(op)
 		{
@@ -144,9 +144,9 @@ Parser::parse(string expression)
 
 	//check for correct Brackets:
 	if(strCount(expression, '(') != strCount(expression, ')'))
-		throw Error("parse", string("The number of left and right brackets (\"(\" and \")\") aren't equal in \"")+expression+"\".");
+		throw ERROR("parse", string("The number of left and right brackets (\"(\" and \")\") aren't equal in \"")+expression+"\".");
 	if(strCount(expression, '[') != strCount(expression, ']'))
-		throw Error("parse", string("The number of left and right function-brackets (\"[\" and \"]\") aren't equal in \"")+expression+"\".");
+		throw ERROR("parse", string("The number of left and right function-brackets (\"[\" and \"]\") aren't equal in \"")+expression+"\".");
 
 	size_t equalPos = expression.find('=');
 	string constantName = "Ans";

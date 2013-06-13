@@ -35,9 +35,9 @@ list <string> scanDir(string dir, string extension, bool filterOutPointFiles, bo
 	if(dir.find_last_of(dirDelimiter) != dir.length()-1){dir += dirDelimiter;} //Pfad sollte mit einem Slash enden
     boost::filesystem::path directory = boost_fs::system_complete(boost_fs::path(dir));
 	if(!boost_fs::exists(directory))
-		{throw Error("load", "\"" + dir + "\" existiert nicht!");}
+		{throw ERROR("load", "\"" + dir + "\" existiert nicht!");}
 	else if(!boost_fs::is_directory(directory))
-		{throw Error("load", "\"" + dir + "\" ist kein Ordner!");}
+		{throw ERROR("load", "\"" + dir + "\" ist kein Ordner!");}
 	else
 	{
 		//cout << "---- scanning \"" << dir << "\" ----" << endl;
